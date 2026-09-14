@@ -71,3 +71,53 @@ document.addEventListener('DOMContentLoaded', () => {
     window.addEventListener('scroll', onScroll, { passive: true });
   }
 });
+
+document.addEventListener('DOMContentLoaded', () => {
+  const articles = document.querySelectorAll('.article-card');
+  articles.forEach(card => {
+    // Make entire card click open an alert for reading
+    const img = card.querySelector('.article-img');
+    const title = card.querySelector('.article-title');
+    const excerpt = card.querySelector('.article-excerpt');
+    const triggerRead = () => alert("Opening full article: " + title.innerText + "\n\nThis would load the full publication page.");
+    
+    if(img) img.addEventListener('click', triggerRead);
+    if(title) { title.style.cursor = 'pointer'; title.addEventListener('click', triggerRead); }
+    if(excerpt) { excerpt.style.cursor = 'pointer'; excerpt.addEventListener('click', triggerRead); }
+    if(img) { img.style.cursor = 'pointer'; }
+
+    // Buttons
+    const btns = card.querySelectorAll('.action-btn');
+    if(btns.length >= 3) {
+      const likeBtn = btns[0];
+      const commentBtn = btns[1];
+      const shareBtn = btns[2];
+      
+      likeBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        likeBtn.classList.toggle('liked');
+        let count = parseInt(likeBtn.innerText.replace(/[^0-9]/g, '')) || 0;
+        if(likeBtn.classList.contains('liked')) {
+          likeBtn.innerHTML = likeBtn.innerHTML.replace(/[0-9]+/, (count + 1));
+        } else {
+          likeBtn.innerHTML = likeBtn.innerHTML.replace(/[0-9]+/, (count - 1));
+        }
+      });
+      
+      commentBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        let comment = prompt("Leave a comment on this publication:");
+        if(comment) {
+          alert("Your comment '\"" + comment + "\"' has been posted!");
+          let count = parseInt(commentBtn.innerText.replace(/[^0-9]/g, '')) || 0;
+          commentBtn.innerHTML = commentBtn.innerHTML.replace(/[0-9]+/, (count + 1));
+        }
+      });
+      
+      shareBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        alert("Share options opened! You can now share this via Email, Twitter, or LinkedIn.");
+      });
+    }
+  });
+});

@@ -345,10 +345,9 @@ section{ position:relative; }
 @media (max-width:520px){ .footer-grid{ grid-template-columns:1fr; } }
 
 /* =================== PAGE HEADER (sub-pages) =================== */
-.page-head{
-  padding-top:clamp(56px,9vw,96px); padding-bottom:clamp(48px,7vw,72px);
-  background:linear-gradient(180deg,var(--green-dark),var(--green) 130%); color:#fff; position:relative; overflow:hidden;
-}
+.page-head{ padding-top:clamp(56px,9vw,96px); padding-bottom:clamp(48px,7vw,72px); position:relative; overflow:hidden; background-size: cover; background-position: center; }
+.page-head::before{ content:""; position:absolute; inset:0; background:rgba(10,30,20,0.75); z-index:1; }
+.page-head > * { position:relative; z-index:2; }
 .page-head .crumb{ font-size:.85rem; color:rgba(247,243,234,.65); margin-bottom:18px; font-weight:600; }
 .page-head h1{ color:#fff; }
 
@@ -404,3 +403,102 @@ section{ position:relative; }
 .team-member-img { width: 120px; height: 120px; border-radius: 50%; object-fit: cover; margin: 0 auto 16px; border: 3px solid #fff; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
 .team-member h4 { color: var(--teal-dark); font-size: 1.15rem; font-family: var(--font-head); margin-bottom: 4px; }
 .team-member p { font-size: 0.9rem; color: #666; }
+
+/* =================== PILLAR HOVER CARDS =================== */
+.pillar-card {
+  background: #fff;
+  border-radius: 12px;
+  padding: 30px;
+  margin-bottom: 24px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  border: 1px solid rgba(0,0,0,0.05);
+  cursor: pointer;
+  transition: all 0.4s ease;
+}
+.pillar-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 30px rgba(0,0,0,0.1);
+  border-color: var(--primary);
+}
+.pillar-header {
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+}
+.pillar-num {
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--gold);
+  line-height: 1;
+}
+.pillar-title-area h3 {
+  font-size: 1.5rem;
+  color: var(--teal-dark);
+  margin-bottom: 8px;
+}
+.pillar-subtitle {
+  font-size: 1rem;
+  color: #555;
+}
+.pillar-details {
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  margin-left: 55px; /* align with text */
+}
+.pillar-card:hover .pillar-details {
+  max-height: 500px;
+  opacity: 1;
+  margin-top: 20px;
+}
+.pillar-details ul {
+  list-style: none;
+  padding: 0;
+}
+.pillar-details li {
+  position: relative;
+  padding-left: 20px;
+  margin-bottom: 12px;
+  color: #444;
+  line-height: 1.5;
+}
+.pillar-details li::before {
+  content: "•";
+  color: var(--gold);
+  position: absolute;
+  left: 0;
+  font-size: 1.5em;
+  line-height: 1;
+  top: -2px;
+}
+
+/* =================== TEAM BIO HOVER =================== */
+.team-member {
+  background: #fff; padding: 24px; border-radius: 12px; text-align: center; 
+  box-shadow: 0 4px 12px rgba(0,0,0,0.04); border: 1px solid rgba(0,0,0,0.05);
+  transition: all 0.4s ease;
+  position: relative;
+  overflow: hidden;
+}
+.team-member:hover {
+  box-shadow: 0 12px 30px rgba(0,0,0,0.1);
+  transform: translateY(-5px);
+}
+.team-bio {
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+  transition: all 0.4s ease;
+  font-size: 0.85rem;
+  color: #555;
+  text-align: left;
+  border-top: 1px solid #eee;
+}
+.team-member:hover .team-bio {
+  max-height: 300px;
+  opacity: 1;
+  margin-top: 16px;
+  padding-top: 16px;
+}
+.liked { color: var(--gold) !important; }
