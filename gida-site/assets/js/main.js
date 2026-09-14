@@ -126,7 +126,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const projImgs = document.querySelectorAll('.project-img');
   if(projImgs.length > 0) {
     // Inject modal HTML
-    const modalHtml = 
+    const modalHtml = `
       <div class="modal-overlay" id="projModal">
         <div class="modal-content">
           <button class="modal-close" id="projClose">&times;</button>
@@ -138,7 +138,7 @@ document.addEventListener('DOMContentLoaded', () => {
           </div>
         </div>
       </div>
-    ;
+    `;
     document.body.insertAdjacentHTML('beforeend', modalHtml);
     
     const modal = document.getElementById('projModal');
