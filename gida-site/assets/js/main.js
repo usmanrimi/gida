@@ -79,7 +79,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const img = card.querySelector('.article-img');
     const title = card.querySelector('.article-title');
     const excerpt = card.querySelector('.article-excerpt');
-    const triggerRead = () => alert("Opening full article: " + title.innerText + "\n\nThis would load the full publication page.");
+    const triggerRead = () => { window.location.href = 'article.html'; };
     
     if(img) img.addEventListener('click', triggerRead);
     if(title) { title.style.cursor = 'pointer'; title.addEventListener('click', triggerRead); }

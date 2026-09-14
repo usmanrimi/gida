@@ -1,0 +1,75 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Article - GIDA</title>
+<link rel="icon" href="assets/img/logo.png">
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+<header class="site-header" style="background:var(--green-dark);">
+  <nav class="nav wrap" aria-label="Primary">
+    <a class="brand" href="index.html">
+      <img src="assets/img/logo.png" alt="GIDA logo">
+      <span class="brand-word">GIDA</span>
+    </a>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="about.html">About Us</a>
+      <a href="programs.html">Pillars &amp; Programs</a>
+      <a href="safeguarding.html">Safeguarding &amp; Publications</a>
+      <a href="contact.html" class="nav-cta">Contact Us</a>
+    </div>
+  </nav>
+</header>
+
+<main id="main">
+  <section class="page-head" style="background-image: url('assets/img/market.jpg');">
+    <div class="wrap">
+      <p class="crumb reveal"><a href="safeguarding.html" style="color:#fff;text-decoration:none;">Publications</a> / Article</p>
+      <h1 class="h-display reveal">Institutional GESI & Safeguarding Policy</h1>
+      <p class="lede reveal mt-m" style="color:rgba(255,255,255,0.9);">A comprehensive zero-tolerance framework designed to protect vulnerable communities.</p>
+    </div>
+  </section>
+
+  <section class="section-pad">
+    <div class="wrap" style="max-width:800px; margin: 0 auto;">
+      <p class="eyebrow">Policy Framework</p>
+      <p class="body-text mt-m" style="font-size:1.15rem; line-height:1.8;">
+        GIDA enforces a zero-tolerance policy against gender-based discrimination, sexual exploitation and abuse (PSEAH), child abuse, human rights violations, and extractive development practices. 
+      </p>
+      <p class="body-text mt-m" style="font-size:1.15rem; line-height:1.8;">
+        This framework is binding on all personnel, partners, and contractors. We believe that true prosperity can only be achieved when every community member feels safe, respected, and empowered.
+      </p>
+      <img src="assets/img/market.jpg" style="width:100%; border-radius:12px; margin: 40px 0;">
+      <h2 class="h-2">Core Commitments</h2>
+      <ul style="margin-top:20px; padding-left:20px; font-size:1.15rem; line-height:1.8; color:var(--text);">
+        <li>Absolute protection from exploitation.</li>
+        <li>Youth enterprise safeguards.</li>
+        <li>Dignified representation in all media.</li>
+      </ul>
+      <div style="margin-top: 60px; padding-top: 40px; border-top: 1px solid #ddd; display: flex; gap: 20px;">
+        <button class="btn btn-gold" id="like-btn" style="display:flex; align-items:center; gap:8px;"><svg style="width:20px;fill:currentColor" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg> <span>124</span> Likes</button>
+        <button class="btn btn-outline" id="share-btn" style="display:flex; align-items:center; gap:8px;"><svg style="width:20px;fill:currentColor" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92 1.61 0 2.92-1.31 2.92-2.92s-1.31-2.92-2.92-2.92z"/></svg> Share</button>
+      </div>
+    </div>
+  </section>
+</main>
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="footer-brand"><img src="assets/img/logo.png" alt="GIDA logo"><span class="footer-brand-word">GIDA</span></div>
+  </div>
+</footer>
+<script>
+  document.getElementById('like-btn').addEventListener('click', function() {
+    let span = this.querySelector('span');
+    span.innerText = parseInt(span.innerText) + 1;
+    this.style.background = '#b36b24';
+  });
+  document.getElementById('share-btn').addEventListener('click', function() {
+    alert("Link copied to clipboard!");
+  });
+</script>
+</body>
+</html>
