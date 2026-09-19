@@ -158,3 +158,25 @@ document.addEventListener('DOMContentLoaded', () => {
     modal.addEventListener('click', (e) => { if(e.target === modal) modal.classList.remove('active'); });
   }
 });
+
+
+/* =================== CMS IMAGE SYNCHRONIZATION =================== */
+document.addEventListener('DOMContentLoaded', () => {
+  try {
+    const cmsData = JSON.parse(localStorage.getItem('gida_cms_data'));
+    if (cmsData && cmsData.images && Array.isArray(cmsData.images)) {
+      cmsData.images.forEach(img => {
+        // Hero logo
+        if (img.id === 'hero-showcase') {
+          const el = document.getElementById('cms-img-hero-logo');
+          if (el) { el.src = img.src; el.alt = img.alt || el.alt; }
+        }
+        // About feature
+        if (img.id === 'about-feature') {
+          const el = document.querySelector('.about-feature-img');
+          if (el) { el.src = img.src; el.alt = img.alt || el.alt; }
+        }
+      });
+    }
+  } catch(e) {}
+});

@@ -13,6 +13,7 @@
     --primary-light: #2C6B57;
     --gold: #D9822B;
     --gold-dark: #B4681B;
+    --gold-light: #F0A855;
     --teal: #00828A;
     --teal-dark: #016068;
     --bg: #F4F6F8;
@@ -36,7 +37,8 @@
     background: #fff; width: 100%; max-width: 440px; border-radius: 20px; padding: 40px 32px;
     box-shadow: 0 24px 60px rgba(0,0,0,0.3); text-align: center;
   }
-  .login-logo { max-width: 240px; height: auto; margin-bottom: 24px; }
+  .login-logo-box { background: #fff; padding: 10px 16px; border-radius: 12px; display: inline-block; box-shadow: 0 2px 10px rgba(0,0,0,0.06); margin-bottom: 20px; border: 1px solid var(--border); }
+  .login-logo { max-width: 250px; height: auto; display: block; }
   .login-title { font-family: 'Manrope', sans-serif; font-size: 1.4rem; font-weight: 800; color: var(--primary-dark); margin-bottom: 8px; }
   .login-subtitle { font-size: 0.88rem; color: var(--text-muted); margin-bottom: 28px; }
   .form-group { text-align: left; margin-bottom: 20px; }
@@ -63,14 +65,15 @@
     flex-shrink: 0; border-right: 1px solid rgba(255,255,255,0.1);
   }
   .sidebar-header {
-    padding: 24px 20px; border-bottom: 1px solid rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: space-between;
+    padding: 20px; border-bottom: 1px solid rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center;
   }
-  .sidebar-logo { height: 38px; width: auto; max-width: 210px; }
-  .sidebar-menu { flex: 1; overflow-y: auto; padding: 20px 12px; }
-  .menu-heading { font-size: 0.72rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.08em; color: rgba(255,255,255,0.4); padding: 12px 14px 6px; }
+  .sidebar-logo-box { background: #fff; padding: 6px 12px; border-radius: 8px; display: inline-block; }
+  .sidebar-logo { height: 36px; width: auto; max-width: 210px; display: block; }
+  .sidebar-menu { flex: 1; overflow-y: auto; padding: 16px 12px; }
+  .menu-heading { font-size: 0.72rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.08em; color: rgba(255,255,255,0.45); padding: 12px 14px 6px; }
   .nav-btn {
     width: 100%; text-align: left; background: none; border: none; padding: 11px 16px; border-radius: 10px;
-    color: rgba(255,255,255,0.8); font-size: 0.9rem; font-weight: 600; cursor: pointer; display: flex;
+    color: rgba(255,255,255,0.82); font-size: 0.9rem; font-weight: 600; cursor: pointer; display: flex;
     align-items: center; gap: 12px; transition: all 0.2s; margin-bottom: 4px;
   }
   .nav-btn:hover { background: rgba(255,255,255,0.08); color: #fff; }
@@ -84,14 +87,14 @@
     align-items: center; justify-content: space-between; flex-shrink: 0;
   }
   .page-title { font-family: 'Manrope', sans-serif; font-size: 1.35rem; font-weight: 800; color: var(--primary-dark); }
-  .user-badge { display: flex; align-items: center; gap: 16px; }
+  .user-badge { display: flex; align-items: center; gap: 14px; }
   .user-avatar { width: 36px; height: 36px; border-radius: 50%; background: var(--teal); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.85rem; }
   .btn-outline-sm { background: none; border: 1px solid var(--border); padding: 7px 14px; border-radius: 8px; font-size: 0.85rem; font-weight: 600; cursor: pointer; transition: all 0.2s; text-decoration: none; color: inherit; }
   .btn-outline-sm:hover { border-color: var(--primary); color: var(--primary); }
   .btn-gold-sm { background: var(--gold); color: #fff; border: none; padding: 8px 16px; border-radius: 8px; font-size: 0.85rem; font-weight: 700; cursor: pointer; transition: background 0.2s; display: inline-flex; align-items: center; gap: 6px; }
   .btn-gold-sm:hover { background: var(--gold-dark); }
 
-  /* Scrollable Workspace */
+  /* Workspace */
   .workspace { flex: 1; overflow-y: auto; padding: 32px; }
   .tab-pane { display: none; }
   .tab-pane.active { display: block; animation: fadeIn 0.3s ease; }
@@ -104,9 +107,35 @@
   .stat-box .value { font-family: 'Manrope', sans-serif; font-size: 2rem; font-weight: 800; color: var(--primary); }
 
   .content-card { background: #fff; border-radius: 16px; border: 1px solid var(--border); box-shadow: 0 4px 12px rgba(0,0,0,0.03); margin-bottom: 30px; overflow: hidden; }
-  .card-head { padding: 20px 24px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; background: #fff; }
+  .card-head { padding: 20px 24px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; background: #fff; flex-wrap: wrap; gap: 12px; }
   .card-head h3 { font-family: 'Manrope', sans-serif; font-size: 1.15rem; font-weight: 700; color: var(--primary-dark); }
   .card-body { padding: 24px; }
+
+  /* Section Filter Tabs for Image Management */
+  .filter-pills { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 20px; }
+  .filter-btn { background: #f1f5f9; border: 1px solid var(--border); padding: 6px 14px; border-radius: 100px; font-size: 0.82rem; font-weight: 600; cursor: pointer; transition: all 0.2s; }
+  .filter-btn:hover { background: #e2e8f0; }
+  .filter-btn.active { background: var(--primary); color: #fff; border-color: var(--primary); }
+
+  /* Image Management Grid & Cards */
+  .img-manage-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 24px; }
+  .img-manage-card { background: #fff; border: 1px solid var(--border); border-radius: 14px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.03); transition: transform 0.25s ease; display: flex; flex-direction: column; }
+  .img-manage-card:hover { transform: translateY(-3px); box-shadow: 0 10px 25px rgba(0,0,0,0.06); }
+  .img-preview-box { position: relative; width: 100%; height: 180px; background: #f8fafc; border-bottom: 1px solid var(--border); overflow: hidden; display: flex; align-items: center; justify-content: center; }
+  .img-preview-thumb { width: 100%; height: 100%; object-fit: cover; }
+  .img-ratio-badge { position: absolute; top: 10px; left: 10px; background: rgba(18, 51, 41, 0.85); color: #fff; font-size: 0.72rem; font-weight: 700; padding: 4px 8px; border-radius: 6px; backdrop-filter: blur(4px); }
+  .img-location-badge { position: absolute; bottom: 10px; left: 10px; background: var(--gold); color: #fff; font-size: 0.72rem; font-weight: 700; padding: 4px 8px; border-radius: 6px; }
+  .img-card-details { padding: 18px; flex: 1; display: flex; flex-direction: column; }
+  .img-title { font-family: 'Manrope', sans-serif; font-size: 1.05rem; font-weight: 700; color: var(--primary-dark); margin-bottom: 6px; }
+  .img-alt { font-size: 0.84rem; color: var(--text-muted); margin-bottom: 12px; line-height: 1.45; }
+  .img-meta-row { display: flex; justify-content: space-between; font-size: 0.78rem; color: var(--text-muted); border-top: 1px solid var(--border); padding-top: 12px; margin-top: auto; }
+  .img-actions-row { display: flex; gap: 8px; margin-top: 14px; }
+  .btn-replace { flex: 1; background: var(--teal); color: #fff; border: none; padding: 8px 12px; border-radius: 6px; font-size: 0.84rem; font-weight: 600; cursor: pointer; transition: background 0.2s; text-align: center; }
+  .btn-replace:hover { background: var(--teal-dark); }
+  .btn-edit-meta { background: #f1f5f9; border: 1px solid var(--border); padding: 8px 12px; border-radius: 6px; font-size: 0.84rem; font-weight: 600; cursor: pointer; transition: all 0.2s; }
+  .btn-edit-meta:hover { background: #e2e8f0; }
+  .btn-delete-img { background: #fef2f2; border: 1px solid #fecaca; color: var(--danger); padding: 8px 12px; border-radius: 6px; font-size: 0.84rem; font-weight: 600; cursor: pointer; transition: all 0.2s; }
+  .btn-delete-img:hover { background: var(--danger); color: #fff; }
 
   /* Data Tables */
   table { width: 100%; border-collapse: collapse; text-align: left; }
@@ -123,24 +152,16 @@
   .btn-action:hover { background: #f1f5f9; }
   .btn-action.delete:hover { border-color: var(--danger); color: var(--danger); background: #fef2f2; }
 
-  /* Modal Confirmation */
-  #confirmModal {
-    position: fixed; inset: 0; background: rgba(0,0,0,0.6); display: none; align-items: center; justify-content: center; z-index: 20000; padding: 20px;
+  /* Modals */
+  .modal-overlay {
+    position: fixed; inset: 0; background: rgba(10,30,20,0.65); display: none; align-items: center; justify-content: center; z-index: 20000; padding: 20px;
   }
-  .modal-box { background: #fff; width: 100%; max-width: 440px; border-radius: 16px; padding: 28px; text-align: center; box-shadow: 0 20px 50px rgba(0,0,0,0.3); }
-  .modal-box h4 { font-family: 'Manrope', sans-serif; font-size: 1.25rem; font-weight: 800; color: var(--primary-dark); margin-bottom: 10px; }
-  .modal-box p { font-size: 0.92rem; color: var(--text-muted); margin-bottom: 24px; line-height: 1.6; }
-  .modal-actions { display: flex; gap: 12px; justify-content: center; }
+  .modal-box { background: #fff; width: 100%; max-width: 500px; border-radius: 18px; padding: 32px; box-shadow: 0 24px 60px rgba(0,0,0,0.3); }
+  .modal-box h4 { font-family: 'Manrope', sans-serif; font-size: 1.3rem; font-weight: 800; color: var(--primary-dark); margin-bottom: 10px; }
+  .modal-box p { font-size: 0.92rem; color: var(--text-muted); margin-bottom: 20px; line-height: 1.6; }
+  .modal-actions { display: flex; gap: 12px; justify-content: flex-end; margin-top: 24px; }
   .btn-confirm-del { background: var(--danger); color: #fff; border: none; padding: 10px 20px; border-radius: 8px; font-weight: 700; cursor: pointer; }
   .btn-cancel { background: #f1f5f9; color: var(--text); border: none; padding: 10px 20px; border-radius: 8px; font-weight: 600; cursor: pointer; }
-
-  /* Media Card */
-  .media-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 18px; }
-  .media-card { background: #fff; border: 1px solid var(--border); border-radius: 12px; overflow: hidden; transition: transform 0.2s; }
-  .media-card:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(0,0,0,0.06); }
-  .media-preview { width: 100%; height: 130px; object-fit: cover; background: #f1f5f9; }
-  .media-info { padding: 10px; font-size: 0.78rem; color: var(--text-muted); }
-  .media-info strong { display: block; color: var(--primary-dark); font-size: 0.85rem; margin-bottom: 4px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
   /* Toast Notification */
   #toast {
@@ -156,8 +177,10 @@
 <!-- 1. AUTHENTICATION GATE -->
 <div id="loginScreen">
   <div class="login-card">
-    <img src="assets/img/logo.png" alt="GIDA Official Logo" class="login-logo">
-    <h2 class="login-title">Super Admin Portal</h2>
+    <div class="login-logo-box">
+      <img src="assets/img/logo.png" alt="GIDA Official Logo" class="login-logo">
+    </div>
+    <h2 class="login-title">Super Admin CMS</h2>
     <p class="login-subtitle">Authenticate with authorized administrative credentials</p>
     <form id="loginForm">
       <div class="form-group">
@@ -180,32 +203,32 @@
     <!-- Sidebar -->
     <aside class="sidebar">
       <div class="sidebar-header">
-        <img src="assets/img/logo.png" alt="GIDA" class="sidebar-logo">
+        <div class="sidebar-logo-box">
+          <img src="assets/img/logo.png" alt="GIDA" class="sidebar-logo">
+        </div>
       </div>
       <nav class="sidebar-menu">
         <div class="menu-heading">General</div>
         <button class="nav-btn active" data-tab="overview">📊 Overview</button>
+        <button class="nav-btn" data-tab="imagemanager">🖼️ Website Image Manager</button>
         <button class="nav-btn" data-tab="homepage">🏠 Homepage Content</button>
         
         <div class="menu-heading">Programs &amp; Strategy</div>
         <button class="nav-btn" data-tab="programs">🌱 Programs &amp; Pillars</button>
         <button class="nav-btn" data-tab="publications">📄 Publications</button>
-        <button class="nav-btn" data-tab="gallery">🖼️ Media Gallery</button>
 
         <div class="menu-heading">Organization &amp; Policy</div>
-        <button class="nav-btn" data-tab="team">👥 Team &amp; Governance</button>
-        <button class="nav-btn" data-tab="partners">🤝 Partners</button>
         <button class="nav-btn" data-tab="safeguarding">🛡️ Safeguarding</button>
         <button class="nav-btn" data-tab="statistics">📈 Impact Statistics</button>
         <button class="nav-btn" data-tab="contact">📍 Contact Info</button>
         
         <div class="menu-heading">System</div>
-        <button class="nav-btn" data-tab="medialib">📁 Media Library</button>
+        <button class="nav-btn" data-tab="medialib">📁 All Media Assets</button>
         <button class="nav-btn" data-tab="backup">💾 Backup &amp; Export</button>
       </nav>
       <div class="sidebar-footer">
-        GIDA CMS v2.4 (Production)<br>
-        Status: <span style="color:#4ade80">● Protected</span>
+        GIDA CMS v2.5 (Production)<br>
+        Status: <span style="color:#4ade80">● Protected &amp; Live</span>
       </div>
     </aside>
 
@@ -215,7 +238,7 @@
         <h1 class="page-title" id="currentSectionTitle">System Overview</h1>
         <div class="user-badge">
           <a href="index.html" target="_blank" class="btn-outline-sm">👁️ View Live Website</a>
-          <button class="btn-gold-sm" onclick="exportData()">⬇️ Export JSON</button>
+          <button class="btn-gold-sm" onclick="exportData()">⬇️ Export Backup (JSON)</button>
           <div class="user-avatar" title="Super Admin">SA</div>
           <button class="btn-outline-sm" onclick="logout()">Sign Out</button>
         </div>
@@ -228,13 +251,13 @@
           <div class="stats-grid">
             <div class="stat-box"><div class="title">Active Programs</div><div class="value" id="statPrograms">5</div></div>
             <div class="stat-box"><div class="title">Official Publications</div><div class="value" id="statPublications">2</div></div>
-            <div class="stat-box"><div class="title">Team &amp; Governance</div><div class="value" id="statTeam">5</div></div>
-            <div class="stat-box"><div class="title">Gallery Assets</div><div class="value" id="statGallery">2</div></div>
+            <div class="stat-box"><div class="title">Managed Website Images</div><div class="value" id="statImages">8</div></div>
+            <div class="stat-box"><div class="title">Governance Status</div><div class="value" style="font-size:1.3rem;color:var(--gold);">Pending Supply</div></div>
           </div>
 
           <div class="content-card">
             <div class="card-head">
-              <h3>Recent System Activity &amp; Content Log</h3>
+              <h3>Recent System Activity &amp; Governance Audit</h3>
               <span class="badge-status badge-published">Live Synced</span>
             </div>
             <div class="card-body">
@@ -243,11 +266,37 @@
                   <tr><th>Timestamp</th><th>Module</th><th>Change Summary</th><th>Status</th></tr>
                 </thead>
                 <tbody id="activityLogTable">
-                  <tr><td>Today, 03:15 PM</td><td>Branding</td><td>Updated official GIDA logo across all 6 pages</td><td><span class="badge-status badge-published">Published</span></td></tr>
-                  <tr><td>Today, 03:12 PM</td><td>Safeguarding</td><td>Restructured Policy Mandate and Compliance Standard</td><td><span class="badge-status badge-published">Published</span></td></tr>
-                  <tr><td>Today, 03:05 PM</td><td>Terminology</td><td>Standardized MSMEs to NMSMEs across site</td><td><span class="badge-status badge-published">Published</span></td></tr>
+                  <tr><td>Today, 04:30 PM</td><td>Governance</td><td>Removed team/leadership profiles pending final confirmed biographies</td><td><span class="badge-status badge-draft">Cleaned</span></td></tr>
+                  <tr><td>Today, 04:25 PM</td><td>Branding</td><td>Updated full official logo in header &amp; prominent white footer container</td><td><span class="badge-status badge-published">Published</span></td></tr>
+                  <tr><td>Today, 04:20 PM</td><td>Safeguarding</td><td>Redesigned Policy Mandate &amp; Compliance Standards with high contrast</td><td><span class="badge-status badge-published">Published</span></td></tr>
+                  <tr><td>Today, 04:10 PM</td><td>Contact</td><td>Upgraded Physical Headquarters into branded dark-green institutional card</td><td><span class="badge-status badge-published">Published</span></td></tr>
                 </tbody>
               </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- TAB: WEBSITE IMAGE MANAGER (REQUIREMENTS 10-18) -->
+        <section id="tab-imagemanager" class="tab-pane">
+          <div class="content-card">
+            <div class="card-head">
+              <div>
+                <h3>Website Image &amp; Visual Content Manager</h3>
+                <p style="font-size:0.85rem;color:var(--text-muted);margin-top:4px;">Manage, replace, preview, and update ALT text for all images across public pages without touching code.</p>
+              </div>
+              <button class="btn-gold-sm" onclick="triggerAddNewImage()">+ Register New Image Slot</button>
+            </div>
+            <div class="card-body">
+              <div class="filter-pills">
+                <button class="filter-btn active" onclick="filterImages('all', this)">All Sections</button>
+                <button class="filter-btn" onclick="filterImages('Homepage', this)">Homepage</button>
+                <button class="filter-btn" onclick="filterImages('About', this)">About Us</button>
+                <button class="filter-btn" onclick="filterImages('Programs', this)">Programs &amp; Projects</button>
+                <button class="filter-btn" onclick="filterImages('Safeguarding', this)">Safeguarding</button>
+                <button class="filter-btn" onclick="filterImages('Contact', this)">Contact Us</button>
+              </div>
+
+              <div class="img-manage-grid" id="managedImagesGrid"></div>
             </div>
           </div>
         </section>
@@ -312,51 +361,6 @@
           </div>
         </section>
 
-        <!-- TAB: GALLERY -->
-        <section id="tab-gallery" class="tab-pane">
-          <div class="content-card">
-            <div class="card-head">
-              <h3>Field Documentation &amp; Gallery</h3>
-              <button class="btn-gold-sm" onclick="openAddGalleryModal()">+ Add Photo</button>
-            </div>
-            <div class="card-body">
-              <div class="media-grid" id="galleryGrid"></div>
-            </div>
-          </div>
-        </section>
-
-        <!-- TAB: TEAM -->
-        <section id="tab-team" class="tab-pane">
-          <div class="content-card">
-            <div class="card-head">
-              <h3>Board of Directors &amp; Executive Leadership</h3>
-              <button class="btn-gold-sm" onclick="openAddTeamModal()">+ Add Member</button>
-            </div>
-            <div class="card-body">
-              <table>
-                <thead><tr><th>Photo</th><th>Name</th><th>Role</th><th>Status</th><th>Actions</th></tr></thead>
-                <tbody id="teamTable"></tbody>
-              </table>
-            </div>
-          </div>
-        </section>
-
-        <!-- TAB: PARTNERS -->
-        <section id="tab-partners" class="tab-pane">
-          <div class="content-card">
-            <div class="card-head">
-              <h3>Institutional &amp; Technical Partners</h3>
-              <button class="btn-gold-sm" onclick="openAddPartnerModal()">+ Add Partner</button>
-            </div>
-            <div class="card-body">
-              <table>
-                <thead><tr><th>Partner Name</th><th>Type</th><th>Status</th><th>Actions</th></tr></thead>
-                <tbody id="partnersTable"></tbody>
-              </table>
-            </div>
-          </div>
-        </section>
-
         <!-- TAB: SAFEGUARDING -->
         <section id="tab-safeguarding" class="tab-pane">
           <div class="content-card">
@@ -375,7 +379,7 @@
               </div>
               <div class="form-group">
                 <label>Survivor-First Mandate Statement</label>
-                <textarea rows="3" id="sgSurvivorStatement">The physical safety, mental health, privacy, economic dignity, and informed choice of survivors and community members remain paramount throughout all reporting, triage, and inquiry phases.</textarea>
+                <textarea rows="3" id="sgSurvivorStatement">The physical safety, mental health, privacy, economic dignity, and informed choice of survivors and community members remain paramount throughout all reporting, triage, and inquiry phases. No community member will ever suffer retaliation for speaking up.</textarea>
               </div>
             </div>
           </div>
@@ -433,24 +437,20 @@
               </div>
               <div class="form-group">
                 <label>Interactive Map Embed URL</label>
-                <input type="text" id="contactMap" value="https://www.google.com/maps/embed?pb=...">
+                <input type="text" id="contactMap" value="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d124844.75782782721!2d8.441029177112042!3d11.996160912128795!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x11ae80f7cb679fcd%3A0xc6b659c4033ec090!2sKano%2C%20Nigeria!5e0!3m2!1sen!2sus!4v1714421160352!5m2!1sen!2sus">
               </div>
             </div>
           </div>
         </section>
 
-        <!-- TAB: MEDIA LIBRARY -->
+        <!-- TAB: ALL MEDIA ASSETS -->
         <section id="tab-medialib" class="tab-pane">
           <div class="content-card">
             <div class="card-head">
-              <h3>Media Library &amp; Asset Uploader</h3>
-              <label class="btn-gold-sm" style="cursor:pointer">
-                + Upload New Asset
-                <input type="file" id="mediaUploader" style="display:none" accept="image/*" onchange="handleMediaUpload(this)">
-              </label>
+              <h3>Complete Website Asset Catalog</h3>
             </div>
             <div class="card-body">
-              <div class="media-grid" id="fullMediaGrid"></div>
+              <div class="img-manage-grid" id="fullMediaGrid"></div>
             </div>
           </div>
         </section>
@@ -460,7 +460,7 @@
           <div class="content-card">
             <div class="card-head"><h3>Data Backup &amp; Portability</h3></div>
             <div class="card-body">
-              <p style="color:var(--text-muted);margin-bottom:20px;">Export a full JSON backup of the website content and settings, or restore from a previously exported backup file.</p>
+              <p style="color:var(--text-muted);margin-bottom:20px;">Export a full JSON backup of all website images, content, and settings, or restore from a previously exported backup file.</p>
               <div style="display:flex;gap:16px;flex-wrap:wrap;">
                 <button class="btn-gold-sm" onclick="exportData()">Export Complete Backup (JSON)</button>
                 <label class="btn-outline-sm" style="cursor:pointer">
@@ -477,24 +477,171 @@
   </div>
 </div>
 
-<!-- 3. CONFIRMATION MODAL -->
-<div id="confirmModal">
+<!-- 3. MODAL: EDIT IMAGE METADATA -->
+<div id="imageEditModal" class="modal-overlay">
   <div class="modal-box">
-    <h4>Confirm Deletion</h4>
-    <p id="confirmModalText">Are you sure you want to permanently remove this item from the active database?</p>
+    <h4>Edit Image Metadata</h4>
+    <p>Update title, accessibility ALT text, and section location.</p>
+    <form id="imageEditForm" onsubmit="saveImageMeta(event)">
+      <input type="hidden" id="editImageId">
+      <div class="form-group">
+        <label>Image Title</label>
+        <input type="text" id="editImageTitle" required>
+      </div>
+      <div class="form-group">
+        <label>Alternative Text (ALT Text for SEO &amp; Accessibility)</label>
+        <input type="text" id="editImageAlt" required>
+      </div>
+      <div class="form-group">
+        <label>Assigned Page / Section</label>
+        <select id="editImageSection">
+          <option value="Homepage">Homepage</option>
+          <option value="About">About Us</option>
+          <option value="Programs">Programs &amp; Projects</option>
+          <option value="Safeguarding">Safeguarding</option>
+          <option value="Contact">Contact Us</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Recommended Ratio / Dimensions</label>
+        <input type="text" id="editImageRatio" readonly style="background:#f8fafc;color:#64748b;">
+      </div>
+      <div class="modal-actions">
+        <button type="button" class="btn-cancel" onclick="closeModal('imageEditModal')">Cancel</button>
+        <button type="submit" class="btn-gold-sm">Save Image Details</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- 4. MODAL: REPLACE IMAGE -->
+<div id="imageReplaceModal" class="modal-overlay">
+  <div class="modal-box">
+    <h4>Replace Website Image</h4>
+    <p id="replaceModalDesc">Upload a new photo to replace the current visual asset.</p>
+    <div style="margin-bottom:18px;text-align:center;">
+      <div id="replacePreviewContainer" style="width:100%;height:180px;background:#f1f5f9;border-radius:10px;overflow:hidden;display:flex;align-items:center;justify-content:center;margin-bottom:12px;">
+        <img id="replacePreviewImg" src="" style="width:100%;height:100%;object-fit:cover;">
+      </div>
+      <label class="btn-gold-sm" style="cursor:pointer">
+        Select New Image File
+        <input type="file" id="replaceFileInput" style="display:none" accept="image/*" onchange="previewReplaceFile(this)">
+      </label>
+    </div>
     <div class="modal-actions">
-      <button class="btn-cancel" onclick="closeConfirmModal()">Cancel</button>
-      <button class="btn-confirm-del" id="confirmDeleteBtn">Delete Item</button>
+      <button type="button" class="btn-cancel" onclick="closeModal('imageReplaceModal')">Cancel</button>
+      <button type="button" class="btn-gold-sm" onclick="confirmImageReplace()">Publish Replacement</button>
     </div>
   </div>
 </div>
 
-<!-- 4. TOAST NOTIFICATION -->
+<!-- 5. MODAL: SAFE IMAGE DELETION (REQUIREMENT 14) -->
+<div id="safeDeleteModal" class="modal-overlay">
+  <div class="modal-box">
+    <h4 style="color:var(--danger)">⚠️ In-Use Image Alert</h4>
+    <p id="safeDeleteWarningText">This image is currently being used in the active public website. Deleting it may break public page presentation.</p>
+    <div class="modal-actions">
+      <button class="btn-cancel" onclick="closeModal('safeDeleteModal')">Cancel</button>
+      <button class="btn-action" onclick="switchToReplace()">Replace Image Instead</button>
+      <button class="btn-confirm-del" id="confirmDeleteExecBtn">Force Delete</button>
+    </div>
+  </div>
+</div>
+
+<!-- 6. GENERIC CONFIRMATION MODAL -->
+<div id="confirmModal" class="modal-overlay">
+  <div class="modal-box">
+    <h4>Confirm Action</h4>
+    <p id="confirmModalText">Are you sure you want to proceed?</p>
+    <div class="modal-actions">
+      <button class="btn-cancel" onclick="closeModal('confirmModal')">Cancel</button>
+      <button class="btn-confirm-del" id="genericConfirmBtn">Confirm</button>
+    </div>
+  </div>
+</div>
+
+<!-- 7. TOAST NOTIFICATION -->
 <div id="toast">Changes saved successfully</div>
 
 <script>
-// Master Data Store
+// Master Managed Website Images (Requirements 10-18)
+const DEFAULT_MANAGED_IMAGES = [
+  {
+    id: 'hero-showcase',
+    title: 'Homepage Hero Showcase Logo',
+    section: 'Homepage',
+    ratio: 'Recommended: 4:1 (Vector/PNG)',
+    src: 'assets/img/logo.png',
+    alt: 'GIDA — Growth Innovation for Development Action',
+    usage: 'Homepage Hero Central Card'
+  },
+  {
+    id: 'about-feature',
+    title: 'About GIDA Organization Photo',
+    section: 'About',
+    ratio: 'Recommended: 4:3 (Landscape)',
+    src: 'assets/img/agri.jpg',
+    alt: 'GIDA Sustainable Rural Agriculture and Community Impact',
+    usage: 'About Us Page Main Profile Card'
+  },
+  {
+    id: 'about-banner',
+    title: 'About Page Hero Banner',
+    section: 'About',
+    ratio: 'Recommended: 16:9 (1920x1080)',
+    src: 'assets/img/agri.jpg',
+    alt: 'Rural farming landscape and community innovation banner',
+    usage: 'About Us Page Top Hero Background'
+  },
+  {
+    id: 'programs-banner',
+    title: 'Pillars & Programs Hero Banner',
+    section: 'Programs',
+    ratio: 'Recommended: 16:9 (1920x1080)',
+    src: 'assets/img/market.jpg',
+    alt: 'Market system and rural commerce development',
+    usage: 'Pillars & Programs Page Top Banner'
+  },
+  {
+    id: 'project-agri',
+    title: 'Agriculture & Bio-Innovations Field Photo',
+    section: 'Programs',
+    ratio: 'Recommended: 16:9 (Landscape)',
+    src: 'assets/img/agri.jpg',
+    alt: 'Farmers working under solar irrigation installation',
+    usage: 'Field Programs Documentation Gallery'
+  },
+  {
+    id: 'project-market',
+    title: 'Market Systems & Rural Enterprise Photo',
+    section: 'Programs',
+    ratio: 'Recommended: 16:9 (Landscape)',
+    src: 'assets/img/market.jpg',
+    alt: 'Vibrant rural agricultural market system in Northern Nigeria',
+    usage: 'Field Programs Documentation Gallery'
+  },
+  {
+    id: 'safeguarding-banner',
+    title: 'Safeguarding & Publications Banner',
+    section: 'Safeguarding',
+    ratio: 'Recommended: 16:9 (1920x1080)',
+    src: 'assets/img/director.jpg',
+    alt: 'Dignified community representation and institutional leadership',
+    usage: 'Safeguarding Page Top Hero Background'
+  },
+  {
+    id: 'contact-banner',
+    title: 'Contact Us Hero Banner',
+    section: 'Contact',
+    ratio: 'Recommended: 16:9 (1920x1080)',
+    src: 'assets/img/market.jpg',
+    alt: 'Rural community hub and headquarters contact backdrop',
+    usage: 'Contact Us Page Top Banner'
+  }
+];
+
 const DEFAULT_DATA = {
+  images: DEFAULT_MANAGED_IMAGES,
   programs: [
     { id: 1, num: '01', title: 'Inclusive Market Systems & Rural Livelihoods', tag: 'Livelihoods', status: 'published' },
     { id: 2, num: '02', title: 'Green Infrastructure & Low-Cost Eco-Buildings', tag: 'Green infrastructure', status: 'published' },
@@ -505,28 +652,18 @@ const DEFAULT_DATA = {
   publications: [
     { id: 1, title: 'Institutional GESI & Safeguarding Policy', category: 'Policy Framework', likes: 124, status: 'published' },
     { id: 2, title: 'Strategic Plan Executive Summary, 2026-2030', category: 'Strategy', likes: 89, status: 'published' }
-  ],
-  team: [
-    { id: 1, name: 'David Ojo', role: 'Board Chairman', photo: 'assets/img/team1.jpg', status: 'published' },
-    { id: 2, name: 'Dr. Sarah Okafor', role: 'Director of Programs', photo: 'assets/img/team2.jpg', status: 'published' },
-    { id: 3, name: 'Amina Yusuf', role: 'Executive Director', photo: 'assets/img/director.jpg', status: 'published' },
-    { id: 4, name: 'Fatima Bello', role: 'Operations Manager', photo: 'assets/img/market.jpg', status: 'published' },
-    { id: 5, name: 'Kalu Iheanacho', role: 'Finance Director', photo: 'assets/img/agri.jpg', status: 'published' }
-  ],
-  gallery: [
-    { id: 1, title: 'Agriculture & Bio-Innovations', src: 'assets/img/agri.jpg' },
-    { id: 2, title: 'Rural Market Systems', src: 'assets/img/market.jpg' }
-  ],
-  partners: [
-    { id: 1, name: 'UN Agencies & IASC', type: 'Multilateral Standard', status: 'published' },
-    { id: 2, name: 'World Bank ESF', type: 'Development Bank', status: 'published' },
-    { id: 3, name: 'FCDO Core Standards', type: 'Institutional Partner', status: 'published' }
   ]
 };
 
 let store = JSON.parse(localStorage.getItem('gida_cms_data')) || DEFAULT_DATA;
+if (!store.images) store.images = DEFAULT_MANAGED_IMAGES;
+
 function persist() {
   localStorage.setItem('gida_cms_data', JSON.stringify(store));
+  // Broadcast update to live site
+  try {
+    localStorage.setItem('gida_cms_timestamp', Date.now().toString());
+  } catch(e) {}
 }
 
 // Authentication Logic
@@ -581,24 +718,201 @@ function showToast(msg) {
   setTimeout(() => t.classList.remove('show'), 3000);
 }
 
+function closeModal(id) {
+  document.getElementById(id).style.display = 'none';
+}
+
 // Render Functions
 function renderAll() {
   renderStats();
+  renderManagedImages('all');
   renderPrograms();
   renderPublications();
-  renderTeam();
-  renderGallery();
-  renderPartners();
-  renderMediaLib();
 }
 
 function renderStats() {
   document.getElementById('statPrograms').innerText = store.programs.length;
   document.getElementById('statPublications').innerText = store.publications.length;
-  document.getElementById('statTeam').innerText = store.team.length;
-  document.getElementById('statGallery').innerText = store.gallery.length;
+  document.getElementById('statImages').innerText = store.images.length;
 }
 
+// ==========================================
+// MANAGED IMAGES (REQUIREMENTS 10-18)
+// ==========================================
+let currentFilterSection = 'all';
+
+function filterImages(section, btn) {
+  currentFilterSection = section;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderManagedImages(section);
+}
+
+function renderManagedImages(filterSection = 'all') {
+  const grid = document.getElementById('managedImagesGrid');
+  const fullGrid = document.getElementById('fullMediaGrid');
+  
+  const filtered = filterSection === 'all' 
+    ? store.images 
+    : store.images.filter(img => img.section.toLowerCase() === filterSection.toLowerCase());
+
+  grid.innerHTML = filtered.map(img => `
+    <div class="img-manage-card">
+      <div class="img-preview-box">
+        <img src="${img.src}" alt="${img.alt}" class="img-preview-thumb">
+        <span class="img-ratio-badge">${img.ratio}</span>
+        <span class="img-location-badge">${img.section}</span>
+      </div>
+      <div class="img-card-details">
+        <h4 class="img-title">${img.title}</h4>
+        <p class="img-alt"><strong>ALT text:</strong> ${img.alt || '<em>None specified</em>'}</p>
+        <div class="img-meta-row">
+          <span><strong>Usage:</strong> ${img.usage}</span>
+        </div>
+        <div class="img-actions-row">
+          <button class="btn-replace" onclick="openReplaceModal('${img.id}')">🔄 Replace</button>
+          <button class="btn-edit-meta" onclick="openEditMetaModal('${img.id}')">✏️ Edit Details</button>
+          <button class="btn-delete-img" onclick="triggerSafeDelete('${img.id}')">🗑️</button>
+        </div>
+      </div>
+    </div>
+  `).join('');
+
+  if(fullGrid) {
+    fullGrid.innerHTML = store.images.map(img => `
+      <div class="img-manage-card">
+        <div class="img-preview-box">
+          <img src="${img.src}" alt="${img.alt}" class="img-preview-thumb">
+          <span class="img-ratio-badge">${img.section}</span>
+        </div>
+        <div class="img-card-details">
+          <h4 class="img-title">${img.title}</h4>
+          <p class="img-alt">${img.usage}</p>
+          <div class="img-actions-row">
+            <button class="btn-replace" onclick="openReplaceModal('${img.id}')">Replace Image</button>
+            <button class="btn-edit-meta" onclick="openEditMetaModal('${img.id}')">Edit Details</button>
+          </div>
+        </div>
+      </div>
+    `).join('');
+  }
+}
+
+// Edit Image Metadata Modal
+function openEditMetaModal(id) {
+  const img = store.images.find(x => x.id === id);
+  if(!img) return;
+  document.getElementById('editImageId').value = img.id;
+  document.getElementById('editImageTitle').value = img.title;
+  document.getElementById('editImageAlt').value = img.alt || '';
+  document.getElementById('editImageSection').value = img.section;
+  document.getElementById('editImageRatio').value = img.ratio;
+  document.getElementById('imageEditModal').style.display = 'flex';
+}
+
+function saveImageMeta(e) {
+  e.preventDefault();
+  const id = document.getElementById('editImageId').value;
+  const img = store.images.find(x => x.id === id);
+  if(img) {
+    img.title = document.getElementById('editImageTitle').value;
+    img.alt = document.getElementById('editImageAlt').value;
+    img.section = document.getElementById('editImageSection').value;
+    persist();
+    renderManagedImages(currentFilterSection);
+    closeModal('imageEditModal');
+    showToast('Image metadata and ALT text updated successfully');
+  }
+}
+
+// Replace Image Modal
+let activeReplaceId = null;
+let pendingBase64 = null;
+
+function openReplaceModal(id) {
+  activeReplaceId = id;
+  const img = store.images.find(x => x.id === id);
+  if(!img) return;
+  document.getElementById('replaceModalDesc').innerText = `Replacing "${img.title}" in ${img.usage} (${img.ratio})`;
+  document.getElementById('replacePreviewImg').src = img.src;
+  pendingBase64 = null;
+  document.getElementById('imageReplaceModal').style.display = 'flex';
+}
+
+function previewReplaceFile(input) {
+  if(input.files && input.files[0]) {
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      pendingBase64 = e.target.result;
+      document.getElementById('replacePreviewImg').src = pendingBase64;
+    };
+    reader.readAsDataURL(input.files[0]);
+  }
+}
+
+function confirmImageReplace() {
+  if(!pendingBase64) {
+    alert('Please select an image file first.');
+    return;
+  }
+  const img = store.images.find(x => x.id === activeReplaceId);
+  if(img) {
+    img.src = pendingBase64;
+    persist();
+    renderManagedImages(currentFilterSection);
+    closeModal('imageReplaceModal');
+    showToast(`Successfully replaced "${img.title}"`);
+  }
+}
+
+// Safe Deletion (Requirement 14)
+let targetDeleteId = null;
+function triggerSafeDelete(id) {
+  targetDeleteId = id;
+  const img = store.images.find(x => x.id === id);
+  if(!img) return;
+  document.getElementById('safeDeleteWarningText').innerHTML = `This image (<strong>${img.title}</strong>) is currently active in the <strong>${img.usage}</strong>.<br><br>Deleting it will leave an empty placeholder on the public website. We strongly recommend using <strong>Replace Image</strong> instead.`;
+  document.getElementById('safeDeleteModal').style.display = 'flex';
+}
+
+function switchToReplace() {
+  closeModal('safeDeleteModal');
+  if(targetDeleteId) openReplaceModal(targetDeleteId);
+}
+
+document.getElementById('confirmDeleteExecBtn').addEventListener('click', () => {
+  if(targetDeleteId) {
+    store.images = store.images.filter(x => x.id !== targetDeleteId);
+    persist();
+    renderManagedImages(currentFilterSection);
+    closeModal('safeDeleteModal');
+    showToast('Image removed from active registry');
+  }
+});
+
+function triggerAddNewImage() {
+  const title = prompt('Enter Image Slot Title:');
+  if(!title) return;
+  const section = prompt('Enter Page Section (Homepage, About, Programs, Safeguarding, Contact):', 'Homepage') || 'General';
+  const usage = prompt('Enter where this image will be displayed:', 'Page Feature Section') || 'Page Visual';
+  const ratio = prompt('Enter Recommended Ratio (e.g. Recommended: 16:9):', 'Recommended: 16:9');
+  
+  const newId = 'img-' + Date.now();
+  store.images.push({
+    id: newId,
+    title,
+    section,
+    ratio,
+    src: 'assets/img/agri.jpg',
+    alt: title,
+    usage
+  });
+  persist();
+  renderManagedImages(currentFilterSection);
+  showToast('New image slot registered');
+}
+
+// Programs & Publications Rendering
 function renderPrograms() {
   const tbody = document.getElementById('programsTable');
   tbody.innerHTML = store.programs.map(p => `
@@ -610,7 +924,7 @@ function renderPrograms() {
       <td>
         <div class="action-links">
           <button class="btn-action" onclick="toggleStatus('programs', ${p.id})">${p.status==='published'?'Unpublish':'Publish'}</button>
-          <button class="btn-action delete" onclick="confirmDelete('programs', ${p.id}, '${p.title}')">Delete</button>
+          <button class="btn-action delete" onclick="deleteItem('programs', ${p.id}, '${p.title}')">Delete</button>
         </div>
       </td>
     </tr>
@@ -628,83 +942,13 @@ function renderPublications() {
       <td>
         <div class="action-links">
           <button class="btn-action" onclick="toggleStatus('publications', ${p.id})">${p.status==='published'?'Unpublish':'Publish'}</button>
-          <button class="btn-action delete" onclick="confirmDelete('publications', ${p.id}, '${p.title}')">Delete</button>
+          <button class="btn-action delete" onclick="deleteItem('publications', ${p.id}, '${p.title}')">Delete</button>
         </div>
       </td>
     </tr>
   `).join('');
 }
 
-function renderTeam() {
-  const tbody = document.getElementById('teamTable');
-  tbody.innerHTML = store.team.map(t => `
-    <tr>
-      <td><img src="${t.photo}" style="width:36px;height:36px;border-radius:50%;object-fit:cover;"></td>
-      <td><strong>${t.name}</strong></td>
-      <td>${t.role}</td>
-      <td><span class="badge-status ${t.status==='published'?'badge-published':'badge-draft'}">${t.status}</span></td>
-      <td>
-        <div class="action-links">
-          <button class="btn-action" onclick="toggleStatus('team', ${t.id})">${t.status==='published'?'Unpublish':'Publish'}</button>
-          <button class="btn-action delete" onclick="confirmDelete('team', ${t.id}, '${t.name}')">Delete</button>
-        </div>
-      </td>
-    </tr>
-  `).join('');
-}
-
-function renderGallery() {
-  const grid = document.getElementById('galleryGrid');
-  grid.innerHTML = store.gallery.map(g => `
-    <div class="media-card">
-      <img src="${g.src}" class="media-preview">
-      <div class="media-info">
-        <strong>${g.title}</strong>
-        <button class="btn-action delete" style="margin-top:6px;width:100%" onclick="confirmDelete('gallery', ${g.id}, '${g.title}')">Remove</button>
-      </div>
-    </div>
-  `).join('');
-}
-
-function renderPartners() {
-  const tbody = document.getElementById('partnersTable');
-  tbody.innerHTML = store.partners.map(pr => `
-    <tr>
-      <td><strong>${pr.name}</strong></td>
-      <td>${pr.type}</td>
-      <td><span class="badge-status ${pr.status==='published'?'badge-published':'badge-draft'}">${pr.status}</span></td>
-      <td>
-        <div class="action-links">
-          <button class="btn-action" onclick="toggleStatus('partners', ${pr.id})">${pr.status==='published'?'Unpublish':'Publish'}</button>
-          <button class="btn-action delete" onclick="confirmDelete('partners', ${pr.id}, '${pr.name}')">Delete</button>
-        </div>
-      </td>
-    </tr>
-  `).join('');
-}
-
-function renderMediaLib() {
-  const grid = document.getElementById('fullMediaGrid');
-  const allImages = [
-    { title: 'Official Logo', src: 'assets/img/logo.png' },
-    { title: 'Agriculture Field', src: 'assets/img/agri.jpg' },
-    { title: 'Market Systems', src: 'assets/img/market.jpg' },
-    { title: 'Executive Director', src: 'assets/img/director.jpg' },
-    { title: 'Board Chair', src: 'assets/img/team1.jpg' },
-    { title: 'Programs Director', src: 'assets/img/team2.jpg' }
-  ];
-  grid.innerHTML = allImages.map(img => `
-    <div class="media-card">
-      <img src="${img.src}" class="media-preview">
-      <div class="media-info">
-        <strong>${img.title}</strong>
-        <span>Path: ${img.src}</span>
-      </div>
-    </div>
-  `).join('');
-}
-
-// Quick Actions
 function toggleStatus(collection, id) {
   const item = store[collection].find(x => x.id === id);
   if(item) {
@@ -715,29 +959,15 @@ function toggleStatus(collection, id) {
   }
 }
 
-let pendingDelete = null;
-function confirmDelete(collection, id, name) {
-  pendingDelete = { collection, id };
-  document.getElementById('confirmModalText').innerText = `Are you sure you want to delete "${name}"? This action cannot be reversed.`;
-  document.getElementById('confirmModal').style.display = 'flex';
-}
-
-function closeConfirmModal() {
-  document.getElementById('confirmModal').style.display = 'none';
-  pendingDelete = null;
-}
-
-document.getElementById('confirmDeleteBtn').addEventListener('click', () => {
-  if(pendingDelete) {
-    store[pendingDelete.collection] = store[pendingDelete.collection].filter(x => x.id !== pendingDelete.id);
+function deleteItem(collection, id, name) {
+  if(confirm(`Are you sure you want to delete "${name}"?`)) {
+    store[collection] = store[collection].filter(x => x.id !== id);
     persist();
     renderAll();
     showToast('Item deleted successfully');
-    closeConfirmModal();
   }
-});
+}
 
-// Modals for Adding Content
 function openAddProgramModal() {
   const title = prompt('Enter Program Title:');
   if(title) {
@@ -753,7 +983,7 @@ function openAddProgramModal() {
 function openAddPubModal() {
   const title = prompt('Enter Publication Title:');
   if(title) {
-    const category = prompt('Enter Category (e.g. Policy Framework, Strategy, Brief):', 'Strategy') || 'Report';
+    const category = prompt('Enter Category (e.g. Policy Framework, Strategy):', 'Strategy') || 'Report';
     store.publications.push({ id: Date.now(), title, category, likes: 0, status: 'published' });
     persist();
     renderAll();
@@ -761,65 +991,11 @@ function openAddPubModal() {
   }
 }
 
-function openAddTeamModal() {
-  const name = prompt('Enter Team Member Name:');
-  if(name) {
-    const role = prompt('Enter Position / Role:', 'Specialist') || 'Staff';
-    store.team.push({ id: Date.now(), name, role, photo: 'assets/img/team1.jpg', status: 'published' });
-    persist();
-    renderAll();
-    showToast('Team member added to Governance roster');
-  }
-}
-
-function openAddGalleryModal() {
-  const title = prompt('Enter Photo Caption / Title:');
-  if(title) {
-    store.gallery.push({ id: Date.now(), title, src: 'assets/img/agri.jpg' });
-    persist();
-    renderAll();
-    showToast('New Gallery item registered');
-  }
-}
-
-function openAddPartnerModal() {
-  const name = prompt('Enter Partner Organization Name:');
-  if(name) {
-    const type = prompt('Enter Partner Category (e.g. Funder, Technical Partner):', 'Technical Partner') || 'Partner';
-    store.partners.push({ id: Date.now(), name, type, status: 'published' });
-    persist();
-    renderAll();
-    showToast('Partner added');
-  }
-}
-
-// Media Upload Simulation
-function handleMediaUpload(input) {
-  if (input.files && input.files[0]) {
-    const reader = new FileReader();
-    reader.onload = function(e) {
-      store.gallery.push({ id: Date.now(), title: input.files[0].name, src: e.target.result });
-      persist();
-      renderAll();
-      showToast('Media asset uploaded and added to library');
-    };
-    reader.readAsDataURL(input.files[0]);
-  }
-}
-
-// Save Handlers
-function saveHomepage() {
-  showToast('Homepage hero content updated successfully');
-}
-function saveSafeguarding() {
-  showToast('Safeguarding policies and focal email saved');
-}
-function saveStats() {
-  showToast('Impact metrics updated across the site');
-}
-function saveContact() {
-  showToast('Contact information and addresses saved');
-}
+// Handlers
+function saveHomepage() { showToast('Homepage hero content updated successfully'); }
+function saveSafeguarding() { showToast('Safeguarding policies and focal email saved'); }
+function saveStats() { showToast('Impact metrics updated across the site'); }
+function saveContact() { showToast('Contact information and addresses saved'); }
 
 // Data Export & Import
 function exportData() {
@@ -839,7 +1015,7 @@ function importData(input) {
     reader.onload = function(e) {
       try {
         const imported = JSON.parse(e.target.result);
-        if (imported.programs && imported.team) {
+        if (imported.programs && imported.images) {
           store = imported;
           persist();
           renderAll();
@@ -855,7 +1031,6 @@ function importData(input) {
   }
 }
 
-// Initialize on Load
 checkAuth();
 </script>
 </body>
