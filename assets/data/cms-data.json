@@ -1,0 +1,233 @@
+{
+  "updatedAt": "2026-09-19T22:30:00.000Z",
+  "homepage": {
+    "kicker": "Where People Prosper",
+    "headline": "Where people prosper.",
+    "desc": "Cultivating resilient rural market systems, low-cost green infrastructure, community and planetary health, and gender-transformative livelihoods.",
+    "prosperity": "GIDA defines prosperity holistically, as equitable economic wealth, physical and biological health, social dignity, and environmental resilience, working together rather than in isolation."
+  },
+  "about": {
+    "heading": "Equitable systems. Resilient land. Enduring human prosperity.",
+    "lead": "Growth Innovation for Development Action (GIDA) is a specialized development organization incorporated as a Company Limited by Guarantee (LTD/GTE) in Kano, Nigeria. We bridge systemic research with pragmatic, community-anchored execution.",
+    "approach": "Our holistic model addresses rural poverty not as isolated technical deficits, but as deeply interconnected market failures, planetary vulnerabilities, and structural social exclusion."
+  },
+  "ceo": {
+    "name": "Usman Rimi",
+    "role": "Executive Director / CEO",
+    "photo": "assets/img/director.jpg",
+    "quote": "Sustainable rural prosperity is not achieved by charity or disconnected aid; it is built through robust market systems, ecological resilience, and respecting the agency of community leaders.",
+    "body": "GIDA bridges rigorous science, low-carbon engineering, and market systems development directly to smallholders, youth, and women-led enterprises. By empowering local institutions and dismantling systemic barriers, we ensure rural transformation is permanent, dignified, and generational.",
+    "visible": true
+  },
+  "vacancies": [
+    {
+      "id": 1,
+      "ref": "GIDA-VAC-2026-01",
+      "title": "Senior Rural Market Systems Specialist",
+      "dept": "Market Systems & Livelihoods",
+      "loc": "Kano (HQ), with field travel",
+      "type": "Full-Time · Technical",
+      "deadline": "15 October 2026",
+      "summary": "Lead the co-design and execution of inclusive market linkages, digital financial tools, and equitable value-chain partnerships for smallholders and NMSMEs.",
+      "status": "published",
+      "responsibilities": [
+        "Design and execute MSD (Market Systems Development) strategies tailored to northern agricultural corridors.",
+        "Structure commercial partnerships between smallholder farmer clusters, bio-input suppliers, and institutional off-takers.",
+        "Supervise field assessments on post-harvest aggregation, cold-chain logistics, and digital traceability systems.",
+        "Co-create catalytic de-risking mechanisms, including blended finance tools and micro-guarantee facilities for female agri-entrepreneurs.",
+        "Conduct periodic market analyses, price monitoring, and regulatory reviews affecting smallholder market participation."
+      ],
+      "qualifications": [
+        "Master's degree in Agricultural Economics, Agribusiness Management, Development Finance, or related field.",
+        "6–8 years of demonstrated experience implementing donor-funded (FCDO, USAID, World Bank, AGRA) MSD market programs.",
+        "Deep knowledge of northern Nigerian rural economies and cooperative governance structures.",
+        "Fluency in English and Hausa."
+      ]
+    },
+    {
+      "id": 2,
+      "ref": "GIDA-VAC-2026-02",
+      "title": "One Health & Bio-Innovations Officer",
+      "dept": "Community & Planetary Health",
+      "loc": "Northern Region Field Hubs",
+      "type": "Full-Time · Science & Health",
+      "deadline": "28 October 2026",
+      "summary": "Spearhead microbial water testing, mycotoxin post-harvest mitigation, and bio-safe soil fertility protocols across rural cluster cooperatives.",
+      "status": "published",
+      "responsibilities": [
+        "Implement field-level microbiological water quality and aflatoxin screening assays.",
+        "Deliver bio-pesticide, organic composting, and soil remediation training to cluster cooperatives.",
+        "Manage zoonotic surveillance protocols in collaboration with local veterinary and public health departments.",
+        "Document environmental indicator benchmarks for the GIDA Planetary Health repository."
+      ],
+      "qualifications": [
+        "Degree in Microbiology, Environmental Health, Agronomy, Veterinary Medicine, or Biochemistry.",
+        "3–5 years of laboratory and field testing experience in rural agricultural environments.",
+        "Hands-on expertise with rapid bio-assay kits and environmental health auditing tools."
+      ]
+    },
+    {
+      "id": 3,
+      "ref": "GIDA-VAC-2026-03",
+      "title": "GESI & Safeguarding Focal Lead",
+      "dept": "Safeguarding & Governance",
+      "loc": "Kano / Hybrid",
+      "type": "Contract · Safeguarding",
+      "deadline": "10 November 2026",
+      "summary": "Oversee community-based grievance redress mechanisms, PSEAH compliance standards, and transformative gender empowerment across all operations.",
+      "status": "published",
+      "responsibilities": [
+        "Manage confidential reporting channels and grievance redress mechanisms across all project hubs.",
+        "Conduct comprehensive safeguarding onboarding and training for staff, contractors, and partner organizations.",
+        "Ensure gender-transformative indicators and safe space mechanisms are embedded in all project lifecycles.",
+        "Lead incident triage in strict accordance with the 24-hour / 48-hour mandatory escalation timeline."
+      ],
+      "qualifications": [
+        "Degree in Social Work, Human Rights, International Law, Gender Studies, or Development Studies.",
+        "5+ years managing safeguarding, protection, or PSEAH systems in complex rural contexts.",
+        "Demonstrated confidentiality, emotional intelligence, and crisis management expertise."
+      ]
+    }
+  ],
+  "publications": [
+    {
+      "id": 1,
+      "title": "GIDA Strategic Operational Framework (2026–2030)",
+      "category": "Strategic Plan",
+      "date": "January 2026",
+      "file": "assets/docs/gida-strategic-framework-2026-2030.pdf",
+      "summary": "Five-pillar strategic blueprint detailing our multi-year interventions across rural market systems, renewable infrastructure, and planetary health.",
+      "status": "published"
+    },
+    {
+      "id": 2,
+      "title": "Comprehensive Safeguarding & PSEAH Policy Mandate",
+      "category": "Policy Standard",
+      "date": "March 2026",
+      "file": "assets/docs/gida-pseah-safeguarding-mandate.pdf",
+      "summary": "Institutional zero-tolerance standards, survivor-centered protocols, community reporting mechanisms, and contractual escalation timelines.",
+      "status": "published"
+    },
+    {
+      "id": 3,
+      "title": "One Health & Rural Bio-Security Field Guidelines",
+      "category": "Technical Report",
+      "date": "February 2026",
+      "file": "assets/docs/gida-one-health-field-standards.pdf",
+      "summary": "Standard operational procedures for water microbiological testing, post-harvest mycotoxin assays, and community zoonotic disease surveillance.",
+      "status": "published"
+    },
+    {
+      "id": 4,
+      "title": "Gender-Transformative Livelihoods & Market Equity Assessment",
+      "category": "Research Publication",
+      "date": "April 2026",
+      "file": "assets/docs/gida-gesi-cooperatives-assessment.pdf",
+      "summary": "Baseline field assessment analyzing female smallholder aggregations, digital financial inclusion tools, and solar cold storage outcomes.",
+      "status": "published"
+    }
+  ],
+  "programs": [
+    { "id": 1, "num": "01", "title": "Inclusive Market Systems & Rural Livelihoods", "tag": "Livelihoods", "status": "published" },
+    { "id": 2, "num": "02", "title": "Green Infrastructure & Low-Cost Eco-Buildings", "tag": "Green infrastructure", "status": "published" },
+    { "id": 3, "num": "03", "title": "Community & Planetary Health, One Health & Bio-Innovations", "tag": "One Health", "status": "published" },
+    { "id": 4, "num": "04", "title": "Gender Equality and Social Inclusion / Gender Transformative", "tag": "GESI", "status": "published" },
+    { "id": 5, "num": "05", "title": "Local Governance, Policy & Climate Risk Resilience", "tag": "Governance & climate", "status": "published" }
+  ],
+  "stats": [
+    { "label": "Direct smallholder producers empowered", "value": 500000, "suffix": "+" },
+    { "label": "Female participation & leadership across cooperatives", "value": 65, "suffix": "%" },
+    { "label": "Rural community hubs and field installations", "value": 120, "suffix": "+" },
+    { "label": "Private sector & institutional research partners", "value": 45, "suffix": "+" }
+  ],
+  "images": [
+    {
+      "id": "hp-hero",
+      "title": "Homepage Main Hero Visual",
+      "section": "Homepage",
+      "ratio": "Recommended: 16:9 (1920x1080)",
+      "src": "assets/img/agri.jpg",
+      "alt": "Sustainable agricultural systems and rural prosperity in Northern Nigeria",
+      "usage": "Homepage Top Hero Background",
+      "selector": ".hero-visual"
+    },
+    {
+      "id": "hp-director",
+      "title": "Executive Director / CEO Portrait",
+      "section": "Homepage",
+      "ratio": "Recommended: 4:5 (Portrait 800x1000)",
+      "src": "assets/img/director.jpg",
+      "alt": "Executive Director of Growth Innovation for Development Action",
+      "usage": "Homepage & About Leadership Section",
+      "selector": ".ceo-img"
+    },
+    {
+      "id": "about-banner",
+      "title": "About Page Hero Visual",
+      "section": "About",
+      "ratio": "Recommended: 16:9 (1920x1080)",
+      "src": "assets/img/market.jpg",
+      "alt": "Rural community market enterprise and economic empowerment",
+      "usage": "About Us Page Top Banner",
+      "selector": ".page-head"
+    },
+    {
+      "id": "about-profile",
+      "title": "About Page Profile Feature",
+      "section": "About",
+      "ratio": "Recommended: 4:3 (Landscape)",
+      "src": "assets/img/agri.jpg",
+      "alt": "Field agronomists and farmers testing bio-safe inputs",
+      "usage": "About Us Institutional Profile Section",
+      "selector": ".about-profile-img"
+    },
+    {
+      "id": "programs-banner",
+      "title": "Programs & Pillars Banner",
+      "section": "Programs",
+      "ratio": "Recommended: 16:9 (1920x1080)",
+      "src": "assets/img/market.jpg",
+      "alt": "Market system and rural commerce development",
+      "usage": "Pillars & Programs Page Top Banner"
+    },
+    {
+      "id": "safeguarding-banner",
+      "title": "Safeguarding & Publications Banner",
+      "section": "Safeguarding",
+      "ratio": "Recommended: 16:9 (1920x1080)",
+      "src": "assets/img/director.jpg",
+      "alt": "Dignified community representation and institutional leadership",
+      "usage": "Safeguarding Page Top Hero Background"
+    },
+    {
+      "id": "career-banner",
+      "title": "Career & Vacancies Hero Banner",
+      "section": "Career",
+      "ratio": "Recommended: 16:9 (1920x1080)",
+      "src": "assets/img/market.jpg",
+      "alt": "Field development professionals collaborating in rural communities",
+      "usage": "Careers Page Top Banner"
+    },
+    {
+      "id": "contact-banner",
+      "title": "Contact Us Hero Banner",
+      "section": "Contact",
+      "ratio": "Recommended: 16:9 (1920x1080)",
+      "src": "assets/img/market.jpg",
+      "alt": "Rural community hub and headquarters contact backdrop",
+      "usage": "Contact Us Page Top Banner"
+    }
+  ],
+  "partners": [
+    { "id": 1, "name": "State Ministry of Agriculture", "type": "Governmental Partner" },
+    { "id": 2, "name": "AGRA Alliance for a Green Revolution", "type": "Strategic Partner" },
+    { "id": 3, "name": "Federal Research Institute for Agro-Ecology", "type": "Research Affiliate" },
+    { "id": 4, "name": "Rural Energy Access Fund", "type": "Infrastructure Partner" }
+  ],
+  "contact": {
+    "email": "info@gida-action.org",
+    "careers": "careers@gida-action.org",
+    "phone": "+234 800 GIDA ACTION",
+    "address": "Kano, Nigeria (Company Limited by Guarantee LTD/GTE)"
+  }
+}

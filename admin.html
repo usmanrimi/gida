@@ -438,7 +438,8 @@
                   </div>
                 </div>
                 <div style="margin-top:20px;">
-                  <button type="submit" class="btn-gold-sm">Publish CEO Message to Website</button>
+                  <button type="submit" class="btn-gold-sm">Publish CEO Message</button>
+                  <button type="button" class="btn-outline-sm" onclick="previewCeo()" style="margin-left:8px;">Preview on Site</button>
                 </div>
               </form>
             </div>
@@ -668,7 +669,8 @@
                 Export the entire website CMS database (CEO message, career vacancies, publications, media assets, policy standards) as a portable JSON file. You can import this backup anytime to restore or synchronize across production environments.
               </p>
               <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:center;">
-                <button class="btn-gold-sm" onclick="exportData()">Export Complete JSON Backup</button>
+                <button class="btn-gold-sm" onclick="downloadCmsJson()">Download cms-data.json</button>
+                <button class="btn-outline-sm" onclick="exportData()">Export JSON Backup</button>
                 <label class="btn-outline-sm" style="cursor:pointer;">
                   Import Backup JSON
                   <input type="file" accept=".json" onchange="importData(this)" style="display:none;">
@@ -857,6 +859,7 @@
 <div id="toast">Changes published successfully</div>
 
 <!-- JAVASCRIPT LOGIC & CMS STORE -->
+<script src="assets/js/cms-engine.js"></script>
 <script>
 // ==========================================
 // DEFAULT STORE CONFIGURATION
@@ -1062,10 +1065,12 @@ try {
 }
 
 function persist() {
-  localStorage.setItem('gida_cms_data', JSON.stringify(store));
-  try {
-    localStorage.setItem('gida_cms_timestamp', Date.now().toString());
-  } catch(e) {}
+  store.updatedAt = new Date().toISOString();
+  if (typeof window.GIDA_SYNC_CMS === 'function') {
+    window.GIDA_SYNC_CMS(store);
+  } else {
+    localStorage.setItem('gida_cms_data', JSON.stringify(store));
+  }
 }
 
 // ==========================================
@@ -1196,6 +1201,30 @@ function saveCeoMessage(e) {
 }
 
 // --- VACANCIES ---
+
+function previewVacancy(id) {
+  window.open('job-detail.html?id=' + id + '&preview=true', '_blank');
+}
+
+function previewPublication(id) {
+  window.open('publication-viewer.html?id=' + id + '&preview=true', '_blank');
+}
+
+function previewCeo() {
+  window.open('index.html#ceo-section', '_blank');
+}
+
+function downloadCmsJson() {
+  const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(store, null, 2));
+  const downloadAnchor = document.createElement('a');
+  downloadAnchor.setAttribute("href", dataStr);
+  downloadAnchor.setAttribute("download", "cms-data.json");
+  document.body.appendChild(downloadAnchor);
+  downloadAnchor.click();
+  downloadAnchor.remove();
+  showToast('cms-data.json downloaded for deployment');
+}
+
 function renderVacancies() {
   const tbody = document.getElementById('vacanciesTable');
   if (!store.vacancies) store.vacancies = [];
@@ -1208,6 +1237,7 @@ function renderVacancies() {
       <td><span class="badge-status ${v.status==='published'?'badge-published':'badge-draft'}">${v.status}</span></td>
       <td>
         <div class="action-links">
+          <button class="btn-action" onclick="previewVacancy(${v.id})">Preview</button>
           <button class="btn-action" onclick="toggleVacancyStatus(${v.id})">${v.status==='published'?'Unpublish':'Publish'}</button>
           <button class="btn-action" onclick="editVacancy(${v.id})">Edit</button>
           <button class="btn-action delete" onclick="deleteVacancy(${v.id}, '${v.title.replace(/'/g, "\\'")}')">Delete</button>
@@ -1306,7 +1336,7 @@ function renderPublications() {
       <td><span class="badge-status ${p.status==='published'?'badge-published':'badge-draft'}">${p.status}</span></td>
       <td>
         <div class="action-links">
-          <a href="publication-viewer.html?id=${p.id}" target="_blank" class="btn-action" style="text-decoration:none;">View</a>
+          <button class="btn-action" onclick="previewPublication(${p.id})">Preview</button>
           <button class="btn-action" onclick="togglePublicationStatus(${p.id})">${p.status==='published'?'Unpublish':'Publish'}</button>
           <button class="btn-action" onclick="editPublication(${p.id})">Edit</button>
           <button class="btn-action delete" onclick="deletePublication(${p.id}, '${p.title.replace(/'/g, "\\'")}')">Delete</button>
