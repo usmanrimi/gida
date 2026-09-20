@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Blog &amp; Field Stories — GIDA</title>
+<meta name="description" content="Read field dispatches, program updates, and research insights on rural market systems, green infrastructure, and community health from GIDA.">
+<link rel="icon" href="assets/img/logo.png">
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="site-header">
+  <nav class="nav wrap" aria-label="Primary">
+    <a class="brand" href="index.html" aria-label="GIDA Home">
+      <img src="assets/img/logo.png" alt="GIDA — Growth Innovation for Development Action">
+    </a>
+    <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false"><span></span></button>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="about.html">About Us</a>
+      <a href="programs.html">Pillars &amp; Programs</a>
+      <a href="safeguarding.html">Safeguarding &amp; Publications</a>
+      <a href="blog.html" aria-current="page">Blog</a>
+      <a href="career.html">Careers</a>
+      <a href="contact.html" class="nav-cta">Contact Us</a>
+    </div>
+  </nav>
+</header>
+
+<main id="main">
+
+  <!-- PAGE HERO -->
+  <section class="page-head" style="background-image: url('assets/img/market.jpg');">
+    <div class="wrap">
+      <p class="crumb reveal">Home / News &amp; Insights</p>
+      <h1 class="h-display reveal">Stories from the Frontline of Rural Prosperity</h1>
+      <p class="lede reveal mt-m" style="color:rgba(255,255,255,0.92); font-size:1.15rem; max-width:68ch;">Firsthand narratives, bio-innovations, and technical updates directly from our farming clusters, rural enterprises, and community health hubs.</p>
+    </div>
+  </section>
+
+  <!-- FEATURED STORY SECTION -->
+  <section class="section-pad on-paper">
+    <div class="wrap">
+      <div class="section-head-simple mb-l">
+        <p class="eyebrow reveal">Featured Editorial</p>
+        <h2 class="h-2 reveal">Highlighted Story</h2>
+      </div>
+
+      <div id="blogFeaturedContainer" class="reveal">
+        <!-- Hydrated dynamically by cms-engine.js -->
+        <div class="blog-featured-card">
+          <div class="blog-featured-media">
+            <img src="assets/img/agri.jpg" alt="Featured Story Image" id="featuredImg">
+          </div>
+          <div class="blog-featured-body">
+            <div class="blog-meta-strip">
+              <span class="blog-tag" id="featuredTag">Field Insights</span>
+              <span class="blog-date" id="featuredDate">15 September 2026</span>
+            </div>
+            <h3 class="blog-featured-title" id="featuredTitle">Scaling Regenerative Soil Systems Across Northern Agricultural Corridors</h3>
+            <p class="blog-featured-excerpt" id="featuredExcerpt">How bio-innovations, indigenous compost amendments, and microbial soil testing are revitalizing exhausted farmlands while raising smallholder yields by over 38%.</p>
+            <div class="blog-author-row">
+              <span class="blog-author-byline">By <strong id="featuredAuthor">GIDA Agronomy Team</strong></span>
+              <a href="article.html?id=1" id="featuredLink" class="btn btn-gold">Read Full Story</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ALL ARTICLES GRID & CATEGORY FILTER -->
+  <section class="section-pad">
+    <div class="wrap">
+      <div class="section-head-simple mb-l" style="display:flex; justify-content:space-between; align-items:flex-end; flex-wrap:wrap; gap:16px;">
+        <div>
+          <p class="eyebrow reveal">All Dispatches</p>
+          <h2 class="h-2 reveal">Recent Articles &amp; Field Updates</h2>
+        </div>
+        <!-- CATEGORY PILLS -->
+        <div class="category-pills reveal" id="blogCategoryPills">
+          <button class="cat-pill active" data-category="all">All Topics</button>
+          <button class="cat-pill" data-category="Field Insights">Field Insights</button>
+          <button class="cat-pill" data-category="Market Systems">Market Systems</button>
+          <button class="cat-pill" data-category="One Health">One Health</button>
+        </div>
+      </div>
+
+      <!-- ARTICLES GRID -->
+      <div id="blogArticlesGrid" class="blog-grid reveal-stagger">
+        <!-- Dynamically hydrated by cms-engine.js -->
+      </div>
+
+      <!-- EMPTY STATE (FALLBACK) -->
+      <div id="noArticlesBox" style="display:none; text-align:center; padding:48px 24px; background:#fff; border-radius:16px; border:1px dashed #cbd5e1; margin-top:24px;">
+        <h3 style="font-size:1.25rem; color:var(--green-deep); margin-bottom:8px;">No stories found in this topic</h3>
+        <p style="color:#64748b; font-size:0.95rem;">Check back soon as our field teams publish regular dispatches and research.</p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- NEWSLETTER / ENGAGEMENT CARD -->
+  <section class="on-dark section-pad-sm">
+    <div class="wrap" style="text-align:center; max-width:680px; margin:0 auto;">
+      <p class="eyebrow text-white-contrast reveal">Stay Connected</p>
+      <h2 class="h-2 reveal" style="color:#fff;">Direct insights from rural community hubs</h2>
+      <p class="lede reveal mt-s" style="color:rgba(255,255,255,0.85); font-size:1.05rem;">Interested in collaborating, visiting our field demonstration sites, or syndicating research?</p>
+      <div class="mt-l reveal" style="display:flex; gap:12px; justify-content:center; flex-wrap:wrap;">
+        <a href="contact.html" class="btn btn-gold">Contact Partnerships Desk</a>
+        <a href="safeguarding.html" class="btn btn-outline">Explore Publications &amp; Reports</a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-brand"><div class="footer-logo-card"><img src="assets/img/logo.png" alt="GIDA — Growth Innovation for Development Action"></div></div>
+        <p style="max-width:34ch">Cultivating rural market systems, green infrastructure, community health, and gender-inclusive livelihoods. Where people prosper.</p>
+      </div>
+      <div class="footer-col">
+        <h5>Explore</h5>
+        <a href="about.html">About Us</a>
+        <a href="programs.html">Pillars &amp; Programs</a>
+        <a href="safeguarding.html">Safeguarding &amp; Publications</a>
+        <a href="blog.html">Blog &amp; Stories</a>
+        <a href="career.html">Careers</a>
+        <a href="contact.html">Contact Us</a>
+      </div>
+      <div class="footer-col">
+        <h5>Safeguarding</h5>
+        <a href="safeguarding.html#reporting">Report a concern</a>
+        <a href="safeguarding.html#pillars">Policy pillars</a>
+        <p>safeguarding@gida-action.org</p>
+      </div>
+      <div class="footer-col">
+        <h5>Organization</h5>
+        <p>Company Limited by Guarantee (LTD/GTE)</p>
+        <p>Kano, Nigeria (Headquarters)</p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 Growth Innovation for Development Action. All rights reserved.</span>
+      <span>Where People Prosper</span>
+    </div>
+  </div>
+</footer>
+
+<script src="assets/js/main.js"></script>
+<script src="assets/js/cms-engine.js"></script>
+</body>
+</html>

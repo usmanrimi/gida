@@ -1,5 +1,13 @@
 {
-  "updatedAt": "2026-09-19T22:30:00.000Z",
+  "updatedAt": "2026-09-20T09:50:19.143954Z",
+  "heroVisual": {
+    "src": "assets/img/gida-logo-official.png",
+    "alt": "GIDA Official Organization Emblem & Identity",
+    "title": "GIDA Official Seal",
+    "kicker": "Where People Prosper",
+    "headline": "Where people prosper.",
+    "desc": "Cultivating resilient rural market systems, low-cost green infrastructure, community and planetary health, and gender-transformative livelihoods."
+  },
   "homepage": {
     "kicker": "Where People Prosper",
     "headline": "Where people prosper.",
@@ -19,6 +27,69 @@
     "body": "GIDA bridges rigorous science, low-carbon engineering, and market systems development directly to smallholders, youth, and women-led enterprises. By empowering local institutions and dismantling systemic barriers, we ensure rural transformation is permanent, dignified, and generational.",
     "visible": true
   },
+  "articles": [
+    {
+      "id": 1,
+      "title": "Scaling Regenerative Soil Systems Across Northern Agricultural Corridors",
+      "slug": "scaling-regenerative-soil-systems",
+      "category": "Field Insights",
+      "author": "GIDA Agronomy Team",
+      "date": "15 September 2026",
+      "excerpt": "How bio-innovations, indigenous compost amendments, and microbial soil testing are revitalizing exhausted farmlands while raising smallholder yields by over 38%.",
+      "image": "assets/img/agri.jpg",
+      "status": "published",
+      "featured": true,
+      "content": "Sustainable rural prosperity starts with the health of the soil under our feet. For generations, northern farming clusters have battled severe topsoil degradation, nutrient leaching, and dependency on costly synthetic inputs that degrade long-term soil biology.\n\nOver the past two cropping seasons, GIDA's Community & Planetary Health team has partnered with over 12,000 smallholders across Kano, Jigawa, and Kaduna corridors to pilot low-cost bio-safe soil fertility protocols.\n\n### The Core Interventions\n\n1. **On-Farm Microbial Soil Testing:** Rapid colorimetric assays enabling farmers to assess nitrogen, phosphorus, and organic carbon levels within minutes at the farm gate.\n2. **Indigenous Microorganism (IMO) Culturing:** Sourcing indigenous forest fungi and beneficial microbes to accelerate organic compost fermentation from 90 days down to 21 days.\n3. **Cover Crop Nitrogen Fixation:** Integrating deep-rooted leguminous cover crops into cereal rotations, sequestering atmospheric nitrogen while suppressing weed proliferation without herbicides.\n\n### Documented Field Impact\n\nInitial harvest data demonstrates that participating farmer clusters achieved a 38.4% increase in sorghum and millet yields, alongside a 45% reduction in synthetic fertilizer expenditure. Furthermore, soil moisture retention increased measurably, shielding crops during dry spells and late-season heatwaves.\n\nAs we expand this model to 50,000 farmers in 2027, GIDA remains committed to transforming scientific ecological research into practical, community-owned wealth."
+    },
+    {
+      "id": 2,
+      "title": "Women-Led Solar Cold Hubs: Breaking the Post-Harvest Loss Cycle",
+      "slug": "women-led-solar-cold-hubs",
+      "category": "Market Systems",
+      "author": "Amina Bello, Market Systems Lead",
+      "date": "28 August 2026",
+      "excerpt": "Deploying 100% solar-powered decentralized cold storage units managed exclusively by female cooperative clusters in rural aggregation centers.",
+      "image": "assets/img/market.jpg",
+      "status": "published",
+      "featured": false,
+      "content": "In horticultural value chains across northern Nigeria, post-harvest losses among perishable crops such as tomatoes, peppers, and leafy greens routinely exceed 42%. Smallholder women, who bear the primary burden of harvest aggregation and retail trading, are forced to distress-sell at cut-throat prices before evening sets in.\n\nGIDA's Green Infrastructure and GESI units joined forces to introduce decentralized, solar-powered walk-in cold rooms located directly at key rural trading junctions.\n\n### Cooperative Ownership & Governance\n\nUnlike conventional top-down donor projects, these facilities are structured as community-owned enterprises governed entirely by female agricultural cooperatives:\n\n- **Pay-As-You-Store Micro-Fees:** Farmers pay a modest daily crate fee (less than 10% of typical distress-sale losses), ensuring commercial viability and ongoing maintenance reserves.\n- **Digital Traceability & Inventory:** A simplified Hausa-language mobile SMS ledger tracks crate ownership, temperature stability, and release times.\n- **Direct Institutional Off-Taking:** Aggregated produce meets institutional buyer standards, allowing women to sell directly to urban supermarkets and processors at premium rates.\n\n### Results and Next Phase\n\nParticipating cooperatives recorded an 85% reduction in spoilage and a 52% average increase in seasonal household income. GIDA is now structuring blended micro-guarantee facilities with regional financial institutions to deploy 30 additional units across regional agricultural corridors."
+    },
+    {
+      "id": 3,
+      "title": "One Health at the Frontline: Surveillance of Zoonotic Pathogens in Livestock Corridors",
+      "slug": "one-health-frontline-surveillance",
+      "category": "One Health",
+      "author": "Dr. Kabir Sani, Epidemiologist",
+      "date": "10 August 2026",
+      "excerpt": "Bridging veterinary medicine, human clinical care, and ecological monitoring to safeguard rural communities against emerging infectious spillover risks.",
+      "image": "assets/img/director.jpg",
+      "status": "published",
+      "featured": false,
+      "content": "The boundary between human well-being, livestock resilience, and ecological stability is inseparable. In pastoral and agro-pastoral communities, close daily contact between animals and families creates critical vulnerabilities to zoonotic transmissions and antimicrobial resistance.\n\nGIDA's One Health initiative unites local veterinary officers, primary healthcare workers, and pastoralist leaders in a coordinated early-warning sentinel surveillance network.\n\n### Integrated Community Health Protocols\n\n- **Cross-Sectoral Diagnostic Teams:** Joint health post visits where veterinary and human clinicians share syndromic reports, tracking fever clusters and livestock abortions concurrently.\n- **Antimicrobial Stewardship:** Discouraging prophylactic antibiotic misuse in cattle and poultry through participatory community dialogues and subsidized probiotic alternatives.\n- **Clean Water Point Separation:** Engineering bio-sand filtration systems that physically isolate human domestic drinking points from livestock watering troughs.\n\nBy building trusted institutional connections between pastoralists and public health authorities, GIDA is demonstrating that planetary health is fundamental to rural security and economic dignity."
+    }
+  ],
+  "announcements": [
+    {
+      "id": 1,
+      "title": "Call for Expressions of Interest: Community Bio-Input Aggregation Hubs (Batch 2)",
+      "category": "Notice / Procurement",
+      "date": "18 September 2026",
+      "summary": "GIDA invites registered agricultural cooperatives and youth enterprise clusters across Kano and Jigawa states to submit expressions of interest to host decentralized bio-input aggregation centers.",
+      "file": "assets/docs/gida-strategic-framework-2026-2030.pdf",
+      "status": "published",
+      "details": "Under our Inclusive Market Systems pillar, GIDA is deploying 15 decentralized aggregation hubs equipped with solar power, digital moisture meters, and bio-fertilizer blending kits. Selected cooperatives will receive equipment grants, operational training, and direct links to off-takers. Interested cooperatives should download the official guidelines and application dossier below."
+    },
+    {
+      "id": 2,
+      "title": "Public Notice: Stakeholder Consultation on Rural Climate Adaptation & Safeguarding Standards",
+      "category": "Institutional Notice",
+      "date": "05 September 2026",
+      "summary": "Notice of public stakeholder hearings and multi-stakeholder policy roundtables regarding GIDA's updated 2026–2030 environmental and community safeguarding compliance standards.",
+      "file": "assets/docs/gida-pseah-safeguarding-mandate.pdf",
+      "status": "published",
+      "details": "In alignment with GIDA's transparent governance framework and international PSEAH standards, we are hosting four hybrid regional stakeholder consultations throughout October 2026. Civil society organizations, local government representatives, farmer federations, and academic researchers are cordially invited to participate and review draft frameworks."
+    }
+  ],
   "vacancies": [
     {
       "id": 1,
@@ -128,17 +199,63 @@
     }
   ],
   "programs": [
-    { "id": 1, "num": "01", "title": "Inclusive Market Systems & Rural Livelihoods", "tag": "Livelihoods", "status": "published" },
-    { "id": 2, "num": "02", "title": "Green Infrastructure & Low-Cost Eco-Buildings", "tag": "Green infrastructure", "status": "published" },
-    { "id": 3, "num": "03", "title": "Community & Planetary Health, One Health & Bio-Innovations", "tag": "One Health", "status": "published" },
-    { "id": 4, "num": "04", "title": "Gender Equality and Social Inclusion / Gender Transformative", "tag": "GESI", "status": "published" },
-    { "id": 5, "num": "05", "title": "Local Governance, Policy & Climate Risk Resilience", "tag": "Governance & climate", "status": "published" }
+    {
+      "id": 1,
+      "num": "01",
+      "title": "Inclusive Market Systems & Rural Livelihoods",
+      "tag": "Livelihoods",
+      "status": "published"
+    },
+    {
+      "id": 2,
+      "num": "02",
+      "title": "Green Infrastructure & Low-Cost Eco-Buildings",
+      "tag": "Green infrastructure",
+      "status": "published"
+    },
+    {
+      "id": 3,
+      "num": "03",
+      "title": "Community & Planetary Health, One Health & Bio-Innovations",
+      "tag": "One Health",
+      "status": "published"
+    },
+    {
+      "id": 4,
+      "num": "04",
+      "title": "Gender Equality and Social Inclusion / Gender Transformative",
+      "tag": "GESI",
+      "status": "published"
+    },
+    {
+      "id": 5,
+      "num": "05",
+      "title": "Local Governance, Policy & Climate Risk Resilience",
+      "tag": "Governance & climate",
+      "status": "published"
+    }
   ],
   "stats": [
-    { "label": "Direct smallholder producers empowered", "value": 500000, "suffix": "+" },
-    { "label": "Female participation & leadership across cooperatives", "value": 65, "suffix": "%" },
-    { "label": "Rural community hubs and field installations", "value": 120, "suffix": "+" },
-    { "label": "Private sector & institutional research partners", "value": 45, "suffix": "+" }
+    {
+      "label": "Direct smallholder producers empowered",
+      "value": 500000,
+      "suffix": "+"
+    },
+    {
+      "label": "Female participation & leadership across cooperatives",
+      "value": 65,
+      "suffix": "%"
+    },
+    {
+      "label": "Rural community hubs and field installations",
+      "value": 120,
+      "suffix": "+"
+    },
+    {
+      "label": "Private sector & institutional research partners",
+      "value": 45,
+      "suffix": "+"
+    }
   ],
   "images": [
     {
@@ -150,6 +267,16 @@
       "alt": "Sustainable agricultural systems and rural prosperity in Northern Nigeria",
       "usage": "Homepage Top Hero Background",
       "selector": ".hero-visual"
+    },
+    {
+      "id": "hp-logo-emblem",
+      "title": "Homepage Hero Logo Graphic",
+      "section": "Homepage",
+      "ratio": "Square or High-Res PNG",
+      "src": "assets/img/gida-logo-official.png",
+      "alt": "GIDA Official Seal & Emblem",
+      "usage": "Homepage Hero Right Graphic Box",
+      "selector": "#cms-img-hero-logo"
     },
     {
       "id": "hp-director",
@@ -219,10 +346,26 @@
     }
   ],
   "partners": [
-    { "id": 1, "name": "State Ministry of Agriculture", "type": "Governmental Partner" },
-    { "id": 2, "name": "AGRA Alliance for a Green Revolution", "type": "Strategic Partner" },
-    { "id": 3, "name": "Federal Research Institute for Agro-Ecology", "type": "Research Affiliate" },
-    { "id": 4, "name": "Rural Energy Access Fund", "type": "Infrastructure Partner" }
+    {
+      "id": 1,
+      "name": "State Ministry of Agriculture",
+      "type": "Governmental Partner"
+    },
+    {
+      "id": 2,
+      "name": "AGRA Alliance for a Green Revolution",
+      "type": "Strategic Partner"
+    },
+    {
+      "id": 3,
+      "name": "Federal Research Institute for Agro-Ecology",
+      "type": "Research Affiliate"
+    },
+    {
+      "id": 4,
+      "name": "Rural Energy Access Fund",
+      "type": "Infrastructure Partner"
+    }
   ],
   "contact": {
     "email": "info@gida-action.org",

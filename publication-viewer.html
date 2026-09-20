@@ -221,10 +221,13 @@
 
 </div>
 
+<script src="assets/js/main.js"></script>
+<script src="assets/js/cms-engine.js"></script>
 <script>
   (function() {
     const params = new URLSearchParams(window.location.search);
     const pubId = params.get('id') || '1';
+    const isAnnouncement = params.get('type') === 'announcement';
 
     const defaultDocs = {
       '1': {
@@ -266,7 +269,24 @@
     // Check dynamic CMS store
     try {
       const cms = JSON.parse(localStorage.getItem('gida_cms_data') || '{}');
-      if (cms.publications && Array.isArray(cms.publications)) {
+      if (isAnnouncement && Array.isArray(cms.announcements)) {
+        const foundAnn = cms.announcements.find(a => String(a.id) === String(pubId));
+        if (foundAnn) {
+          doc = {
+            title: foundAnn.title,
+            category: foundAnn.category || 'Official Announcement',
+            date: foundAnn.date || '2026',
+            ref: 'ID: GIDA-ANN-' + foundAnn.id,
+            file: foundAnn.file || defaultDocs['1'].file,
+            summary: foundAnn.summary || foundAnn.details || foundAnn.title
+          };
+          const backBtn = document.querySelector('.viewer-nav-bar a.btn');
+          if (backBtn) {
+            backBtn.href = 'programs.html#announcements';
+            backBtn.innerHTML = '&larr; Back to Announcements';
+          }
+        }
+      } else if (cms.publications && Array.isArray(cms.publications)) {
         const found = cms.publications.find(p => String(p.id) === String(pubId));
         if (found) {
           doc = {
