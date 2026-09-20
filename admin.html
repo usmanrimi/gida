@@ -397,31 +397,31 @@
             </div>
           </div>
 
-          <!-- HOMEPAGE HERO GRAPHIC / EMBLEM MANAGER (ITEM 2) -->
+          <!-- HOMEPAGE HERO SHOWCASE PHOTOGRAPH -->
           <div class="content-card">
             <div class="card-head">
-              <h3>Homepage Hero Image / Emblem Visual</h3>
+              <h3>Homepage Hero Showcase Photograph</h3>
             </div>
             <div class="card-body">
-              <div style="display:grid;grid-template-columns:220px 1fr;gap:24px;align-items:start;">
+              <div style="display:grid;grid-template-columns:240px 1fr;gap:24px;align-items:start;">
                 <div>
-                  <div style="border:1px solid var(--border);border-radius:12px;background:#f8fafc;padding:16px;display:flex;align-items:center;justify-content:center;aspect-ratio:1/1;">
-                    <img id="heroLogoPreview" src="assets/img/logo.png" alt="Hero Emblem Preview" style="max-width:100%;max-height:100%;object-fit:contain;">
+                  <div style="border:1px solid var(--border);border-radius:12px;background:#f8fafc;overflow:hidden;display:flex;align-items:center;justify-content:center;aspect-ratio:4/3;">
+                    <img id="heroLogoPreview" src="assets/img/hero-slide.jpg" alt="Hero Showcase Preview" style="width:100%;height:100%;object-fit:cover;">
                   </div>
                 </div>
                 <div>
                   <form id="formHeroVisual" onsubmit="saveHeroVisual(event)">
                     <div class="form-group">
                       <label>Image Source / Path</label>
-                      <input type="text" id="heroLogoUrl" value="assets/img/logo.png" required>
+                      <input type="text" id="heroLogoUrl" value="assets/img/hero-slide.jpg" required>
                     </div>
                     <div class="form-group">
                       <label>Alt Text / Accessibility Label</label>
-                      <input type="text" id="heroLogoAlt" value="GIDA — Growth Innovation for Development Action Official Seal" required>
+                      <input type="text" id="heroLogoAlt" value="Smiling rural market trader in Northern Nigeria — Where People Prosper" required>
                     </div>
                     <div style="display:flex;gap:10px;align-items:center;">
                       <input type="file" id="heroLogoFile" accept="image/*" onchange="previewHeroLogoFile(this)" style="display:none;">
-                      <button type="button" class="btn-outline-sm" onclick="document.getElementById('heroLogoFile').click()">Choose Local Image</button>
+                      <button type="button" class="btn-outline-sm" onclick="document.getElementById('heroLogoFile').click()">Choose Local Photograph</button>
                       <button type="submit" class="btn-gold-sm">Publish Hero Image Live</button>
                     </div>
                   </form>
@@ -975,7 +975,12 @@
       </div>
       <div class="form-group">
         <label>PDF Document File / Path</label>
-        <input type="text" id="pubFile" placeholder="e.g. assets/docs/gida-strategic-framework-2026-2030.pdf" required>
+        <div style="display:flex;gap:10px;align-items:center;margin-bottom:6px;">
+          <input type="text" id="pubFile" placeholder="e.g. assets/docs/gida-strategic-framework-2026-2030.pdf" required style="flex:1;">
+          <input type="file" id="pubPdfFileInput" accept="application/pdf" style="display:none;" onchange="handlePdfUpload(this, 'pubFile', 'pubPdfStatus')">
+          <button type="button" class="btn-outline-sm" onclick="document.getElementById('pubPdfFileInput').click()" style="white-space:nowrap;padding:8px 14px;font-size:0.85rem;">Choose PDF File</button>
+        </div>
+        <div id="pubPdfStatus" style="font-size:0.8rem;color:var(--text-muted);">Select a PDF from your computer to upload directly to the server repository.</div>
       </div>
       <div class="form-group">
         <label>Executive Summary / Abstract</label>
@@ -1083,7 +1088,12 @@
       </div>
       <div class="form-group">
         <label>Attached Document / PDF Link</label>
-        <input type="text" id="annFile" placeholder="e.g. assets/docs/gida-strategic-framework-2026-2030.pdf" value="assets/docs/gida-strategic-framework-2026-2030.pdf" required>
+        <div style="display:flex;gap:10px;align-items:center;margin-bottom:6px;">
+          <input type="text" id="annFile" placeholder="e.g. assets/docs/gida-strategic-framework-2026-2030.pdf" value="assets/docs/gida-strategic-framework-2026-2030.pdf" required style="flex:1;">
+          <input type="file" id="annPdfFileInput" accept="application/pdf" style="display:none;" onchange="handlePdfUpload(this, 'annFile', 'annPdfStatus')">
+          <button type="button" class="btn-outline-sm" onclick="document.getElementById('annPdfFileInput').click()" style="white-space:nowrap;padding:8px 14px;font-size:0.85rem;">Choose PDF File</button>
+        </div>
+        <div id="annPdfStatus" style="font-size:0.8rem;color:var(--text-muted);">Select a PDF from your computer to upload directly to the server repository.</div>
       </div>
       <div class="form-group">
         <label>Summary / Synopsis</label>
@@ -2418,6 +2428,45 @@ function deleteAnnouncement(id, title) {
     renderAnnouncements();
     showToast('Announcement removed');
   }
+}
+
+// --- PDF DOCUMENT UPLOADER ---
+async function handlePdfUpload(input, targetPathId, statusSpanId) {
+  if (!input.files || !input.files[0]) return;
+  const file = input.files[0];
+  const statusSpan = document.getElementById(statusSpanId);
+  if (statusSpan) statusSpan.innerHTML = `<span style="color:#0284c7">Uploading ${file.name}...</span>`;
+
+  const reader = new FileReader();
+  reader.onload = async function(e) {
+    const base64Data = e.target.result;
+    try {
+      const res = await fetch('/api/upload-pdf', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          filename: file.name,
+          data: base64Data
+        })
+      });
+      if (res.ok) {
+        const jsonRes = await res.json();
+        if (jsonRes.success && jsonRes.filePath) {
+          document.getElementById(targetPathId).value = jsonRes.filePath;
+          if (statusSpan) statusSpan.innerHTML = `<span style="color:#16a34a;font-weight:600;">✓ Uploaded to server: ${jsonRes.filename} (${(file.size/1024).toFixed(1)} KB)</span>`;
+          showToast(`PDF "${jsonRes.filename}" uploaded successfully to server`);
+          return;
+        }
+      }
+    } catch(err) {
+      console.warn('Backend upload unavailable, falling back to local data URI', err);
+    }
+    // Fallback for standalone/offline: store as data URI
+    document.getElementById(targetPathId).value = base64Data;
+    if (statusSpan) statusSpan.innerHTML = `<span style="color:#16a34a;font-weight:600;">✓ Ready (local): ${file.name} (${(file.size/1024).toFixed(1)} KB)</span>`;
+    showToast(`PDF "${file.name}" ready`);
+  };
+  reader.readAsDataURL(file);
 }
 
 // --- BACKUP & RESTORE ---

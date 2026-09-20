@@ -106,24 +106,74 @@
     }
 
     // --- B. HOMEPAGE HERO VISUAL & TEXT ---
-    if (cms.heroVisual || (cms.images && cms.images.find(i => i.id === 'hp-logo-emblem'))) {
-      const emblemImg = document.getElementById('cms-img-hero-logo');
-      const emblemData = cms.heroVisual || cms.images.find(i => i.id === 'hp-logo-emblem');
-      if (emblemImg && emblemData && emblemData.src) {
-        emblemImg.src = emblemData.src;
-        if (emblemData.alt) emblemImg.alt = emblemData.alt;
+    if (cms.heroVisual || (cms.images && cms.images.find(i => i.id === 'hp-logo-emblem' || i.id === 'hp-hero'))) {
+      const heroVisualImg = document.getElementById('cms-img-hero-visual') || document.getElementById('cms-img-hero-logo');
+      const visualData = cms.heroVisual || (cms.images ? cms.images.find(i => i.id === 'hp-hero' || i.id === 'hp-logo-emblem') : null);
+      if (heroVisualImg && visualData && visualData.src) {
+        heroVisualImg.src = visualData.src;
+        if (visualData.alt) heroVisualImg.alt = visualData.alt;
       }
     }
 
     if (cms.homepage) {
-      const hpKicker = document.querySelector('.hero-sub-kicker');
+      const hpKicker = document.getElementById('cms-hero-tag') || document.querySelector('.hero-tag') || document.querySelector('.hero-sub-kicker');
       if (hpKicker && cms.homepage.kicker) hpKicker.textContent = cms.homepage.kicker;
-      const hpHead = document.querySelector('.hero-headline');
-      if (hpHead && cms.homepage.headline) hpHead.textContent = cms.homepage.headline;
-      const hpDesc = document.querySelector('.hero-lede');
+      
+      const hpHead = document.getElementById('cms-hero-headline') || document.querySelector('.hero h1') || document.querySelector('.h-display') || document.querySelector('.hero-headline');
+      if (hpHead && cms.homepage.headline) {
+        const text = cms.homepage.headline;
+        if (text.includes('<em>')) {
+          hpHead.innerHTML = text;
+        } else if (/prosper/i.test(text)) {
+          hpHead.innerHTML = text.replace(/(prosper\.?)/i, '<em>$1</em>');
+        } else {
+          hpHead.textContent = text;
+        }
+      }
+
+      const hpDesc = document.getElementById('cms-hero-lede') || document.querySelector('.hero p.lede') || document.querySelector('.hero-lede');
       if (hpDesc && cms.homepage.desc) hpDesc.textContent = cms.homepage.desc;
-      const hpProsperity = document.querySelector('.prosperity-highlight-text');
+
+      const hpProsperity = document.getElementById('cms-prosperity-statement') || document.querySelector('.prosperity-highlight-text') || document.querySelector('.prosperity-highlight-lead');
       if (hpProsperity && cms.homepage.prosperity) hpProsperity.textContent = cms.homepage.prosperity;
+    }
+
+    // --- B2. ABOUT US PROFILE HYDRATION (about.html) ---
+    if (cms.about) {
+      const abHead = document.getElementById('cms-about-heading') || document.querySelector('.about-text-box h2');
+      if (abHead && cms.about.heading) abHead.textContent = cms.about.heading;
+
+      const abLead = document.getElementById('cms-about-lead') || document.querySelector('.about-lead-text');
+      if (abLead && cms.about.lead) abLead.textContent = cms.about.lead;
+
+      const abApp = document.getElementById('cms-about-approach') || document.querySelector('.about-approach-text');
+      if (abApp && cms.about.approach) abApp.textContent = cms.about.approach;
+    }
+
+    // --- B3. SAFEGUARDING HYDRATION (safeguarding.html) ---
+    if (cms.safeguarding) {
+      const zt = document.getElementById('cms-sg-zerotolerance') || document.querySelector('.mandate-body');
+      if (zt && cms.safeguarding.zeroTolerance) zt.textContent = cms.safeguarding.zeroTolerance;
+
+      const sgEmail = document.getElementById('cms-sg-email');
+      if (sgEmail && cms.safeguarding.email) {
+        sgEmail.textContent = cms.safeguarding.email;
+        sgEmail.href = 'mailto:' + cms.safeguarding.email;
+      }
+
+      const sgHotline = document.getElementById('cms-sg-hotline');
+      if (sgHotline && cms.safeguarding.hotline) sgHotline.textContent = cms.safeguarding.hotline;
+    }
+
+    // --- B4. CONTACT INFO HYDRATION (contact.html) ---
+    if (cms.contact) {
+      const cEmail = document.getElementById('cms-contact-email');
+      if (cEmail && cms.contact.email) {
+        cEmail.textContent = cms.contact.email;
+        cEmail.href = 'mailto:' + cms.contact.email;
+      }
+      const cAddress = document.getElementById('cms-contact-address');
+      if (cAddress && cms.contact.address) cAddress.textContent = cms.contact.address;
     }
 
     // --- C. HOMEPAGE LATEST STORIES (index.html) ---

@@ -9,6 +9,8 @@ import socketserver
 import json
 import os
 import sys
+import re
+import base64
 from datetime import datetime
 
 PORT = 3000
@@ -50,6 +52,8 @@ class GidaCMSHandler(http.server.SimpleHTTPRequestHandler):
     def do_POST(self):
         if self.path.startswith('/api/save-cms'):
             self.handle_save_cms()
+        elif self.path.startswith('/api/upload-pdf') or self.path.startswith('/api/upload-file'):
+            self.handle_upload_file()
         else:
             self.send_error(404, "Endpoint not found")
 
@@ -116,6 +120,57 @@ class GidaCMSHandler(http.server.SimpleHTTPRequestHandler):
             self.send_header('Content-Length', str(len(err_bytes)))
             self.end_headers()
             self.wfile.write(err_bytes)
+        except Exception as e:
+            err_bytes = json.dumps({"success": False, "error": str(e)}).encode('utf-8')
+            self.send_response(500)
+            self.send_header('Content-Type', 'application/json; charset=utf-8')
+            self.send_header('Content-Length', str(len(err_bytes)))
+            self.end_headers()
+            self.wfile.write(err_bytes)
+
+    def handle_upload_file(self):
+        try:
+            content_length = int(self.headers.get('Content-Length', 0))
+            if content_length <= 0:
+                self.send_error(400, "Empty payload")
+                return
+
+            body = self.rfile.read(content_length).decode('utf-8')
+            payload = json.loads(body)
+            raw_name = payload.get('filename', 'document.pdf')
+            # Sanitize filename
+            clean_name = re.sub(r'[^a-zA-Z0-9_\-\.]', '_', os.path.basename(raw_name))
+            if not clean_name.lower().endswith(('.pdf', '.png', '.jpg', '.jpeg', '.webp')):
+                clean_name += '.pdf'
+
+            file_b64 = payload.get('data', '')
+            if ',' in file_b64:
+                file_b64 = file_b64.split(',', 1)[1]
+
+            file_bytes = base64.b64decode(file_b64)
+            docs_dir = os.path.join(DIRECTORY, "assets", "docs")
+            os.makedirs(docs_dir, exist_ok=True)
+            target_path = os.path.join(docs_dir, clean_name)
+
+            with open(target_path, 'wb') as f:
+                f.write(file_bytes)
+
+            rel_path = f"assets/docs/{clean_name}"
+            res_data = {
+                "success": True,
+                "filePath": rel_path,
+                "filename": clean_name,
+                "size": len(file_bytes),
+                "message": f"Successfully uploaded {clean_name}"
+            }
+            res_bytes = json.dumps(res_data).encode('utf-8')
+            self.send_response(200)
+            self.send_header('Content-Type', 'application/json; charset=utf-8')
+            self.send_header('Content-Length', str(len(res_bytes)))
+            self.end_headers()
+            self.wfile.write(res_bytes)
+            print(f"[FILE UPLOAD] Saved {clean_name} ({len(file_bytes)} bytes) to {rel_path}")
+
         except Exception as e:
             err_bytes = json.dumps({"success": False, "error": str(e)}).encode('utf-8')
             self.send_response(500)
