@@ -252,10 +252,6 @@
           <svg width="20" height="20" fill="none" stroke-width="1.75" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
           Publications
         </button>
-        <button class="nav-btn" data-tab="announcements">
-          <svg width="20" height="20" fill="none" stroke-width="1.75" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z"></path></svg>
-          Announcements
-        </button>
         <button class="nav-btn" data-tab="vacancies">
           <svg width="20" height="20" fill="none" stroke-width="1.75" viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg>
           Careers
@@ -311,7 +307,11 @@
             <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
             View Live Site
           </a>
-          <button class="btn-gold-sm" onclick="exportData()">
+          <button class="btn-gold-sm" id="btnPushLive" onclick="pushChangesToLive()" title="Commit &amp; Push live website changes directly to repository" style="display:inline-flex;align-items:center;gap:6px;background:var(--green-dark,#1b4d3e);color:#ffffff;border:none;">
+            <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path></svg>
+            <span id="btnPushLiveText">Push Changes to Live</span>
+          </button>
+          <button class="btn-outline-sm" onclick="exportData()">
             <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
             Export Backup (JSON)
           </button>
@@ -338,10 +338,6 @@
               <div class="value" id="statArticles">3</div>
             </div>
             <div class="stat-box">
-              <div class="title">Announcements</div>
-              <div class="value" id="statAnnouncements">2</div>
-            </div>
-            <div class="stat-box">
               <div class="title">Open Vacancies</div>
               <div class="value" id="statVacancies">3</div>
             </div>
@@ -357,7 +353,6 @@
             </div>
             <div class="card-body" style="display:flex;gap:12px;flex-wrap:wrap;">
               <button class="btn-action" style="padding:10px 18px;font-weight:700;" onclick="switchTab('articles')">Manage Blog Articles</button>
-              <button class="btn-action" style="padding:10px 18px;font-weight:700;" onclick="switchTab('announcements')">Manage Announcements</button>
               <button class="btn-action" style="padding:10px 18px;font-weight:700;" onclick="switchTab('ceo')">Manage CEO Message</button>
               <button class="btn-action" style="padding:10px 18px;font-weight:700;" onclick="switchTab('vacancies')">Manage Career Vacancies</button>
               <button class="btn-action" style="padding:10px 18px;font-weight:700;" onclick="switchTab('publications')">Manage Publications</button>
@@ -643,36 +638,6 @@
                   </tr>
                 </thead>
                 <tbody id="publicationsTable">
-                  <!-- Rendered dynamically -->
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </section>
-
-        <!-- TAB: ANNOUNCEMENTS (ITEM 8) -->
-        <section id="tab-announcements" class="tab-pane">
-          <div class="content-card">
-            <div class="card-head">
-              <h3>Institutional Announcements &amp; Public Notices</h3>
-              <div style="display:flex;gap:10px;">
-                <a href="programs.html" target="_blank" class="btn-outline-sm">Preview on Programs</a>
-                <button class="btn-gold-sm" onclick="openAddAnnouncementModal()">New Announcement / Notice</button>
-              </div>
-            </div>
-            <div class="card-body" style="padding:0;">
-              <table>
-                <thead>
-                  <tr>
-                    <th>Notice Title</th>
-                    <th>Category</th>
-                    <th>Date</th>
-                    <th>Attached PDF</th>
-                    <th>Status</th>
-                    <th style="width:240px">Actions</th>
-                  </tr>
-                </thead>
-                <tbody id="announcementsTable">
                   <!-- Rendered dynamically -->
                 </tbody>
               </table>
@@ -1068,58 +1033,6 @@
   </div>
 </div>
 
-<!-- 6. ADD / EDIT ANNOUNCEMENT MODAL (ITEM 8) -->
-<div id="announcementModal" class="modal-overlay">
-  <div class="modal-box" style="max-width:680px;">
-    <h4 id="announcementModalTitle">Create Announcement</h4>
-    <form id="formAnnouncement" onsubmit="saveAnnouncement(event)">
-      <input type="hidden" id="annId">
-      <div class="form-group">
-        <label>Notice / RFP Title</label>
-        <input type="text" id="annTitle" placeholder="e.g. Call for Expressions of Interest: Community Hubs" required>
-      </div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
-        <div class="form-group">
-          <label>Category</label>
-          <input type="text" id="annCategory" placeholder="e.g. Notice / Procurement, Institutional Notice" required>
-        </div>
-        <div class="form-group">
-          <label>Date</label>
-          <input type="text" id="annDate" placeholder="e.g. 18 September 2026" required>
-        </div>
-      </div>
-      <div class="form-group">
-        <label>Attached Document / PDF Link</label>
-        <div style="display:flex;gap:10px;align-items:center;margin-bottom:6px;">
-          <input type="text" id="annFile" placeholder="e.g. assets/docs/gida-strategic-framework-2026-2030.pdf" value="assets/docs/gida-strategic-framework-2026-2030.pdf" required style="flex:1;">
-          <input type="file" id="annPdfFileInput" accept="application/pdf" style="display:none;" onchange="handlePdfUpload(this, 'annFile', 'annPdfStatus')">
-          <button type="button" class="btn-outline-sm" onclick="document.getElementById('annPdfFileInput').click()" style="white-space:nowrap;padding:8px 14px;font-size:0.85rem;">Choose PDF File</button>
-        </div>
-        <div id="annPdfStatus" style="font-size:0.8rem;color:var(--text-muted);">Select a PDF from your computer to upload directly to the server repository.</div>
-      </div>
-      <div class="form-group">
-        <label>Summary / Synopsis</label>
-        <textarea id="annSummary" rows="3" placeholder="Concise 2-sentence summary displayed on card" required></textarea>
-      </div>
-      <div class="form-group">
-        <label>Detailed Information / Scope</label>
-        <textarea id="annDetails" rows="4" placeholder="Full notice description and eligibility guidelines..."></textarea>
-      </div>
-      <div class="form-group">
-        <label>Status</label>
-        <select id="annStatus">
-          <option value="published">Published (Visible Publicly)</option>
-          <option value="draft">Draft (Hidden)</option>
-        </select>
-      </div>
-      <div class="modal-actions">
-        <button type="button" class="btn-modal-cancel" onclick="closeModal('announcementModal')">Cancel</button>
-        <button type="submit" class="btn-modal-save">Publish Announcement</button>
-      </div>
-    </form>
-  </div>
-</div>
-
 <!-- 5. SAFE DELETION WARNING MODAL -->
 <div id="safeDeleteModal" class="modal-overlay">
   <div class="modal-box">
@@ -1487,9 +1400,49 @@ document.getElementById('loginForm').addEventListener('submit', (e) => {
 });
 
 function logout() {
+  if (!confirm("Do you confirm signing out of Super Admin?")) return;
   sessionStorage.removeItem(AUTH_KEY);
   showToast('Logged out securely');
   checkAuth();
+}
+
+// PUSH CHANGES TO LIVE REPOSITORY
+async function pushChangesToLive() {
+  if (!confirm("Do you confirm pushing all local changes to the live repository?")) return;
+
+  const btn = document.getElementById('btnPushLive');
+  const txt = document.getElementById('btnPushLiveText');
+  const originalHtml = txt ? txt.innerText : 'Push Changes to Live';
+  
+  try {
+    if (btn) btn.disabled = true;
+    if (txt) txt.innerText = 'Pushing to Live...';
+    showToast('Pushing latest CMS changes to remote repository...');
+
+    // First ensure latest store state is persisted locally & to server disk
+    await persist();
+
+    const response = await fetch('/api/push-changes', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ message: 'Update CMS content and site data from Super Admin' })
+    });
+
+    const result = await response.json();
+    if (response.ok && result.success) {
+      showToast('✓ Successfully pushed changes to live repository (' + result.branch + ')');
+      alert('Do you confirm completion: Changes have been successfully published and pushed to the live repository (' + result.branch + ')!');
+    } else {
+      throw new Error(result.error || 'Push failed on server');
+    }
+  } catch (err) {
+    console.error('[GIT PUSH ERROR]', err);
+    showToast('Error pushing changes: ' + err.message);
+    alert('Push to Live Notice: ' + err.message + '\n(Note: Your changes remain safely saved in local database and browser storage.)');
+  } finally {
+    if (btn) btn.disabled = false;
+    if (txt) txt.innerText = originalHtml;
+  }
 }
 
 // ==========================================
@@ -1533,7 +1486,6 @@ function renderAll() {
   renderSafeguardingForm();
   renderCeoForm();
   renderArticles();
-  renderAnnouncements();
   renderVacancies();
   renderPublications();
   renderPrograms();
@@ -1548,7 +1500,6 @@ function renderStats() {
   if (document.getElementById('statPrograms')) document.getElementById('statPrograms').innerText = store.programs ? store.programs.length : 0;
   if (document.getElementById('statPublications')) document.getElementById('statPublications').innerText = store.publications ? store.publications.length : 0;
   if (document.getElementById('statArticles')) document.getElementById('statArticles').innerText = store.articles ? store.articles.length : 0;
-  if (document.getElementById('statAnnouncements')) document.getElementById('statAnnouncements').innerText = store.announcements ? store.announcements.length : 0;
   if (document.getElementById('statVacancies')) document.getElementById('statVacancies').innerText = store.vacancies ? store.vacancies.length : 0;
   if (document.getElementById('statImages')) document.getElementById('statImages').innerText = store.images ? store.images.length : 0;
 }
@@ -1584,6 +1535,7 @@ function updateCeoPhotoFromUrl(url) {
 
 function saveCeoMessage(e) {
   e.preventDefault();
+  if (!confirm("Do you confirm updating the CEO Leadership Message across the website?")) return;
   store.ceo = {
     name: document.getElementById('ceoName').value,
     role: document.getElementById('ceoRole').value,
@@ -1674,6 +1626,7 @@ function editVacancy(id) {
 
 function saveVacancy(e) {
   e.preventDefault();
+  if (!confirm("Do you confirm saving this career vacancy?")) return;
   const id = document.getElementById('vacId').value;
   const vacancyData = {
     title: document.getElementById('vacTitle').value,
@@ -1705,7 +1658,9 @@ function saveVacancy(e) {
 function toggleVacancyStatus(id) {
   const v = store.vacancies.find(x => x.id === id);
   if (v) {
-    v.status = v.status === 'published' ? 'draft' : 'published';
+    const newStatus = v.status === 'published' ? 'draft' : 'published';
+    if (!confirm(`Do you confirm changing status of "${v.title}" to ${newStatus}?`)) return;
+    v.status = newStatus;
     persist();
     renderVacancies();
     showToast(`Vacancy status changed to ${v.status}`);
@@ -1713,7 +1668,7 @@ function toggleVacancyStatus(id) {
 }
 
 function deleteVacancy(id, title) {
-  if (confirm(`Are you sure you want to remove vacancy "${title}"?`)) {
+  if (confirm(`Do you confirm permanently removing vacancy "${title}"?`)) {
     store.vacancies = store.vacancies.filter(x => x.id !== id);
     persist();
     renderVacancies();
@@ -1724,6 +1679,7 @@ function deleteVacancy(id, title) {
 // --- PUBLICATIONS ---
 function movePublication(id, direction) {
   if (!store.publications) return;
+  if (!confirm(`Do you confirm moving this publication ${direction}?`)) return;
   const idx = store.publications.findIndex(x => String(x.id) === String(id));
   if (idx < 0) return;
   const targetIdx = direction === 'up' ? idx - 1 : idx + 1;
@@ -1793,6 +1749,7 @@ function editPublication(id) {
 
 function savePublication(e) {
   e.preventDefault();
+  if (!confirm("Do you confirm saving this publication?")) return;
   const id = document.getElementById('pubId').value;
   const pubData = {
     title: document.getElementById('pubTitle').value,
@@ -1821,7 +1778,9 @@ function savePublication(e) {
 function togglePublicationStatus(id) {
   const p = store.publications.find(x => x.id === id);
   if (p) {
-    p.status = p.status === 'published' ? 'draft' : 'published';
+    const newStatus = p.status === 'published' ? 'draft' : 'published';
+    if (!confirm(`Do you confirm changing status of "${p.title}" to ${newStatus}?`)) return;
+    p.status = newStatus;
     persist();
     renderPublications();
     showToast(`Publication status toggled to ${p.status}`);
@@ -1829,7 +1788,7 @@ function togglePublicationStatus(id) {
 }
 
 function deletePublication(id, title) {
-  if (confirm(`Delete publication "${title}"?`)) {
+  if (confirm(`Do you confirm deleting publication "${title}"?`)) {
     store.publications = store.publications.filter(x => x.id !== id);
     persist();
     renderPublications();
@@ -1859,7 +1818,9 @@ function renderPrograms() {
 function toggleProgramStatus(id) {
   const p = store.programs.find(x => x.id === id);
   if (p) {
-    p.status = p.status === 'published' ? 'draft' : 'published';
+    const newStatus = p.status === 'published' ? 'draft' : 'published';
+    if (!confirm(`Do you confirm changing status of "${p.title}" to ${newStatus}?`)) return;
+    p.status = newStatus;
     persist();
     renderPrograms();
     showToast(`Program status set to ${p.status}`);
@@ -1867,7 +1828,7 @@ function toggleProgramStatus(id) {
 }
 
 function deleteProgram(id, title) {
-  if (confirm(`Remove Program "${title}"?`)) {
+  if (confirm(`Do you confirm deleting program "${title}"?`)) {
     store.programs = store.programs.filter(x => x.id !== id);
     persist();
     renderPrograms();
@@ -1914,6 +1875,9 @@ function openAddPartnerModal() {
 }
 
 function deletePartner(id) {
+  const p = store.partners.find(x => x.id === id);
+  const name = p ? p.name : 'Partner';
+  if (!confirm(`Do you confirm removing partner "${name}"?`)) return;
   store.partners = store.partners.filter(x => x.id !== id);
   persist();
   renderPartners();
@@ -1977,6 +1941,7 @@ function openEditMetaModal(id) {
 
 function saveImageMeta(e) {
   e.preventDefault();
+  if (!confirm("Do you confirm updating this media slot's metadata?")) return;
   const id = document.getElementById('editImageId').value;
   const img = store.images.find(x => x.id === id);
   if(img) {
@@ -2022,6 +1987,7 @@ function confirmImageReplace() {
     alert('Please choose a file or specify a valid image URL.');
     return;
   }
+  if (!confirm("Do you confirm replacing this image media across the website?")) return;
   const img = store.images.find(x => x.id === activeReplaceId);
   if(img) {
     img.src = finalSrc;
@@ -2048,6 +2014,7 @@ function switchToReplace() {
 
 document.getElementById('confirmDeleteExecBtn').addEventListener('click', () => {
   if(targetDeleteId) {
+    if (!confirm("Do you confirm permanently removing this media slot?")) return;
     store.images = store.images.filter(x => x.id !== targetDeleteId);
     persist();
     renderManagedImages(currentFilterSection);
@@ -2105,6 +2072,7 @@ function previewHeroLogoFile(input) {
 
 function saveHomepage(e) {
   e.preventDefault();
+  if (!confirm("Do you confirm saving these changes to the Homepage?")) return;
   store.homepage = {
     kicker: document.getElementById('hpKicker').value,
     headline: document.getElementById('hpHeadline').value,
@@ -2117,6 +2085,7 @@ function saveHomepage(e) {
 
 function saveHeroVisual(e) {
   e.preventDefault();
+  if (!confirm("Do you confirm updating the Homepage hero visual emblem?")) return;
   const src = document.getElementById('heroLogoUrl').value || 'assets/img/logo.png';
   const alt = document.getElementById('heroLogoAlt').value || 'GIDA Official Seal';
   store.heroVisual = { src, alt };
@@ -2143,6 +2112,7 @@ function renderAboutForm() {
 
 function saveAbout(e) {
   e.preventDefault();
+  if (!confirm("Do you confirm saving these changes to About Us?")) return;
   store.about = {
     heading: document.getElementById('aboutHeading').value,
     lead: document.getElementById('aboutLead').value,
@@ -2162,6 +2132,7 @@ function renderSafeguardingForm() {
 
 function saveSafeguarding(e) {
   e.preventDefault();
+  if (!confirm("Do you confirm saving these Safeguarding policy updates?")) return;
   store.safeguarding = {
     zeroTolerance: document.getElementById('sgZeroTolerance').value,
     email: document.getElementById('sgEmail').value,
@@ -2182,6 +2153,7 @@ function renderContactForm() {
 
 function saveContact(e) {
   e.preventDefault();
+  if (!confirm("Do you confirm saving these Contact details?")) return;
   store.contact = {
     email: document.getElementById('contactEmail').value,
     careers: document.getElementById('contactCareersEmail').value,
@@ -2203,6 +2175,7 @@ function renderSocialForm() {
 
 function saveSocial(e) {
   e.preventDefault();
+  if (!confirm("Do you confirm saving these Social Media links?")) return;
   store.social = {
     twitter: document.getElementById('socialTwitter').value,
     linkedin: document.getElementById('socialLinkedIn').value,
@@ -2222,6 +2195,7 @@ function renderSettingsForm() {
 }
 
 function saveSettings() {
+  if (!confirm("Do you confirm saving the Global Website configuration?")) return;
   store.settings = {
     orgName: document.getElementById('settingOrgName').value,
     tagline: document.getElementById('settingTagline').value,
@@ -2234,6 +2208,7 @@ function saveSettings() {
 // --- EDITORIAL BLOG ARTICLES ---
 function moveArticle(id, direction) {
   if (!store.articles) return;
+  if (!confirm(`Do you confirm moving this article ${direction}?`)) return;
   const idx = store.articles.findIndex(x => String(x.id) === String(id));
   if (idx < 0) return;
   const targetIdx = direction === 'up' ? idx - 1 : idx + 1;
@@ -2318,6 +2293,7 @@ function editArticle(id) {
 
 function saveArticle(e) {
   e.preventDefault();
+  if (!confirm("Do you confirm saving and publishing this article?")) return;
   const id = document.getElementById('artId').value;
   const isFeatured = document.getElementById('artFeatured').checked;
   
@@ -2355,7 +2331,9 @@ function saveArticle(e) {
 function toggleArticleStatus(id) {
   const a = store.articles.find(x => x.id === id);
   if (a) {
-    a.status = a.status === 'published' ? 'draft' : 'published';
+    const newStatus = a.status === 'published' ? 'draft' : 'published';
+    if (!confirm(`Do you confirm changing status of "${a.title}" to ${newStatus}?`)) return;
+    a.status = newStatus;
     persist();
     renderArticles();
     showToast(`Article status set to ${a.status}`);
@@ -2363,115 +2341,11 @@ function toggleArticleStatus(id) {
 }
 
 function deleteArticle(id, title) {
-  if (confirm(`Are you sure you want to delete article "${title}"?`)) {
+  if (confirm(`Do you confirm permanently deleting article "${title}"?`)) {
     store.articles = store.articles.filter(x => x.id !== id);
     persist();
     renderArticles();
     showToast('Article removed');
-  }
-}
-
-// --- INSTITUTIONAL ANNOUNCEMENTS ---
-function renderAnnouncements() {
-  const tbody = document.getElementById('announcementsTable');
-  if (!tbody) return;
-  if (!store.announcements) store.announcements = [];
-  tbody.innerHTML = store.announcements.map(a => `
-    <tr>
-      <td><strong>${a.title}</strong></td>
-      <td><span style="font-size:0.8rem;background:#e0f2fe;color:#0369a1;padding:3px 8px;border-radius:100px;">${a.category}</span></td>
-      <td>${a.date}</td>
-      <td><span style="font-size:0.8rem;color:var(--text-muted);">${a.file ? a.file.split('/').pop() : 'None'}</span></td>
-      <td><span class="badge-status ${a.status==='published'?'badge-published':'badge-draft'}">${a.status}</span></td>
-      <td>
-        <div class="action-links">
-          <button class="btn-action" onclick="previewAnnouncement(${a.id})">Preview</button>
-          <button class="btn-action" onclick="toggleAnnouncementStatus(${a.id})">${a.status==='published'?'Unpublish':'Publish'}</button>
-          <button class="btn-action" onclick="editAnnouncement(${a.id})">Edit</button>
-          <button class="btn-action delete" onclick="deleteAnnouncement(${a.id}, '${a.title.replace(/'/g, "\\'")}')">Delete</button>
-        </div>
-      </td>
-    </tr>
-  `).join('');
-  renderStats();
-}
-
-function previewAnnouncement(id) {
-  window.open('publication-viewer.html?type=announcement&id=' + id + '&preview=true', '_blank');
-}
-
-function openAddAnnouncementModal() {
-  document.getElementById('announcementModalTitle').innerText = 'Create Announcement / Notice';
-  document.getElementById('annId').value = '';
-  document.getElementById('annTitle').value = '';
-  document.getElementById('annCategory').value = 'Notice / Procurement';
-  document.getElementById('annDate').value = new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
-  document.getElementById('annFile').value = 'assets/docs/gida-strategic-framework-2026-2030.pdf';
-  document.getElementById('annSummary').value = '';
-  document.getElementById('annDetails').value = '';
-  document.getElementById('annStatus').value = 'published';
-  document.getElementById('announcementModal').style.display = 'flex';
-}
-
-function editAnnouncement(id) {
-  const a = store.announcements.find(x => x.id === id);
-  if (!a) return;
-  document.getElementById('announcementModalTitle').innerText = 'Edit Announcement';
-  document.getElementById('annId').value = a.id;
-  document.getElementById('annTitle').value = a.title;
-  document.getElementById('annCategory').value = a.category;
-  document.getElementById('annDate').value = a.date;
-  document.getElementById('annFile').value = a.file || '';
-  document.getElementById('annSummary').value = a.summary || '';
-  document.getElementById('annDetails').value = a.details || '';
-  document.getElementById('annStatus').value = a.status || 'published';
-  document.getElementById('announcementModal').style.display = 'flex';
-}
-
-function saveAnnouncement(e) {
-  e.preventDefault();
-  const id = document.getElementById('annId').value;
-  const annData = {
-    title: document.getElementById('annTitle').value,
-    category: document.getElementById('annCategory').value,
-    date: document.getElementById('annDate').value,
-    file: document.getElementById('annFile').value,
-    summary: document.getElementById('annSummary').value,
-    details: document.getElementById('annDetails').value,
-    status: document.getElementById('annStatus').value
-  };
-
-  if (id) {
-    const existing = store.announcements.find(x => String(x.id) === String(id));
-    if (existing) Object.assign(existing, annData);
-  } else {
-    store.announcements.unshift({
-      id: Date.now(),
-      ...annData
-    });
-  }
-  persist();
-  renderAnnouncements();
-  closeModal('announcementModal');
-  showToast('Announcement published and synced live to site');
-}
-
-function toggleAnnouncementStatus(id) {
-  const a = store.announcements.find(x => x.id === id);
-  if (a) {
-    a.status = a.status === 'published' ? 'draft' : 'published';
-    persist();
-    renderAnnouncements();
-    showToast(`Announcement status toggled to ${a.status}`);
-  }
-}
-
-function deleteAnnouncement(id, title) {
-  if (confirm(`Delete announcement "${title}"?`)) {
-    store.announcements = store.announcements.filter(x => x.id !== id);
-    persist();
-    renderAnnouncements();
-    showToast('Announcement removed');
   }
 }
 

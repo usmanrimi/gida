@@ -11,6 +11,7 @@ import os
 import sys
 import re
 import base64
+import subprocess
 from datetime import datetime
 
 PORT = 3000
@@ -54,6 +55,8 @@ class GidaCMSHandler(http.server.SimpleHTTPRequestHandler):
             self.handle_save_cms()
         elif self.path.startswith('/api/upload-pdf') or self.path.startswith('/api/upload-file'):
             self.handle_upload_file()
+        elif self.path.startswith('/api/push-changes') or self.path.startswith('/api/git-push'):
+            self.handle_push_changes()
         else:
             self.send_error(404, "Endpoint not found")
 
@@ -170,6 +173,58 @@ class GidaCMSHandler(http.server.SimpleHTTPRequestHandler):
             self.end_headers()
             self.wfile.write(res_bytes)
             print(f"[FILE UPLOAD] Saved {clean_name} ({len(file_bytes)} bytes) to {rel_path}")
+
+        except Exception as e:
+            err_bytes = json.dumps({"success": False, "error": str(e)}).encode('utf-8')
+            self.send_response(500)
+            self.send_header('Content-Type', 'application/json; charset=utf-8')
+            self.send_header('Content-Length', str(len(err_bytes)))
+            self.end_headers()
+            self.wfile.write(err_bytes)
+
+    def handle_push_changes(self):
+        try:
+            content_length = int(self.headers.get('Content-Length', 0))
+            body = self.rfile.read(content_length).decode('utf-8') if content_length > 0 else '{}'
+            payload = json.loads(body) if body.strip() else {}
+            commit_msg = payload.get('message', 'Update CMS content and site data from Super Admin')
+
+            # 1. Stage all changes
+            add_proc = subprocess.run(['git', 'add', '-A'], cwd=DIRECTORY, capture_output=True, text=True)
+            if add_proc.returncode != 0:
+                raise Exception(f"git add failed: {add_proc.stderr}")
+
+            # 2. Check if there are uncommitted changes to commit
+            status_proc = subprocess.run(['git', 'status', '--porcelain'], cwd=DIRECTORY, capture_output=True, text=True)
+            committed = False
+            if status_proc.stdout.strip():
+                commit_proc = subprocess.run(['git', 'commit', '-m', commit_msg], cwd=DIRECTORY, capture_output=True, text=True)
+                if commit_proc.returncode != 0:
+                    raise Exception(f"git commit failed: {commit_proc.stderr}")
+                committed = True
+
+            # 3. Detect current branch
+            branch_proc = subprocess.run(['git', 'rev-parse', '--abbrev-ref', 'HEAD'], cwd=DIRECTORY, capture_output=True, text=True)
+            branch = branch_proc.stdout.strip() or 'master'
+
+            # 4. Git push to origin
+            push_proc = subprocess.run(['git', 'push', 'origin', branch], cwd=DIRECTORY, capture_output=True, text=True)
+            if push_proc.returncode != 0:
+                raise Exception(f"git push failed: {push_proc.stderr}")
+
+            res_data = {
+                "success": True,
+                "committed": committed,
+                "branch": branch,
+                "message": f"Successfully pushed all changes to origin/{branch}!"
+            }
+            res_bytes = json.dumps(res_data).encode('utf-8')
+            self.send_response(200)
+            self.send_header('Content-Type', 'application/json; charset=utf-8')
+            self.send_header('Content-Length', str(len(res_bytes)))
+            self.end_headers()
+            self.wfile.write(res_bytes)
+            print(f"[GIT PUSH] Successfully pushed changes to origin/{branch}")
 
         except Exception as e:
             err_bytes = json.dumps({"success": False, "error": str(e)}).encode('utf-8')
