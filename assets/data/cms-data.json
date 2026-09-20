@@ -166,6 +166,15 @@
   ],
   "publications": [
     {
+      "id": 1789919637925,
+      "title": "GIDA Selected for AIR - CBN Gender Data Design Sprint",
+      "category": "Announcement",
+      "date": "2026",
+      "file": "assets/docs/AIR_CBN_Sprint_Announcement__1_.pdf",
+      "summary": "GIDA joins the AIR - CBN Gender-Disaggregated Data Design Sprint, further advancing its contribution to financial inclusion and data-driven policy innovation in Nigeria.",
+      "status": "published"
+    },
+    {
       "id": 1,
       "title": "GIDA Strategic Operational Framework (2026–2030)",
       "category": "Strategic Plan",
@@ -199,15 +208,6 @@
       "date": "April 2026",
       "file": "assets/docs/gida-gesi-cooperatives-assessment.pdf",
       "summary": "Baseline field assessment analyzing female smallholder aggregations, digital financial inclusion tools, and solar cold storage outcomes.",
-      "status": "published"
-    },
-    {
-      "id": 1789919637925,
-      "title": "GIDA Selected for AIR - CBN Gender Data Design Sprint",
-      "category": "Announcement",
-      "date": "2026",
-      "file": "assets/docs/AIR_CBN_Sprint_Announcement__1_.pdf",
-      "summary": "GIDA joins the AIR - CBN Gender-Disaggregated Data Design Sprint, further advancing its contribution to financial inclusion and data-driven policy innovation in Nigeria.",
       "status": "published"
     }
   ],
@@ -370,7 +370,7 @@
     "facebook": "https://facebook.com/gidaaction",
     "instagram": "https://instagram.com/gida_action"
   },
-  "updatedAt": "2026-09-20T15:54:04.103618Z",
+  "updatedAt": "2026-09-20T15:54:27.979935Z",
   "stats": [
     {
       "label": "Direct smallholder producers empowered",
