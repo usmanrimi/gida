@@ -393,6 +393,38 @@
       }
     }
 
+    // --- G2. HOMEPAGE PUBLICATIONS SHOWCASE (index.html) ---
+    const homePubGrid = document.getElementById('homePublicationsGrid');
+    if (homePubGrid && Array.isArray(cms.publications)) {
+      const publishedPubs = cms.publications.filter(p => p.status === 'published');
+      if (publishedPubs.length > 0) {
+        // Showcase the top 3 publications in their defined order
+        const showcasePubs = publishedPubs.slice(0, 3);
+        homePubGrid.innerHTML = showcasePubs.map(p => `
+          <article class="pub-card">
+            <div class="pub-header-strip">
+              <span class="pub-tag">${escapeHtml(p.category || 'Strategic Plan')}</span>
+              <span class="pub-date">${escapeHtml(p.date || '2026')}</span>
+            </div>
+            <div class="pub-body">
+              <h3 class="pub-title">${escapeHtml(p.title)}</h3>
+              <p class="pub-summary">${escapeHtml(p.summary || '')}</p>
+              <div class="pub-actions">
+                <a href="publication-viewer.html?id=${p.id}" class="pub-btn-read">
+                  <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
+                  Read Document
+                </a>
+                <a href="${p.file || 'assets/docs/gida-strategic-framework-2026-2030.pdf'}" download class="pub-btn-download" title="Download PDF">
+                  <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+                  PDF
+                </a>
+              </div>
+            </div>
+          </article>
+        `).join('');
+      }
+    }
+
     // --- H. VACANCIES (career.html) ---
     const vacancyGrid = document.getElementById('vacancyListContainer');
     const noVacanciesBox = document.getElementById('noVacanciesBox');
