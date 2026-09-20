@@ -303,6 +303,10 @@
       <header class="top-header">
         <h1 class="page-title" id="currentSectionTitle">System Overview</h1>
         <div class="user-badge">
+          <div id="connStatusBadge" style="display:inline-flex;align-items:center;gap:6px;font-size:0.78rem;padding:6px 12px;border-radius:100px;background:#f1f5f9;color:#475569;font-weight:600;cursor:pointer;" onclick="switchTab('settings')" title="Click to configure GitHub connection">
+            <span style="width:8px;height:8px;border-radius:50%;background:#94a3b8;display:inline-block;" id="connStatusDot"></span>
+            <span id="connStatusText">Checking Connection...</span>
+          </div>
           <a href="index.html" target="_blank" class="btn-outline-sm">
             <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
             View Live Site
@@ -751,6 +755,55 @@
             </div>
           </div>
 
+          <!-- GITHUB & LIVE DEPLOYMENT INTEGRATION -->
+          <div class="content-card" style="border-left: 4px solid var(--teal);">
+            <div class="card-head">
+              <h3>
+                <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24" style="margin-right:6px;"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+                GitHub Connection &amp; Live Auto-Deployment (Vercel)
+              </h3>
+              <span id="ghStatusPill" class="badge-status" style="background:#e0f2fe;color:#0369a1;">Checking Connection...</span>
+            </div>
+            <div class="card-body">
+              <p style="font-size:0.92rem;color:var(--text-muted);margin-bottom:18px;line-height:1.6;">
+                Connect the Super Admin directly to your GitHub repository to allow 1-click publishing from anywhere (including when accessing Super Admin directly from the hosted Vercel website). When you push, GitHub automatically receives the update and triggers instant deployment to your live website.
+              </p>
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;">
+                <div class="form-group">
+                  <label>GitHub Repository</label>
+                  <input type="text" id="ghRepo" value="usmanrimi/gida" readonly style="background:#f8fafc;">
+                </div>
+                <div class="form-group">
+                  <label>Target Production Branch</label>
+                  <input type="text" id="ghBranch" value="master" readonly style="background:#f8fafc;">
+                </div>
+              </div>
+              <div class="form-group">
+                <label>Live Published URL</label>
+                <div style="display:flex;gap:10px;align-items:center;">
+                  <input type="text" id="ghLiveUrl" value="https://gida-xi.vercel.app" readonly style="background:#f8fafc;flex:1;">
+                  <a href="https://gida-xi.vercel.app" target="_blank" class="btn-outline-sm">Visit Site &rarr;</a>
+                </div>
+              </div>
+              <div class="form-group">
+                <label>GitHub Personal Access Token (PAT) <span style="font-size:0.75rem;color:var(--text-muted);font-weight:normal;">— Stored securely in your browser</span></label>
+                <div style="display:flex;gap:10px;">
+                  <input type="password" id="ghToken" placeholder="ghp_xxxxxxxxxxxxxxxxxxxxxxxxxxxx or github_pat_..." style="flex:1;">
+                  <button type="button" class="btn-outline-sm" onclick="toggleTokenVisibility()">Show / Hide</button>
+                </div>
+                <div style="font-size:0.78rem;color:var(--text-muted);margin-top:6px;">
+                  Need a token? <a href="https://github.com/settings/tokens/new?scopes=repo&description=GIDA+Super+Admin+Live+Sync" target="_blank" style="color:var(--teal);font-weight:600;">Generate a GitHub Token with &ldquo;repo&rdquo; scope &rarr;</a> (takes 30 seconds).
+                </div>
+              </div>
+              <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin-top:20px;">
+                <button type="button" class="btn-gold-sm" onclick="saveGitHubSettings()">Save GitHub Settings</button>
+                <button type="button" class="btn-outline-sm" onclick="testGitHubConnection()">Test GitHub Connection</button>
+                <button type="button" class="btn-action" style="background:#1b4d3e;color:#fff;border:none;" onclick="pushChangesToLive()">Push &amp; Deploy Now</button>
+              </div>
+              <div id="ghTestResult" style="margin-top:14px;font-size:0.88rem;display:none;"></div>
+            </div>
+          </div>
+
           <div class="content-card">
             <div class="card-head">
               <h3>Backup, Migration &amp; Disaster Recovery</h3>
@@ -810,6 +863,27 @@
 <!-- ==========================================
      MODALS FOR CRUD ACTIONS
 ========================================== -->
+
+<!-- 0. GITHUB CONNECT & PUSH MODAL -->
+<div id="githubModal" class="modal-overlay">
+  <div class="modal-box">
+    <h4>Connect GitHub for 1-Click Publishing</h4>
+    <p style="font-size:0.88rem;color:var(--text-muted);margin-bottom:16px;line-height:1.5;">
+      You are accessing the Super Admin directly from the web without a local Python server. To publish and deploy changes automatically to <strong>https://gida-xi.vercel.app</strong>, please enter your GitHub Personal Access Token.
+    </p>
+    <div class="form-group">
+      <label>GitHub Personal Access Token (PAT)</label>
+      <input type="password" id="modalGhToken" placeholder="ghp_... or github_pat_..." style="width:100%;">
+      <p style="font-size:0.78rem;color:var(--text-muted);margin-top:6px;">
+        <a href="https://github.com/settings/tokens/new?scopes=repo&description=GIDA+Super+Admin+Live+Sync" target="_blank" style="color:var(--teal);font-weight:700;">Click here to generate a token on GitHub &rarr;</a> (Check the &ldquo;repo&rdquo; box, click Generate, and paste it here).
+      </p>
+    </div>
+    <div class="modal-actions">
+      <button type="button" class="btn-modal-cancel" onclick="closeModal('githubModal')">Cancel</button>
+      <button type="button" class="btn-modal-save" onclick="saveTokenFromModalAndPush()">Save &amp; Push to Live</button>
+    </div>
+  </div>
+</div>
 
 <!-- 1. EDIT IMAGE METADATA MODAL -->
 <div id="imageEditModal" class="modal-overlay">
@@ -1360,16 +1434,29 @@ const AUTH_KEY = 'gida_admin_authenticated';
 
 async function syncWithServer() {
   try {
-    const res = await fetch('/api/get-cms?t=' + Date.now())
-      .catch(() => fetch('assets/data/cms-data.json?t=' + Date.now()));
-    if (res && res.ok) {
-      const serverData = await res.json();
-      if (serverData && typeof serverData === 'object') {
-        store = { ...DEFAULT_STORE, ...store, ...serverData };
-        localStorage.setItem('gida_cms_data', JSON.stringify(store));
-        renderAll();
-      }
+    let serverData = null;
+    const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+    if (isLocal) {
+      try {
+        const res = await fetch('/api/get-cms?t=' + Date.now(), { cache: 'no-store' });
+        if (res.ok) serverData = await res.json();
+      } catch(e) {}
     }
+    if (!serverData) {
+      try {
+        const fileRes = await fetch('assets/data/cms-data.json?t=' + Date.now(), {
+          cache: 'no-store',
+          headers: { 'Cache-Control': 'no-cache, no-store, must-revalidate', 'Pragma': 'no-cache' }
+        });
+        if (fileRes.ok) serverData = await fileRes.json();
+      } catch(e) {}
+    }
+    if (serverData && typeof serverData === 'object') {
+      store = { ...DEFAULT_STORE, ...store, ...serverData };
+      localStorage.setItem('gida_cms_data', JSON.stringify(store));
+      renderAll();
+    }
+    checkServerConnection();
   } catch(e) {
     console.warn('[CMS] Server sync notice:', e);
   }
@@ -1406,42 +1493,284 @@ function logout() {
   checkAuth();
 }
 
-// PUSH CHANGES TO LIVE REPOSITORY
+// ==========================================
+// DUAL-MODE PUSH TO LIVE (LOCAL GIT & GITHUB REST API)
+// ==========================================
+async function checkServerConnection() {
+  const badge = document.getElementById('connStatusBadge');
+  const dot = document.getElementById('connStatusDot');
+  const text = document.getElementById('connStatusText');
+  const ghPill = document.getElementById('ghStatusPill');
+
+  try {
+    const res = await fetch('/api/health?t=' + Date.now(), { cache: 'no-store' });
+    if (res.ok) {
+      if (dot) dot.style.background = '#22c55e';
+      if (text) text.innerText = 'Server Connected (Port 3000)';
+      if (badge) {
+        badge.style.background = '#dcfce7';
+        badge.style.color = '#15803d';
+        badge.title = 'Local Python server is active. Changes push directly via Git.';
+      }
+      if (ghPill) {
+        ghPill.innerText = 'Local Server Active';
+        ghPill.className = 'badge-status badge-published';
+      }
+      return true;
+    }
+  } catch(e) {}
+
+  // Not on local server, check if GitHub token is present
+  const ghToken = localStorage.getItem('gida_github_token');
+  if (ghToken) {
+    if (dot) dot.style.background = '#0284c7';
+    if (text) text.innerText = 'GitHub API Mode (Direct)';
+    if (badge) {
+      badge.style.background = '#e0f2fe';
+      badge.style.color = '#0369a1';
+      badge.title = 'Super Admin is configured with GitHub Token for 1-click cloud publishing.';
+    }
+    if (ghPill) {
+      ghPill.innerText = 'GitHub Token Configured';
+      ghPill.className = 'badge-status badge-published';
+    }
+    return false;
+  } else {
+    if (dot) dot.style.background = '#f59e0b';
+    if (text) text.innerText = 'Cloud Mode (Setup Token)';
+    if (badge) {
+      badge.style.background = '#fef3c7';
+      badge.style.color = '#b45309';
+      badge.title = 'Running on hosted web. Enter GitHub token in Settings to enable 1-click push.';
+    }
+    if (ghPill) {
+      ghPill.innerText = 'Token Needed for Cloud Push';
+      ghPill.className = 'badge-status badge-draft';
+    }
+    return false;
+  }
+}
+
 async function pushChangesToLive() {
-  if (!confirm("Do you confirm pushing all local changes to the live repository?")) return;
+  if (!confirm("Do you confirm pushing all website changes to the live repository and deploying?")) return;
 
   const btn = document.getElementById('btnPushLive');
   const txt = document.getElementById('btnPushLiveText');
   const originalHtml = txt ? txt.innerText : 'Push Changes to Live';
-  
+
   try {
     if (btn) btn.disabled = true;
-    if (txt) txt.innerText = 'Pushing to Live...';
-    showToast('Pushing latest CMS changes to remote repository...');
+    if (txt) txt.innerText = 'Saving Changes...';
+    showToast('Saving and packaging latest CMS data...');
 
-    // First ensure latest store state is persisted locally & to server disk
+    // 1. Ensure latest store is saved locally & to server disk if running
     await persist();
 
-    const response = await fetch('/api/push-changes', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ message: 'Update CMS content and site data from Super Admin' })
-    });
+    // 2. Detect local Python server
+    let isServerRunning = false;
+    try {
+      const ping = await fetch('/api/health?t=' + Date.now(), { cache: 'no-store' });
+      if (ping.ok) isServerRunning = true;
+    } catch(e) {}
 
-    const result = await response.json();
-    if (response.ok && result.success) {
-      showToast('✓ Successfully pushed changes to live repository (' + result.branch + ')');
-      alert('Do you confirm completion: Changes have been successfully published and pushed to the live repository (' + result.branch + ')!');
-    } else {
-      throw new Error(result.error || 'Push failed on server');
+    if (isServerRunning) {
+      // --- MODE 1: LOCAL PYTHON SERVER (Localhost:3000) ---
+      if (txt) txt.innerText = 'Pushing to GitHub (Local)...';
+      showToast('Pushing changes to GitHub via local development server...');
+
+      const response = await fetch('/api/push-changes', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ message: 'Update CMS content and site data from Super Admin' })
+      });
+
+      const result = await response.json().catch(() => ({}));
+      if (response.ok && result.success) {
+        showToast('✓ Successfully pushed changes to live repository (' + result.branch + ')');
+        alert('Do you confirm completion: Changes have been successfully published and pushed to GitHub (origin/' + result.branch + ')!\n\nYour live website (https://gida-xi.vercel.app) is automatically deploying.');
+        checkServerConnection();
+        return;
+      } else {
+        throw new Error(result.error || ('Server returned HTTP ' + response.status));
+      }
     }
+
+    // --- MODE 2: DIRECT GITHUB REST API (Works on Vercel / Remote / Cloud) ---
+    const token = localStorage.getItem('gida_github_token');
+    if (!token) {
+      openGitHubModal();
+      return;
+    }
+
+    if (txt) txt.innerText = 'Pushing to GitHub API...';
+    showToast('Pushing directly to GitHub repository via REST API...');
+
+    await pushViaGitHubApi(token);
+
   } catch (err) {
-    console.error('[GIT PUSH ERROR]', err);
-    showToast('Error pushing changes: ' + err.message);
-    alert('Push to Live Notice: ' + err.message + '\n(Note: Your changes remain safely saved in local database and browser storage.)');
+    console.error('[PUSH ERROR]', err);
+    showToast('Push Error: ' + err.message);
+    alert('Push Notice: ' + err.message + '\n\nNote: Your changes remain safely saved locally. If running on the web, please check your GitHub Token in Settings.');
   } finally {
     if (btn) btn.disabled = false;
     if (txt) txt.innerText = originalHtml;
+  }
+}
+
+async function pushViaGitHubApi(token) {
+  const repo = 'usmanrimi/gida';
+  const branch = 'master';
+  const path = 'assets/data/cms-data.json';
+  const apiUrl = `https://api.github.com/repos/${repo}/contents/${path}?ref=${branch}`;
+
+  // 1. Fetch current file SHA
+  let currentSha = null;
+  const getRes = await fetch(apiUrl, {
+    headers: {
+      'Accept': 'application/vnd.github.v3+json',
+      'Authorization': `Bearer ${token}`
+    },
+    cache: 'no-store'
+  });
+
+  if (getRes.ok) {
+    const fileInfo = await getRes.json();
+    currentSha = fileInfo.sha;
+  } else if (getRes.status === 401 || getRes.status === 403) {
+    throw new Error('GitHub authentication failed. Please update your GitHub Token in Settings.');
+  }
+
+  // 2. Prepare base64 payload
+  const jsonString = JSON.stringify(store, null, 2);
+  const base64Content = btoa(unescape(encodeURIComponent(jsonString)));
+
+  const putBody = {
+    message: 'Update CMS content and site data from Super Admin [skip ci]',
+    content: base64Content,
+    branch: branch
+  };
+  if (currentSha) {
+    putBody.sha = currentSha;
+  }
+
+  // 3. Commit to GitHub master branch
+  const putRes = await fetch(`https://api.github.com/repos/${repo}/contents/${path}`, {
+    method: 'PUT',
+    headers: {
+      'Accept': 'application/vnd.github.v3+json',
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(putBody)
+  });
+
+  if (!putRes.ok) {
+    const errData = await putRes.json().catch(() => ({}));
+    throw new Error(errData.message || `GitHub API returned ${putRes.status}`);
+  }
+
+  showToast('✓ Successfully committed to GitHub master! Vercel auto-deploying...');
+  alert('Do you confirm completion: Changes have been successfully committed directly to GitHub (' + repo + ':' + branch + ')!\n\nYour live website (https://gida-xi.vercel.app) is auto-deploying now and will apply across the website momentarily.');
+  checkServerConnection();
+}
+
+function openGitHubModal() {
+  const modal = document.getElementById('githubModal');
+  const input = document.getElementById('modalGhToken');
+  if (input) input.value = localStorage.getItem('gida_github_token') || '';
+  if (modal) modal.style.display = 'flex';
+}
+
+async function saveTokenFromModalAndPush() {
+  const input = document.getElementById('modalGhToken');
+  const token = input ? input.value.trim() : '';
+  if (!token) {
+    alert('Please enter your GitHub Personal Access Token.');
+    return;
+  }
+  localStorage.setItem('gida_github_token', token);
+  closeModal('githubModal');
+  showToast('GitHub token saved. Initiating direct push...');
+  checkServerConnection();
+  try {
+    await pushViaGitHubApi(token);
+  } catch(err) {
+    console.error(err);
+    alert('Direct GitHub Push Error: ' + err.message);
+  }
+}
+
+function saveGitHubSettings() {
+  const token = document.getElementById('ghToken').value.trim();
+  if (!token) {
+    if (confirm("Remove saved GitHub token?")) {
+      localStorage.removeItem('gida_github_token');
+      showToast('GitHub token removed');
+      checkServerConnection();
+    }
+    return;
+  }
+  localStorage.setItem('gida_github_token', token);
+  showToast('GitHub token saved securely in browser storage');
+  checkServerConnection();
+}
+
+function toggleTokenVisibility() {
+  const input = document.getElementById('ghToken');
+  if (input) {
+    input.type = input.type === 'password' ? 'text' : 'password';
+  }
+}
+
+async function testGitHubConnection() {
+  const token = (document.getElementById('ghToken') ? document.getElementById('ghToken').value.trim() : '') || localStorage.getItem('gida_github_token');
+  const resDiv = document.getElementById('ghTestResult');
+  const pill = document.getElementById('ghStatusPill');
+
+  if (!token) {
+    alert('Please enter a GitHub Personal Access Token first.');
+    return;
+  }
+
+  if (resDiv) {
+    resDiv.style.display = 'block';
+    resDiv.innerHTML = '<span style="color:#0284c7;">Testing connection to GitHub repository usmanrimi/gida...</span>';
+  }
+
+  try {
+    const res = await fetch('https://api.github.com/repos/usmanrimi/gida', {
+      headers: {
+        'Accept': 'application/vnd.github.v3+json',
+        'Authorization': `Bearer ${token}`
+      }
+    });
+
+    if (res.ok) {
+      const repoData = await res.json();
+      const hasPush = repoData.permissions ? repoData.permissions.push : true;
+      if (resDiv) {
+        resDiv.innerHTML = `<span style="color:#16a34a;font-weight:700;">✓ Connected to GitHub repository "${repoData.full_name}"! Push Permission: ${hasPush ? 'Granted' : 'Read-Only (Requires "repo" scope)'}</span>`;
+      }
+      if (pill) {
+        pill.innerText = 'Connected to GitHub';
+        pill.className = 'badge-status badge-published';
+      }
+      localStorage.setItem('gida_github_token', token);
+      showToast('GitHub connection verified successfully');
+    } else {
+      const err = await res.json().catch(() => ({}));
+      if (resDiv) {
+        resDiv.innerHTML = `<span style="color:#dc2626;font-weight:700;">✕ Connection failed: ${err.message || res.statusText}</span>`;
+      }
+      if (pill) {
+        pill.innerText = 'Connection Failed';
+        pill.className = 'badge-status badge-draft';
+      }
+    }
+  } catch(e) {
+    if (resDiv) {
+      resDiv.innerHTML = `<span style="color:#dc2626;font-weight:700;">✕ Network error connecting to GitHub: ${e.message}</span>`;
+    }
   }
 }
 
@@ -2192,6 +2521,9 @@ function renderSettingsForm() {
   if (document.getElementById('settingOrgName')) document.getElementById('settingOrgName').value = store.settings.orgName || 'GIDA — Growth Innovation for Development Action';
   if (document.getElementById('settingTagline')) document.getElementById('settingTagline').value = store.settings.tagline || 'Where People Prosper';
   if (document.getElementById('settingHeadquarters')) document.getElementById('settingHeadquarters').value = store.settings.headquarters || 'Kano, Nigeria';
+  const savedToken = localStorage.getItem('gida_github_token') || '';
+  if (document.getElementById('ghToken')) document.getElementById('ghToken').value = savedToken;
+  checkServerConnection();
 }
 
 function saveSettings() {

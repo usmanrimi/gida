@@ -5,6 +5,7 @@ Provides static file serving and handles live CMS persistence to assets/data/cms
 """
 
 import http.server
+import socket
 import socketserver
 import json
 import os
@@ -45,7 +46,14 @@ class GidaCMSHandler(http.server.SimpleHTTPRequestHandler):
             super().do_HEAD()
 
     def do_GET(self):
-        if self.path.startswith('/api/get-cms'):
+        if self.path.startswith('/api/health'):
+            self.send_response(200)
+            self.send_header('Content-Type', 'application/json; charset=utf-8')
+            res = json.dumps({"status": "ok", "server": "GIDA Live Dev Server", "port": PORT}).encode('utf-8')
+            self.send_header('Content-Length', str(len(res)))
+            self.end_headers()
+            self.wfile.write(res)
+        elif self.path.startswith('/api/get-cms'):
             self.serve_cms_data()
         else:
             super().do_GET()
@@ -143,7 +151,8 @@ class GidaCMSHandler(http.server.SimpleHTTPRequestHandler):
             raw_name = payload.get('filename', 'document.pdf')
             # Sanitize filename
             clean_name = re.sub(r'[^a-zA-Z0-9_\-\.]', '_', os.path.basename(raw_name))
-            if not clean_name.lower().endswith(('.pdf', '.png', '.jpg', '.jpeg', '.webp')):
+            is_image = clean_name.lower().endswith(('.png', '.jpg', '.jpeg', '.webp', '.svg'))
+            if not is_image and not clean_name.lower().endswith('.pdf'):
                 clean_name += '.pdf'
 
             file_b64 = payload.get('data', '')
@@ -151,19 +160,25 @@ class GidaCMSHandler(http.server.SimpleHTTPRequestHandler):
                 file_b64 = file_b64.split(',', 1)[1]
 
             file_bytes = base64.b64decode(file_b64)
-            docs_dir = os.path.join(DIRECTORY, "assets", "docs")
-            os.makedirs(docs_dir, exist_ok=True)
-            target_path = os.path.join(docs_dir, clean_name)
+            if is_image:
+                target_dir = os.path.join(DIRECTORY, "assets", "img")
+                rel_path = f"assets/img/{clean_name}"
+            else:
+                target_dir = os.path.join(DIRECTORY, "assets", "docs")
+                rel_path = f"assets/docs/{clean_name}"
+
+            os.makedirs(target_dir, exist_ok=True)
+            target_path = os.path.join(target_dir, clean_name)
 
             with open(target_path, 'wb') as f:
                 f.write(file_bytes)
 
-            rel_path = f"assets/docs/{clean_name}"
             res_data = {
                 "success": True,
                 "filePath": rel_path,
                 "filename": clean_name,
                 "size": len(file_bytes),
+                "isImage": is_image,
                 "message": f"Successfully uploaded {clean_name}"
             }
             res_bytes = json.dumps(res_data).encode('utf-8')
@@ -186,7 +201,10 @@ class GidaCMSHandler(http.server.SimpleHTTPRequestHandler):
         try:
             content_length = int(self.headers.get('Content-Length', 0))
             body = self.rfile.read(content_length).decode('utf-8') if content_length > 0 else '{}'
-            payload = json.loads(body) if body.strip() else {}
+            try:
+                payload = json.loads(body) if body.strip() else {}
+            except Exception:
+                payload = {}
             commit_msg = payload.get('message', 'Update CMS content and site data from Super Admin')
 
             # 1. Stage all changes
@@ -210,7 +228,8 @@ class GidaCMSHandler(http.server.SimpleHTTPRequestHandler):
             # 4. Git push to origin
             push_proc = subprocess.run(['git', 'push', 'origin', branch], cwd=DIRECTORY, capture_output=True, text=True)
             if push_proc.returncode != 0:
-                raise Exception(f"git push failed: {push_proc.stderr}")
+                error_detail = push_proc.stderr.strip() or push_proc.stdout.strip() or 'Unknown push error'
+                raise Exception(f"git push failed: {error_detail}")
 
             res_data = {
                 "success": True,
@@ -234,28 +253,22 @@ class GidaCMSHandler(http.server.SimpleHTTPRequestHandler):
             self.end_headers()
             self.wfile.write(err_bytes)
 
-import socket
-import contextlib
-
-class DualStackServer(http.server.ThreadingHTTPServer):
+class GidaServer(http.server.ThreadingHTTPServer):
+    address_family = socket.AF_INET6
     allow_reuse_address = True
     daemon_threads = True
 
-    if getattr(socket, 'has_dualstack_ipv6', lambda: False)():
-        address_family = socket.AF_INET6
-
     def server_bind(self):
-        with contextlib.suppress(Exception):
-            self.socket.setsockopt(socket.IPPROTO_IPV6, socket.IPV6_V6ONLY, 0)
-        return super().server_bind()
+        self.socket.setsockopt(socket.IPPROTO_IPV6, socket.IPV6_V6ONLY, 0)
+        super().server_bind()
 
 if __name__ == "__main__":
     print(f"Starting GIDA Live CMS Server on http://localhost:{PORT} and http://127.0.0.1:{PORT}...")
     print(f"Serving directory: {DIRECTORY}")
     print(f"CMS Data file: {DATA_FILE}")
     try:
-        with DualStackServer(("", PORT), GidaCMSHandler) as httpd:
-            print(f"Server live at http://localhost:{PORT} (DualStack IPv4/IPv6 active)")
+        with GidaServer(("::", PORT), GidaCMSHandler) as httpd:
+            print(f"Server live at http://localhost:{PORT} and http://127.0.0.1:{PORT} (DualStack)")
             httpd.serve_forever()
     except KeyboardInterrupt:
         print("\nShutting down server.")

@@ -46,24 +46,40 @@
       } catch(e) {}
     }
 
-    // B. Fetch canonical server data to ensure synchronization
-    fetch('/api/get-cms?t=' + Date.now())
-      .catch(() => fetch('assets/data/cms-data.json?t=' + Date.now()))
-      .then(response => {
-        if (!response.ok) throw new Error('CMS file fetch failed');
-        return response.json();
-      })
+    // B. Fetch canonical server/file data to ensure synchronization across devices
+    async function fetchCanonicalData() {
+      // 1. If running on local server environment, try dynamic API first
+      const isLocalHost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+      if (isLocalHost) {
+        try {
+          const apiRes = await fetch('/api/get-cms?t=' + Date.now(), { cache: 'no-store' });
+          if (apiRes.ok) return await apiRes.json();
+        } catch(e) {}
+      }
+
+      // 2. Guaranteed primary canonical file (always present on Vercel, GitHub Pages, or local server)
+      try {
+        const fileRes = await fetch('assets/data/cms-data.json?t=' + Date.now(), {
+          cache: 'no-store',
+          headers: { 'Cache-Control': 'no-cache, no-store, must-revalidate', 'Pragma': 'no-cache' }
+        });
+        if (fileRes.ok) return await fileRes.json();
+      } catch(e) {
+        console.warn('[CMS Engine] Direct JSON fetch error:', e);
+      }
+      return null;
+    }
+
+    fetchCanonicalData()
       .then(serverData => {
         if (!serverData) return;
-        // If server data is newer or active data missing, hydrate from server
-        if (!activeCmsData || (serverData.updatedAt && (!activeCmsData.updatedAt || new Date(serverData.updatedAt) >= new Date(activeCmsData.updatedAt)))) {
-          activeCmsData = serverData;
-          localStorage.setItem(STORAGE_KEY, JSON.stringify(serverData));
-          applyCmsToDom(activeCmsData);
-        }
+        // Apply canonical server / repository data
+        activeCmsData = serverData;
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(serverData));
+        applyCmsToDom(activeCmsData);
       })
       .catch(err => {
-        // Cached or static DOM remains functional
+        console.warn('[CMS Engine] Hydration notice:', err);
       });
   }
 
