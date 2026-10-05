@@ -16,7 +16,7 @@ import base64
 import hashlib
 import hmac
 import subprocess
-from datetime import datetime
+from datetime import datetime, timezone
 
 PORT = int(os.environ.get("PORT", 8000))
 DIRECTORY = os.path.dirname(os.path.abspath(__file__))
@@ -36,10 +36,11 @@ def verify_password(entered_password):
     return hmac.compare_digest(entered_hash, STORED_HASH)
 
 def generate_session_token(identifier):
+    now_ts = datetime.now(timezone.utc).timestamp()
     payload = {
         "sub": identifier,
-        "iat": int(datetime.utcnow().timestamp() * 1000),
-        "exp": int((datetime.utcnow().timestamp() + 86400) * 1000) # 24 hours
+        "iat": int(now_ts * 1000),
+        "exp": int((now_ts + 86400) * 1000) # 24 hours
     }
     encoded_payload = base64.urlsafe_b64encode(json.dumps(payload).encode("utf-8")).decode("utf-8").rstrip("=")
     sig = hmac.new(AUTH_SECRET.encode("utf-8"), encoded_payload.encode("utf-8"), hashlib.sha256).digest()
@@ -63,7 +64,7 @@ def verify_session_token(token):
         if rem > 0:
             encoded_payload += "=" * (4 - rem)
         payload = json.loads(base64.urlsafe_b64decode(encoded_payload.encode("utf-8")).decode("utf-8"))
-        if payload.get("exp", 0) < int(datetime.utcnow().timestamp() * 1000):
+        if payload.get("exp", 0) < int(datetime.now(timezone.utc).timestamp() * 1000):
             return None
         return payload
     except Exception:
