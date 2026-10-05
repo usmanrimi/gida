@@ -38,6 +38,8 @@ class GidaCMSHandler(http.server.SimpleHTTPRequestHandler):
         self.end_headers()
 
     def do_HEAD(self):
+        if self.path == '/admin' or self.path == '/admin/' or self.path.startswith('/admin?'):
+            self.path = '/admin.html' + (self.path[6:] if self.path.startswith('/admin?') else '')
         if self.path.startswith('/api/get-cms'):
             self.send_response(200)
             self.send_header('Content-Type', 'application/json; charset=utf-8')
@@ -46,6 +48,9 @@ class GidaCMSHandler(http.server.SimpleHTTPRequestHandler):
             super().do_HEAD()
 
     def do_GET(self):
+        if self.path == '/admin' or self.path == '/admin/' or self.path.startswith('/admin?'):
+            self.path = '/admin.html' + (self.path[6:] if self.path.startswith('/admin?') else '')
+
         if self.path.startswith('/api/health'):
             self.send_response(200)
             self.send_header('Content-Type', 'application/json; charset=utf-8')
@@ -254,21 +259,16 @@ class GidaCMSHandler(http.server.SimpleHTTPRequestHandler):
             self.wfile.write(err_bytes)
 
 class GidaServer(http.server.ThreadingHTTPServer):
-    address_family = socket.AF_INET6
     allow_reuse_address = True
     daemon_threads = True
-
-    def server_bind(self):
-        self.socket.setsockopt(socket.IPPROTO_IPV6, socket.IPV6_V6ONLY, 0)
-        super().server_bind()
 
 if __name__ == "__main__":
     print(f"Starting GIDA Live CMS Server on http://localhost:{PORT} and http://127.0.0.1:{PORT}...")
     print(f"Serving directory: {DIRECTORY}")
     print(f"CMS Data file: {DATA_FILE}")
     try:
-        with GidaServer(("::", PORT), GidaCMSHandler) as httpd:
-            print(f"Server live at http://localhost:{PORT} and http://127.0.0.1:{PORT} (DualStack)")
+        with GidaServer(("0.0.0.0", PORT), GidaCMSHandler) as httpd:
+            print(f"Server live at http://localhost:{PORT} and http://127.0.0.1:{PORT}")
             httpd.serve_forever()
     except KeyboardInterrupt:
         print("\nShutting down server.")
