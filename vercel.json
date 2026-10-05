@@ -3,7 +3,7 @@
   "trailingSlash": false,
   "rewrites": [
     {
-      "source": "/admin/(.*)",
+      "source": "/admin/:subpath*",
       "destination": "/admin.html"
     },
     {
