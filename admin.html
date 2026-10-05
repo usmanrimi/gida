@@ -1506,7 +1506,9 @@ async function checkServerConnection() {
     const res = await fetch('/api/health?t=' + Date.now(), { cache: 'no-store' });
     if (res.ok) {
       if (dot) dot.style.background = '#22c55e';
-      if (text) text.innerText = 'Server Connected (Port 3000)';
+      const healthData = await res.json().catch(() => ({}));
+      const activePort = healthData.port || window.location.port || '8000';
+      if (text) text.innerText = 'Server Connected (Port ' + activePort + ')';
       if (badge) {
         badge.style.background = '#dcfce7';
         badge.style.color = '#15803d';

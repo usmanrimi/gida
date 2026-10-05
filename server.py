@@ -15,7 +15,7 @@ import base64
 import subprocess
 from datetime import datetime
 
-PORT = 3000
+PORT = int(os.environ.get("PORT", 8000))
 DIRECTORY = os.path.dirname(os.path.abspath(__file__))
 DATA_FILE = os.path.join(DIRECTORY, "assets", "data", "cms-data.json")
 
