@@ -33,6 +33,18 @@
   },
   "articles": [
     {
+      "id": 1791211692687,
+      "title": "Beyond Gender-Blind Finance: How Gender-Disaggregated Data and Inclusive Innovation Are Transforming Agricultural Finance",
+      "category": "Field Insights",
+      "date": "5 October 2026",
+      "author": "GIDA Communications",
+      "image": "assets/img/agri.jpg",
+      "excerpt": "True financial inclusion requires more than expanding access to financial services. It requires systems designed around the realities of the people they intend to serve. GIDA explores how gender-disaggregated data, alternative credit assessment, and flexible financing models can improve access to finance for women farmers and agribusiness entrepreneurs.",
+      "content": "Financial inclusion is widely recognised as an important driver of poverty reduction and rural economic resilience. Yet, despite the growth of digital financial services across Sub-Saharan Africa, women particularly female smallholder farmers and agribusiness entrepreneurs continue to face significant barriers to accessing finance.\nThese challenges include limited access to formal land titles and conventional collateral, seasonal cash-flow patterns, mobility constraints and social dynamics that are often overlooked by traditional financial systems. Financial products designed around gender-neutral assumptions can therefore unintentionally exclude the very communities they are intended to support. \n\n\nFrom Assumptions to Evidence:\nGender-disaggregated data provides an opportunity to move financial decision-making from assumptions to evidence. By examining the specific economic behaviours and experiences of women, financial institutions can better understand repayment patterns, seasonal cash flows and structural barriers affecting women-led enterprises.\nFor example, data from community-based financial systems such as Village Savings and Loan Associations can provide evidence of repayment behaviour that may not appear in conventional credit records. \n\nThis creates opportunities to develop risk-assessment models that better reflect the realities of rural women.\n\nDe-Risking Female Agripreneurs Through CreditHer\nOne practical response to this challenge is CreditHer, an alternative credit-assessment framework co-developed by GIDA's Lead, Inclusive Development, alongside a multidisciplinary team of financial systems, gender and agritech specialists.\n\n\nThe solution was recently recognised with 3rd place at the AIR × CBN Activating Gender-Disaggregated Data for Impact Design Sprint.\n\n\nCreditHer is designed for female agripreneurs who may lack formal credit histories or fixed collateral. Rather than relying solely on conventional bank records and property ownership, the framework considers alternative indicators such as VSLA transaction records, mobile money history, group savings consistency, social collateral and peer guarantees.\n\nMaking Finance More Flexible\nAccess to credit alone is not enough. The structure of financing also determines whether women can realistically adopt productivity-enhancing technologies.\nFlexible financing models such as Buy-Now-Pay-Later (BNPL) and Pay-As-You-Go (PAYG) can reduce the burden of large upfront costs for agricultural technologies and inputs. By aligning payments with harvest and sales cycles, these models can make solutions such as solar-powered irrigation systems, improved seeds and other climate-smart technologies more accessible to female smallholders.     \n\n\nBuilding Financial Systems That Work for Everyone\nAchieving meaningful financial inclusion requires moving beyond participation toward genuine economic agency.\n\n\nWhen gender-disaggregated data informs credit assessment, and flexible financing mechanisms are integrated into local market systems, underserved women can gain stronger pathways into formal finance and productive investment.\nAt GIDA, we remain committed to working with policymakers, financial institutions, researchers and private-sector partners to develop evidence-driven and market-led solutions that build financial systems capable of reaching every actor across the value chain.\n\nInterested in partnering with GIDA on gender-responsive financial innovation? Connect with our team to explore opportunities for collaboration.",
+      "status": "published",
+      "featured": true
+    },
+    {
       "id": 1,
       "title": "Scaling Regenerative Soil Systems Across Northern Agricultural Corridors",
       "slug": "scaling-regenerative-soil-systems",
@@ -42,7 +54,7 @@
       "excerpt": "How bio-innovations, indigenous compost amendments, and microbial soil testing are revitalizing exhausted farmlands while raising smallholder yields by over 38%.",
       "image": "assets/img/agri.jpg",
       "status": "published",
-      "featured": true,
+      "featured": false,
       "content": "Sustainable rural prosperity starts with the health of the soil under our feet. For generations, northern farming clusters have battled severe topsoil degradation, nutrient leaching, and dependency on costly synthetic inputs that degrade long-term soil biology.\n\nOver the past two cropping seasons, GIDA's Community & Planetary Health team has partnered with over 12,000 smallholders across Kano, Jigawa, and Kaduna corridors to pilot low-cost bio-safe soil fertility protocols.\n\n### The Core Interventions\n\n1. **On-Farm Microbial Soil Testing:** Rapid colorimetric assays enabling farmers to assess nitrogen, phosphorus, and organic carbon levels within minutes at the farm gate.\n2. **Indigenous Microorganism (IMO) Culturing:** Sourcing indigenous forest fungi and beneficial microbes to accelerate organic compost fermentation from 90 days down to 21 days.\n3. **Cover Crop Nitrogen Fixation:** Integrating deep-rooted leguminous cover crops into cereal rotations, sequestering atmospheric nitrogen while suppressing weed proliferation without herbicides.\n\n### Documented Field Impact\n\nInitial harvest data demonstrates that participating farmer clusters achieved a 38.4% increase in sorghum and millet yields, alongside a 45% reduction in synthetic fertilizer expenditure. Furthermore, soil moisture retention increased measurably, shielding crops during dry spells and late-season heatwaves.\n\nAs we expand this model to 50,000 farmers in 2027, GIDA remains committed to transforming scientific ecological research into practical, community-owned wealth."
     },
     {
@@ -165,6 +177,15 @@
     }
   ],
   "publications": [
+    {
+      "id": 1791211294900,
+      "title": "GIDA Secures 3rd Place at the AIR × CBN Gender-Disaggregated Data for Impact Design Sprint with CreditHer",
+      "category": "Announcement",
+      "date": "2026",
+      "file": "assets/docs/GIDA_CreditHer_3rd_Place_Announcement.pdf",
+      "summary": "GIDA celebrates a 3rd-place finish at the AIR × CBN Gender-Disaggregated Data for Impact Design Sprint, where its Lead, Inclusive Development, contributed to the development of CreditHer, an innovative credit-scoring solution designed to expand financial access for underserved women.",
+      "status": "published"
+    },
     {
       "id": 1789919637925,
       "title": "GIDA Selected for AIR - CBN Gender Data Design Sprint",
@@ -370,7 +391,8 @@
     "facebook": "https://facebook.com/gidaaction",
     "instagram": "https://instagram.com/gida_action"
   },
-  "updatedAt": "2026-09-20T15:55:42.727019Z",
+  "settings": {},
+  "updatedAt": "2026-10-05T14:48:21.930158Z",
   "stats": [
     {
       "label": "Direct smallholder producers empowered",
@@ -392,6 +414,5 @@
       "value": 45,
       "suffix": "+"
     }
-  ],
-  "settings": {}
+  ]
 }
