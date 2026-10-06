@@ -121,18 +121,24 @@
   .card-head h3 { font-family: 'Manrope', sans-serif; font-size: 1.15rem; font-weight: 700; color: var(--primary-dark); display: flex; align-items: center; gap: 10px; }
   .card-body { padding: 24px; }
 
-  /* Tables */
-  table { width: 100%; border-collapse: collapse; text-align: left; }
-  th { background: #f8fafc; padding: 14px 18px; font-size: 0.82rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; color: var(--text-muted); border-bottom: 1px solid var(--border); }
+  /* Tables & Responsive Containers */
+  .table-responsive {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    border-radius: 0 0 16px 16px;
+  }
+  table { width: 100%; min-width: 820px; border-collapse: collapse; text-align: left; }
+  th { background: #f8fafc; padding: 14px 18px; font-size: 0.82rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; color: var(--text-muted); border-bottom: 1px solid var(--border); white-space: nowrap; }
   td { padding: 14px 18px; font-size: 0.9rem; border-bottom: 1px solid var(--border); vertical-align: middle; }
   tr:hover td { background: #fcfdfd; }
-  .badge-status { display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; border-radius: 100px; font-size: 0.76rem; font-weight: 700; text-transform: uppercase; }
+  .badge-status { display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; border-radius: 100px; font-size: 0.76rem; font-weight: 700; text-transform: uppercase; white-space: nowrap; }
   .badge-published { background: #dcfce7; color: #15803d; }
   .badge-draft { background: #fef3c7; color: #b45309; }
 
   /* Action Buttons */
-  .action-links { display: flex; gap: 8px; }
-  .btn-action { background: #fff; border: 1px solid var(--border); padding: 5px 12px; border-radius: 6px; font-size: 0.8rem; font-weight: 600; cursor: pointer; transition: all 0.2s; color: var(--text); }
+  .action-links { display: inline-flex; gap: 6px; align-items: center; flex-wrap: nowrap; }
+  .btn-action { background: #fff; border: 1px solid var(--border); padding: 5px 10px; border-radius: 6px; font-size: 0.8rem; font-weight: 600; cursor: pointer; transition: all 0.2s; color: var(--text); white-space: nowrap; }
   .btn-action:hover { background: #f1f5f9; border-color: #cbd5e1; }
   .btn-action.delete:hover { border-color: var(--danger); color: var(--danger); background: #fef2f2; }
 
@@ -164,7 +170,7 @@
   }
   .modal-box { background: #fff; width: 100%; max-width: 600px; border-radius: 18px; padding: 32px; box-shadow: 0 24px 60px rgba(0,0,0,0.3); max-height: 90vh; overflow-y: auto; }
   .modal-box h4 { font-family: 'Manrope', sans-serif; font-size: 1.3rem; font-weight: 800; color: var(--primary-dark); margin-bottom: 10px; }
-  .modal-actions { display: flex; gap: 12px; justify-content: flex-end; margin-top: 24px; }
+  .modal-actions { display: flex; gap: 12px; justify-content: flex-end; margin-top: 24px; flex-wrap: wrap; }
   .btn-modal-save { background: var(--primary); color: #fff; border: none; padding: 10px 22px; border-radius: 8px; font-weight: 700; cursor: pointer; }
   .btn-modal-cancel { background: #f1f5f9; color: var(--text); border: none; padding: 10px 20px; border-radius: 8px; font-weight: 600; cursor: pointer; }
 
@@ -193,6 +199,37 @@
     border-left: 4px solid var(--gold);
   }
   #toast.show { transform: translateY(0); opacity: 1; }
+
+  /* Mobile / Tablet Responsive Layout */
+  .sidebar-overlay {
+    display: none; position: fixed; inset: 0; background: rgba(10,30,20,0.6); z-index: 998; backdrop-filter: blur(2px);
+  }
+  .mobile-menu-btn { display: none; }
+
+  @media (max-width: 1024px) {
+    .sidebar {
+      position: fixed; top: 0; bottom: 0; left: -290px; z-index: 999;
+      transition: left 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: 8px 0 30px rgba(0,0,0,0.3);
+    }
+    .sidebar.open { left: 0; }
+    .sidebar-overlay.show { display: block; }
+    .mobile-menu-btn { display: inline-flex; }
+    .top-header { padding: 14px 20px; flex-wrap: wrap; gap: 12px; }
+    .workspace { padding: 20px 16px; }
+    .user-badge { flex-wrap: wrap; gap: 8px; }
+  }
+
+  @media (max-width: 680px) {
+    .workspace { padding: 14px 10px; }
+    .stats-grid { grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; }
+    .stat-box { padding: 16px; }
+    .stat-box .value { font-size: 1.5rem; }
+    .card-head { padding: 16px; flex-direction: column; align-items: flex-start; gap: 12px; }
+    .card-body { padding: 16px; }
+    .modal-box { padding: 20px 16px; border-radius: 14px; }
+    .img-manage-grid { grid-template-columns: 1fr; }
+  }
 </style>
 </head>
 <body>
@@ -237,6 +274,7 @@
 
 <!-- 2. MAIN APPLICATION SHELL -->
 <div id="adminApp">
+  <div id="sidebarOverlay" class="sidebar-overlay" onclick="toggleSidebar()"></div>
   <div class="admin-layout">
 
     <!-- SIDEBAR NAVIGATION (5 REQUESTED GROUPS WITH SVG ICONS) -->
@@ -337,7 +375,13 @@
     <!-- MAIN STAGE -->
     <main class="main-stage">
       <header class="top-header">
-        <h1 class="page-title" id="currentSectionTitle">System Overview</h1>
+        <div style="display:flex;align-items:center;gap:12px;">
+          <button type="button" class="btn-outline-sm mobile-menu-btn" onclick="toggleSidebar()" aria-label="Toggle navigation menu">
+            <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+            Menu
+          </button>
+          <h1 class="page-title" id="currentSectionTitle">System Overview</h1>
+        </div>
         <div class="user-badge">
           <div id="connStatusBadge" style="display:inline-flex;align-items:center;gap:6px;font-size:0.78rem;padding:6px 12px;border-radius:100px;background:#f1f5f9;color:#475569;font-weight:600;cursor:pointer;" onclick="switchTab('settings')" title="Click to configure GitHub connection">
             <span style="width:8px;height:8px;border-radius:50%;background:#94a3b8;display:inline-block;" id="connStatusDot"></span>
@@ -538,30 +582,32 @@
           <div class="content-card">
             <div class="card-head">
               <h3>Leadership, Stakeholder &amp; Partner Messages</h3>
-              <div style="display:flex;gap:10px;">
+              <div style="display:flex;gap:10px;flex-wrap:wrap;">
                 <a href="index.html#leadership-section" target="_blank" class="btn-outline-sm">Preview Carousel</a>
                 <button class="btn-gold-sm" onclick="openAddLeadershipModal()">Add New Message</button>
               </div>
             </div>
             <div class="card-body" style="padding:0;">
-              <table>
-                <thead>
-                  <tr>
-                    <th style="width:110px;">Order</th>
-                    <th style="width:60px;">Photo</th>
-                    <th>Name &amp; Designation</th>
-                    <th>Organisation</th>
-                    <th>Expertise / Focus Area</th>
-                    <th>Category</th>
-                    <th>Featured</th>
-                    <th>Status</th>
-                    <th style="width:250px">Actions</th>
-                  </tr>
-                </thead>
-                <tbody id="leadershipTable">
-                  <!-- Rendered dynamically -->
-                </tbody>
-              </table>
+              <div class="table-responsive">
+                <table>
+                  <thead>
+                    <tr>
+                      <th style="width:110px;">Order</th>
+                      <th style="width:64px;">Photo</th>
+                      <th>Name &amp; Designation</th>
+                      <th>Organisation</th>
+                      <th>Expertise / Focus Area</th>
+                      <th>Category</th>
+                      <th>Featured</th>
+                      <th>Status</th>
+                      <th style="width:260px;min-width:260px;">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody id="leadershipTable">
+                    <!-- Rendered dynamically -->
+                  </tbody>
+                </table>
+              </div>
             </div>
           </div>
         </section>
@@ -574,20 +620,22 @@
               <button class="btn-gold-sm" onclick="openAddProgramModal()">Add New Program</button>
             </div>
             <div class="card-body" style="padding:0;">
-              <table>
-                <thead>
-                  <tr>
-                    <th style="width:60px">#</th>
-                    <th>Pillar Title</th>
-                    <th>Strategic Tag</th>
-                    <th>Status</th>
-                    <th style="width:180px">Actions</th>
-                  </tr>
-                </thead>
-                <tbody id="programsTable">
-                  <!-- Rendered dynamically -->
-                </tbody>
-              </table>
+              <div class="table-responsive">
+                <table>
+                  <thead>
+                    <tr>
+                      <th style="width:60px">#</th>
+                      <th>Pillar Title</th>
+                      <th>Strategic Tag</th>
+                      <th>Status</th>
+                      <th style="width:200px;min-width:200px;">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody id="programsTable">
+                    <!-- Rendered dynamically -->
+                  </tbody>
+                </table>
+              </div>
             </div>
           </div>
         </section>
@@ -653,28 +701,30 @@
           <div class="content-card">
             <div class="card-head">
               <h3>Editorial Dispatches &amp; Blog Articles</h3>
-              <div style="display:flex;gap:10px;">
+              <div style="display:flex;gap:10px;flex-wrap:wrap;">
                 <a href="blog.html" target="_blank" class="btn-outline-sm">Preview Blog</a>
                 <button class="btn-gold-sm" onclick="openAddArticleModal()">Write New Article</button>
               </div>
             </div>
             <div class="card-body" style="padding:0;">
-              <table>
-                <thead>
-                  <tr>
-                    <th style="width:110px;">Order</th>
-                    <th>Article Title</th>
-                    <th>Category</th>
-                    <th>Author</th>
-                    <th>Date</th>
-                    <th>Status</th>
-                    <th style="width:240px">Actions</th>
-                  </tr>
-                </thead>
-                <tbody id="articlesTable">
-                  <!-- Rendered dynamically -->
-                </tbody>
-              </table>
+              <div class="table-responsive">
+                <table>
+                  <thead>
+                    <tr>
+                      <th style="width:110px;">Order</th>
+                      <th>Article Title</th>
+                      <th>Category</th>
+                      <th>Author</th>
+                      <th>Date</th>
+                      <th>Status</th>
+                      <th style="width:260px;min-width:260px;">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody id="articlesTable">
+                    <!-- Rendered dynamically -->
+                  </tbody>
+                </table>
+              </div>
             </div>
           </div>
         </section>
@@ -711,30 +761,32 @@
           <div class="content-card">
             <div class="card-head">
               <h3>Videos &amp; Curated Sessions</h3>
-              <div style="display:flex;gap:10px;">
+              <div style="display:flex;gap:10px;flex-wrap:wrap;">
                 <a href="blog.html?filter=videos" target="_blank" class="btn-outline-sm">Preview on Site</a>
                 <button class="btn-gold-sm" onclick="openAddVideoModal()">Add New Video Session</button>
               </div>
             </div>
             <div class="card-body" style="padding:0;">
-              <table>
-                <thead>
-                  <tr>
-                    <th style="width:110px;">Order</th>
-                    <th style="width:90px;">Thumbnail</th>
-                    <th>Video Title</th>
-                    <th>Speaker / Presenter</th>
-                    <th>Category</th>
-                    <th>Duration</th>
-                    <th>Home Showcase</th>
-                    <th>Status</th>
-                    <th style="width:250px">Actions</th>
-                  </tr>
-                </thead>
-                <tbody id="videosTable">
-                  <!-- Rendered dynamically -->
-                </tbody>
-              </table>
+              <div class="table-responsive">
+                <table>
+                  <thead>
+                    <tr>
+                      <th style="width:110px;">Order</th>
+                      <th style="width:90px;">Thumbnail</th>
+                      <th>Video Title</th>
+                      <th>Speaker / Presenter</th>
+                      <th>Category</th>
+                      <th>Duration</th>
+                      <th>Home Showcase</th>
+                      <th>Status</th>
+                      <th style="width:260px;min-width:260px;">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody id="videosTable">
+                    <!-- Rendered dynamically -->
+                  </tbody>
+                </table>
+              </div>
             </div>
           </div>
         </section>
@@ -747,21 +799,23 @@
               <button class="btn-gold-sm" onclick="openAddPubModal()">Add New Publication</button>
             </div>
             <div class="card-body" style="padding:0;">
-              <table>
-                <thead>
-                  <tr>
-                    <th style="width:110px;">Order</th>
-                    <th>Document Title</th>
-                    <th>Category</th>
-                    <th>Date</th>
-                    <th>Status</th>
-                    <th style="width:240px">Actions</th>
-                  </tr>
-                </thead>
-                <tbody id="publicationsTable">
-                  <!-- Rendered dynamically -->
-                </tbody>
-              </table>
+              <div class="table-responsive">
+                <table>
+                  <thead>
+                    <tr>
+                      <th style="width:110px;">Order</th>
+                      <th>Document Title</th>
+                      <th>Category</th>
+                      <th>Date</th>
+                      <th>Status</th>
+                      <th style="width:260px;min-width:260px;">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody id="publicationsTable">
+                    <!-- Rendered dynamically -->
+                  </tbody>
+                </table>
+              </div>
             </div>
           </div>
         </section>
@@ -774,21 +828,23 @@
               <button class="btn-gold-sm" onclick="openAddVacancyModal()">Add New Vacancy</button>
             </div>
             <div class="card-body" style="padding:0;">
-              <table>
-                <thead>
-                  <tr>
-                    <th>Job Title</th>
-                    <th>Department</th>
-                    <th>Type</th>
-                    <th>Deadline</th>
-                    <th>Status</th>
-                    <th style="width:240px">Actions</th>
-                  </tr>
-                </thead>
-                <tbody id="vacanciesTable">
-                  <!-- Rendered dynamically -->
-                </tbody>
-              </table>
+              <div class="table-responsive">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Job Title</th>
+                      <th>Department</th>
+                      <th>Type</th>
+                      <th>Deadline</th>
+                      <th>Status</th>
+                      <th style="width:260px;min-width:260px;">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody id="vacanciesTable">
+                    <!-- Rendered dynamically -->
+                  </tbody>
+                </table>
+              </div>
             </div>
           </div>
         </section>
@@ -1631,35 +1687,19 @@ const DEFAULT_STORE = {
     },
     {
       id: 2,
-      name: "Dr. Mansur Kabir",
-      role: "Chair, Technical Advisory Council",
-      organization: "Agro-Ecological Research Alliance",
-      expertise: "Agro-Ecology • Smallholder Innovation • Soil Health",
+      name: "Food Systems & Policy Advisor",
+      role: "Food Systems & Policy Advisor",
+      organization: "Growth Innovation for Development Action (GIDA)",
+      expertise: "Food Systems Policy • Agricultural Law • Compliance & Governance",
       category: "Advisory & Governance",
-      photo: "assets/img/director.jpg",
-      date: "September 2026",
-      excerpt: "Sustainable prosperity requires bridging rigorous scientific agronomy with deep community ownership and market incentives.",
-      fullMessage: "Addressing systemic rural vulnerability in northern agricultural corridors demands more than technological handouts. We must build decentralized soil health testing, low-cost bio-fertilizer synthesis, and water harvesting structures that rural producers themselves can operate and expand.\n\nGIDA's collaborative model brings together agronomists, community elders, and private input off-takers to turn ecological resilience into everyday economic security.",
+      photo: "assets/img/advisor-food-systems.jpg",
+      date: "October 2026",
+      excerpt: "I lead policy development, programme implementation and stakeholder engagement across food systems and sustainable agriculture, drawing on legal professionalism, compliance and governance.",
+      fullMessage: "As a Food Systems & Policy Advisor at GIDA, I lead policy development, programme implementation and stakeholder engagement across food systems and sustainable agriculture. Drawing on my legal professionalism, I bring a strong focus on policy, contracts, compliance and governance.\n\nMy interest lies at the intersection of policy, law and food systems. I lead and contribute to research, project development and the development of practical tools that strengthen GIDA’s work and drive activities across its programmes.",
       ctaText: "Read Full Message",
       featured: false,
       status: "published",
       order: 2
-    },
-    {
-      id: 3,
-      name: "Amina Bello",
-      role: "Lead, Market Systems & GESI",
-      organization: "GIDA Inclusive Finance Unit",
-      expertise: "Value Chain Finance • Women Cooperatives • Solar Cold Hubs",
-      category: "Partner & Expert Voice",
-      photo: "assets/img/market.jpg",
-      date: "August 2026",
-      excerpt: "When market systems are co-designed around women's daily financial realities, entire household economies transform.",
-      fullMessage: "Women in rural aggregation hubs are the backbone of food security, yet traditional formal banking structures consistently misread their risk profiles. Through initiatives like CreditHer and decentralized solar cold storage hubs, we are proving that alternative data, peer guarantees, and flexible Pay-As-You-Store models yield superior repayment and unprecedented household prosperity.",
-      ctaText: "Read Full Message",
-      featured: false,
-      status: "published",
-      order: 3
     }
   ],
   videoSection: {
@@ -1673,8 +1713,8 @@ const DEFAULT_STORE = {
       title: "Beyond Gender-Blind Finance: Activating Gender-Disaggregated Data",
       youtubeUrl: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
       youtubeId: "dQw4w9WgXcQ",
-      thumbnail: "https://img.youtube.com/vi/dQw4w9WgXcQ/hqdefault.jpg",
-      thumbnailType: "youtube",
+      thumbnail: "assets/img/video-cover-gender-finance.jpg",
+      thumbnailType: "custom",
       speaker: "Bukola F. Sanni & Technical Panelists",
       event: "AIR × CBN Design Sprint Dialogue",
       category: "Dialogue & Webinar",
@@ -1691,8 +1731,8 @@ const DEFAULT_STORE = {
       title: "Regenerative Soil Systems & Microbial Testing at the Farm Gate",
       youtubeUrl: "https://www.youtube.com/watch?v=y881t8ilMyc",
       youtubeId: "y881t8ilMyc",
-      thumbnail: "https://img.youtube.com/vi/y881t8ilMyc/hqdefault.jpg",
-      thumbnailType: "youtube",
+      thumbnail: "assets/img/video-cover-regenerative-soil.jpg",
+      thumbnailType: "custom",
       speaker: "GIDA Agronomy Technical Unit",
       event: "Northern Corridors Farmer Summit",
       category: "Field Masterclass",
@@ -1709,8 +1749,8 @@ const DEFAULT_STORE = {
       title: "Decentralized Solar Cold Storage & Women-Led Aggregation Hubs",
       youtubeUrl: "https://www.youtube.com/watch?v=7X8II6J-6mU",
       youtubeId: "7X8II6J-6mU",
-      thumbnail: "https://img.youtube.com/vi/7X8II6J-6mU/hqdefault.jpg",
-      thumbnailType: "youtube",
+      thumbnail: "assets/img/video-cover-solar-cold-storage.jpg",
+      thumbnailType: "custom",
       speaker: "Horticultural Cooperative Leaders & Engineers",
       event: "Green Infrastructure Showcase",
       category: "Impact Documentary",
@@ -2435,6 +2475,13 @@ async function testGitHubConnection() {
 // ==========================================
 // NAVIGATION & TABS
 // ==========================================
+function toggleSidebar() {
+  const sidebar = document.querySelector('.sidebar');
+  const overlay = document.getElementById('sidebarOverlay');
+  if (sidebar) sidebar.classList.toggle('open');
+  if (overlay) overlay.classList.toggle('show');
+}
+
 function switchTab(tabName) {
   if (tabName === 'ceo') tabName = 'leadership';
   const btn = document.querySelector(`.nav-btn[data-tab="${tabName}"]`);
@@ -2450,6 +2497,14 @@ document.querySelectorAll('.nav-btn').forEach(btn => {
     const target = document.getElementById(tabId);
     if(target) target.classList.add('active');
     document.getElementById('currentSectionTitle').innerText = btn.innerText.trim();
+    
+    // Close sidebar on mobile/tablet after selection
+    if (window.innerWidth <= 1024) {
+      const sidebar = document.querySelector('.sidebar');
+      const overlay = document.getElementById('sidebarOverlay');
+      if (sidebar) sidebar.classList.remove('open');
+      if (overlay) overlay.classList.remove('show');
+    }
   });
 });
 
