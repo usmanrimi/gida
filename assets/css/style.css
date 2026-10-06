@@ -2755,11 +2755,12 @@ html, body {
   min-width: 0;
   background: #ffffff;
   border-radius: 20px;
-  padding: 32px 28px;
-  box-shadow: 0 12px 32px rgba(20, 36, 32, 0.05);
+  padding: 30px 28px 24px;
+  box-shadow: 0 10px 28px rgba(20, 36, 32, 0.05);
   border: 1px solid rgba(20, 36, 32, 0.08);
   display: flex;
   flex-direction: column;
+  text-align: left;
   transition: transform 0.28s ease, box-shadow 0.28s ease, border-color 0.28s ease;
   position: relative;
 }
@@ -2781,24 +2782,28 @@ html, body {
   background: rgba(217, 130, 43, 0.12);
   color: #b45309;
   font-size: 0.72rem;
-  font-weight: 700;
+  font-weight: 800;
   text-transform: uppercase;
   letter-spacing: 0.06em;
   padding: 3px 10px;
   border-radius: 100px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
 }
 
 .leadership-card-header {
   display: flex;
   align-items: center;
   gap: 16px;
-  margin-bottom: 20px;
+  margin-bottom: 14px;
+  text-align: left;
 }
 
 .leadership-avatar-frame {
-  width: 72px;
-  height: 72px;
-  border-radius: 16px;
+  width: 66px;
+  height: 66px;
+  border-radius: 14px;
   overflow: hidden;
   flex-shrink: 0;
   background: var(--paper, #f4efe6);
@@ -2816,22 +2821,23 @@ html, body {
 .leadership-author-meta {
   flex: 1;
   min-width: 0;
+  text-align: left;
 }
 
 .leadership-author-name {
   font-family: var(--font-head, "Manrope", sans-serif);
-  font-size: 1.15rem;
+  font-size: 1.18rem;
   font-weight: 800;
   color: var(--green-dark, #0d231d);
   line-height: 1.25;
-  margin-bottom: 4px;
+  margin-bottom: 3px;
 }
 
 .leadership-author-role {
   font-size: 0.86rem;
   font-weight: 600;
   color: var(--teal-dark, #00686e);
-  line-height: 1.3;
+  line-height: 1.35;
 }
 
 .leadership-author-org {
@@ -2841,27 +2847,74 @@ html, body {
   line-height: 1.3;
 }
 
+.leadership-card-expertise {
+  font-size: 0.78rem;
+  font-weight: 600;
+  font-style: normal;
+  color: var(--green-deep, #1b4d3e);
+  background: rgba(27, 77, 62, 0.06);
+  padding: 4px 10px;
+  border-radius: 6px;
+  margin-bottom: 16px;
+  display: inline-block;
+  text-align: left;
+  line-height: 1.4;
+  border-left: 2px solid var(--teal, #00828a);
+}
+
 .leadership-quote-body {
-  font-size: 0.96rem;
+  font-size: 0.94rem;
   line-height: 1.65;
-  color: var(--ink-soft, #334155);
-  font-style: italic;
-  margin-bottom: 24px;
+  color: #334155;
+  margin-bottom: 22px;
   flex: 1;
   position: relative;
+  text-align: left;
   display: -webkit-box;
   -webkit-line-clamp: 4;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
 
+.leadership-quote-body::before {
+  content: "“";
+  font-family: Georgia, serif;
+  font-size: 1.6rem;
+  line-height: 0;
+  color: var(--gold, #d9822b);
+  margin-right: 4px;
+  vertical-align: -0.2em;
+}
+
+.leadership-quote-body::after {
+  content: "”";
+  font-family: Georgia, serif;
+  font-size: 1.6rem;
+  line-height: 0;
+  color: var(--gold, #d9822b);
+  margin-left: 4px;
+  vertical-align: -0.2em;
+}
+
 .leadership-card-footer {
   margin-top: auto;
-  padding-top: 16px;
+  padding-top: 14px;
   border-top: 1px solid rgba(20, 36, 32, 0.08);
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 10px;
+}
+
+.leadership-category-pill {
+  font-size: 0.74rem;
+  font-weight: 700;
+  color: var(--teal-dark, #00686e);
+  background: rgba(0, 130, 138, 0.08);
+  padding: 4px 10px;
+  border-radius: 100px;
+  letter-spacing: 0.03em;
+  white-space: nowrap;
 }
 
 .leadership-read-btn {
@@ -2869,7 +2922,7 @@ html, body {
   border: none;
   padding: 0;
   font-family: var(--font-head, "Manrope", sans-serif);
-  font-size: 0.9rem;
+  font-size: 0.88rem;
   font-weight: 700;
   color: var(--green-dark, #0d231d);
   display: inline-flex;
@@ -2877,6 +2930,7 @@ html, body {
   gap: 6px;
   cursor: pointer;
   transition: color 0.2s, transform 0.2s;
+  white-space: nowrap;
 }
 
 .leadership-read-btn:hover {

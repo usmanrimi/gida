@@ -114,21 +114,25 @@
 
         leadershipTrack.innerHTML = sorted.map(m => `
           <article class="leadership-card ${m.featured ? 'is-featured' : ''}" data-id="${m.id}">
-            <div class="leadership-card-top">
-              <img src="${m.photo || 'assets/img/avatar-placeholder.png'}" alt="${escapeHtml(m.name)}" class="leadership-avatar" loading="lazy">
-              <div class="leadership-header-text">
-                <h4 class="leadership-name">${escapeHtml(m.name)}</h4>
-                <div class="leadership-role">${escapeHtml(m.role || '')}</div>
-                <div class="leadership-org">${escapeHtml(m.organization || '')}</div>
+            ${m.featured ? '<div class="leadership-featured-tag">★ Featured Voice</div>' : ''}
+            <div class="leadership-card-header">
+              <div class="leadership-avatar-frame">
+                <img src="${m.photo || 'assets/img/avatar-placeholder.png'}" alt="${escapeHtml(m.name)}" class="leadership-avatar-img" loading="lazy">
+              </div>
+              <div class="leadership-author-meta">
+                <h4 class="leadership-author-name">${escapeHtml(m.name)}</h4>
+                <div class="leadership-author-role">${escapeHtml(m.role || '')}</div>
+                ${m.organization ? `<div class="leadership-author-org">${escapeHtml(m.organization)}</div>` : ''}
               </div>
             </div>
-            <div class="leadership-card-body">
-              <p class="leadership-quote-preview">${escapeHtml(m.excerpt || '')}</p>
+            ${m.expertise ? `<div class="leadership-card-expertise">${escapeHtml(m.expertise)}</div>` : ''}
+            <div class="leadership-quote-body">
+              ${escapeHtml(m.excerpt || m.quote || '')}
             </div>
             <div class="leadership-card-footer">
               <span class="leadership-category-pill">${escapeHtml(m.category || 'Leadership')}</span>
               <button type="button" class="leadership-read-btn" onclick="openLeadershipModal('${m.id}')" aria-label="Read full message from ${escapeHtml(m.name)}">
-                Read Message
+                ${escapeHtml(m.ctaText || 'Read Full Message')}
                 <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
               </button>
             </div>
@@ -972,6 +976,15 @@
     if (role) role.textContent = item.role || '';
     const org = document.getElementById('modalLeaderOrg');
     if (org) org.textContent = item.organization || '';
+    const expEl = document.getElementById('modalLeaderExpertise');
+    if (expEl) {
+      if (item.expertise) {
+        expEl.textContent = item.expertise;
+        expEl.style.display = 'inline-block';
+      } else {
+        expEl.style.display = 'none';
+      }
+    }
     const cat = document.getElementById('modalLeaderCategory');
     if (cat) cat.textContent = item.category || 'Leadership Voice';
     const body = document.getElementById('modalLeaderFullProse');
