@@ -82,6 +82,7 @@
         <!-- CATEGORY PILLS -->
         <div class="category-pills reveal" id="blogCategoryPills">
           <button class="cat-pill active" data-category="all">All Topics</button>
+          <button class="cat-pill" data-category="Videos & Sessions">Videos &amp; Sessions</button>
           <button class="cat-pill" data-category="Field Insights">Field Insights</button>
           <button class="cat-pill" data-category="Market Systems">Market Systems</button>
           <button class="cat-pill" data-category="One Health">One Health</button>
@@ -151,6 +152,21 @@
     </div>
   </div>
 </footer>
+
+<!-- IN-WEBSITE VIDEO LIGHTBOX PLAYER MODAL -->
+<div id="videoPlayerModal" class="gida-modal-overlay" aria-hidden="true" role="dialog">
+  <div class="gida-modal-dialog gida-video-modal-dialog">
+    <button class="gida-modal-close-btn" onclick="closeVideoModal()" aria-label="Close video player" style="top:12px; right:12px; background:rgba(0,0,0,0.6); color:#fff;">&times;</button>
+    <div class="gida-video-player-wrap" id="videoIframeContainer">
+      <!-- 16:9 iframe injected on user click -->
+    </div>
+    <div class="gida-video-meta-body">
+      <span id="modalVideoSpeaker" class="gida-video-meta-speaker">Speaker Info</span>
+      <h3 id="modalVideoTitle" class="gida-video-meta-title">Session Title</h3>
+      <p id="modalVideoDesc" class="gida-video-meta-desc">Session Description</p>
+    </div>
+  </div>
+</div>
 
 <script src="assets/js/main.js"></script>
 <script src="assets/js/cms-engine.js"></script>

@@ -87,7 +87,59 @@
   function applyCmsToDom(cms) {
     if (!cms) return;
 
-    // --- A. CEO / EXECUTIVE LEADERSHIP MESSAGE ---
+    // --- A. LEADERSHIP & VOICES CAROUSEL (index.html) ---
+    if (cms.leadershipSection) {
+      const badge = document.getElementById('cms-leadership-kicker');
+      if (badge && cms.leadershipSection.kicker) badge.textContent = cms.leadershipSection.kicker;
+      const title = document.getElementById('cms-leadership-title');
+      if (title && cms.leadershipSection.title) title.textContent = cms.leadershipSection.title;
+      const desc = document.getElementById('cms-leadership-desc');
+      if (desc && cms.leadershipSection.desc) desc.textContent = cms.leadershipSection.desc;
+    }
+
+    const leadershipTrack = document.getElementById('leadershipTrack');
+    if (leadershipTrack && Array.isArray(cms.leadershipMessages)) {
+      const published = cms.leadershipMessages.filter(m => m.status === 'published');
+      const leadSection = document.getElementById('leadership-section');
+      if (published.length === 0) {
+        if (leadSection) leadSection.style.display = 'none';
+      } else {
+        if (leadSection) leadSection.style.display = '';
+        // Sort: featured first or by order
+        const sorted = [...published].sort((a, b) => {
+          if (a.featured && !b.featured) return -1;
+          if (!a.featured && b.featured) return 1;
+          return (a.order || 0) - (b.order || 0);
+        });
+
+        leadershipTrack.innerHTML = sorted.map(m => `
+          <article class="leadership-card ${m.featured ? 'is-featured' : ''}" data-id="${m.id}">
+            <div class="leadership-card-top">
+              <img src="${m.photo || 'assets/img/avatar-placeholder.png'}" alt="${escapeHtml(m.name)}" class="leadership-avatar" loading="lazy">
+              <div class="leadership-header-text">
+                <h4 class="leadership-name">${escapeHtml(m.name)}</h4>
+                <div class="leadership-role">${escapeHtml(m.role || '')}</div>
+                <div class="leadership-org">${escapeHtml(m.organization || '')}</div>
+              </div>
+            </div>
+            <div class="leadership-card-body">
+              <p class="leadership-quote-preview">${escapeHtml(m.excerpt || '')}</p>
+            </div>
+            <div class="leadership-card-footer">
+              <span class="leadership-category-pill">${escapeHtml(m.category || 'Leadership')}</span>
+              <button type="button" class="leadership-read-btn" onclick="openLeadershipModal('${m.id}')" aria-label="Read full message from ${escapeHtml(m.name)}">
+                Read Message
+                <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+              </button>
+            </div>
+          </article>
+        `).join('');
+
+        initLeadershipCarousel(sorted.length);
+      }
+    }
+
+    // --- A2. CEO / EXECUTIVE LEADERSHIP MESSAGE (Backwards compatibility) ---
     if (cms.ceo) {
       const ceoSections = document.querySelectorAll('.ceo-message-section');
       ceoSections.forEach(section => {
@@ -192,6 +244,48 @@
       if (cAddress && cms.contact.address) cAddress.textContent = cms.contact.address;
     }
 
+    // --- C0. HOMEPAGE VIDEO SHOWCASE (index.html) ---
+    if (cms.videoSection) {
+      const vk = document.getElementById('cms-video-kicker');
+      if (vk && cms.videoSection.kicker) vk.textContent = cms.videoSection.kicker;
+      const vt = document.getElementById('cms-video-title');
+      if (vt && cms.videoSection.title) vt.textContent = cms.videoSection.title;
+      const vd = document.getElementById('cms-video-desc');
+      if (vd && cms.videoSection.desc) vd.textContent = cms.videoSection.desc;
+    }
+
+    const homeVideoGrid = document.getElementById('homeVideoGrid');
+    if (homeVideoGrid && Array.isArray(cms.videos)) {
+      const publishedVideos = cms.videos.filter(v => v.status === 'published' && v.featuredOnHome !== false);
+      const videoSection = document.getElementById('homeVideoSection');
+      if (publishedVideos.length === 0) {
+        if (videoSection) videoSection.style.display = 'none';
+      } else {
+        if (videoSection) videoSection.style.display = '';
+        const showcaseVideos = publishedVideos.slice(0, 3);
+        homeVideoGrid.innerHTML = showcaseVideos.map(vid => `
+          <article class="video-card" onclick="openVideoModal('${escapeHtml(vid.youtubeId)}', '${escapeHtml(vid.title)}', '${escapeHtml(vid.speaker || '')}', '${escapeHtml(vid.excerpt || '')}')" tabindex="0" role="button" aria-label="Watch session: ${escapeHtml(vid.title)}">
+            <div class="video-thumb-container">
+              <img src="${vid.thumbnail || 'https://img.youtube.com/vi/' + vid.youtubeId + '/hqdefault.jpg'}" alt="${escapeHtml(vid.title)}" class="video-thumb" loading="lazy">
+              <span class="video-badge-pill">${escapeHtml(vid.category || 'Session')}</span>
+              ${vid.duration ? `<span class="video-duration-pill">${escapeHtml(vid.duration)}</span>` : ''}
+              <div class="video-play-btn-circle" aria-label="Play Video">
+                <svg width="22" height="22" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+              </div>
+            </div>
+            <div class="video-card-body">
+              <div class="video-card-meta">
+                <span class="video-speaker">${escapeHtml(vid.speaker || 'GIDA')}</span>
+                ${vid.date ? `<span class="video-date">${escapeHtml(vid.date)}</span>` : ''}
+              </div>
+              <h4 class="video-card-title">${escapeHtml(vid.title)}</h4>
+              <p class="video-card-excerpt">${escapeHtml(vid.excerpt || '')}</p>
+            </div>
+          </article>
+        `).join('');
+      }
+    }
+
     // --- C. HOMEPAGE LATEST STORIES (index.html) ---
     const homeStoriesGrid = document.getElementById('homeLatestStoriesGrid');
     if (homeStoriesGrid && Array.isArray(cms.articles)) {
@@ -226,8 +320,9 @@
 
     if (blogArticlesGrid && Array.isArray(cms.articles)) {
       const publishedArticles = cms.articles.filter(a => a.status === 'published');
+      const publishedVideos = Array.isArray(cms.videos) ? cms.videos.filter(v => v.status === 'published') : [];
       
-      if (publishedArticles.length === 0) {
+      if (publishedArticles.length === 0 && publishedVideos.length === 0) {
         if (blogFeaturedContainer) blogFeaturedContainer.style.display = 'none';
         blogArticlesGrid.innerHTML = '';
         if (noArticlesBox) noArticlesBox.style.display = 'block';
@@ -236,13 +331,13 @@
 
         // Find featured article or pick the first one
         let featuredArt = publishedArticles.find(a => a.featured) || publishedArticles[0];
-        let gridArticles = publishedArticles.filter(a => a.id !== featuredArt.id);
+        let gridArticles = publishedArticles.filter(a => a.id !== (featuredArt ? featuredArt.id : null));
         if (gridArticles.length === 0 && publishedArticles.length === 1) {
           gridArticles = [featuredArt]; // Show in grid too if only one article exists
         }
 
         // Hydrate featured card
-        if (blogFeaturedContainer) {
+        if (blogFeaturedContainer && featuredArt) {
           blogFeaturedContainer.style.display = 'block';
           blogFeaturedContainer.innerHTML = `
             <div class="blog-featured-card">
@@ -268,8 +363,8 @@
         // Render remaining articles in grid
         renderBlogGrid(gridArticles);
 
-        // Setup category filter pills
-        setupCategoryFilter(publishedArticles);
+        // Setup category filter pills (with both articles and videos)
+        setupCategoryFilter(publishedArticles, publishedVideos);
       }
     }
 
@@ -496,36 +591,60 @@
   }
 
   // HELPER: Category filtering in blog.html
-  function setupCategoryFilter(allArticles) {
+  function setupCategoryFilter(allArticles, allVideos) {
     const filterPills = document.querySelectorAll('#blogCategoryPills .cat-pill');
+    if (!filterPills.length) return;
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const filterParam = urlParams.get('filter');
+
     filterPills.forEach(pill => {
       pill.onclick = function() {
         filterPills.forEach(p => p.classList.remove('active'));
         this.classList.add('active');
         const cat = this.getAttribute('data-category');
-        if (cat === 'all') {
-          renderBlogGrid(allArticles);
-        } else {
-          const filtered = allArticles.filter(a => a.category && a.category.toLowerCase() === cat.toLowerCase());
-          renderBlogGrid(filtered);
-        }
+        applyFilter(cat);
       };
     });
+
+    function applyFilter(cat) {
+      if (!cat || cat === 'all') {
+        renderBlogGrid(allArticles);
+      } else if (cat.toLowerCase() === 'videos & sessions' || cat.toLowerCase() === 'videos') {
+        renderBlogVideos(allVideos || []);
+      } else {
+        const filtered = allArticles.filter(a => a.category && a.category.toLowerCase() === cat.toLowerCase());
+        renderBlogGrid(filtered);
+      }
+    }
+
+    if (filterParam === 'videos') {
+      const vidPill = Array.from(filterPills).find(p => p.getAttribute('data-category').toLowerCase().includes('video'));
+      if (vidPill) {
+        filterPills.forEach(p => p.classList.remove('active'));
+        vidPill.classList.add('active');
+        applyFilter(vidPill.getAttribute('data-category'));
+      }
+    }
   }
 
   function renderBlogGrid(articles) {
     const grid = document.getElementById('blogArticlesGrid');
     const empty = document.getElementById('noArticlesBox');
     if (!grid) return;
-    if (articles.length === 0) {
+    if (!articles || articles.length === 0) {
       grid.innerHTML = '';
-      if (empty) empty.style.display = 'block';
+      if (empty) {
+        empty.style.display = 'block';
+        const h3 = empty.querySelector('h3');
+        if (h3) h3.textContent = 'No stories found in this topic';
+      }
     } else {
       if (empty) empty.style.display = 'none';
       grid.innerHTML = articles.map(art => `
         <div class="blog-card">
           <div class="blog-card-media">
-            <img src="${art.image || 'assets/img/agri.jpg'}" alt="${escapeHtml(art.title)}" class="blog-card-img">
+            <img src="${art.image || 'assets/img/agri.jpg'}" alt="${escapeHtml(art.title)}" class="blog-card-img" loading="lazy">
           </div>
           <div class="blog-card-body">
             <div class="blog-card-meta">
@@ -544,7 +663,201 @@
     }
   }
 
-  // HELPER: Convert Markdown into Clean Semantic HTML
+  function renderBlogVideos(videos) {
+    const grid = document.getElementById('blogArticlesGrid');
+    const empty = document.getElementById('noArticlesBox');
+    if (!grid) return;
+    if (!videos || videos.length === 0) {
+      grid.innerHTML = '';
+      if (empty) {
+        empty.style.display = 'block';
+        const h3 = empty.querySelector('h3');
+        if (h3) h3.textContent = 'No video sessions currently available';
+      }
+    } else {
+      if (empty) empty.style.display = 'none';
+      grid.innerHTML = videos.map(vid => `
+        <article class="video-card" onclick="openVideoModal('${escapeHtml(vid.youtubeId)}', '${escapeHtml(vid.title)}', '${escapeHtml(vid.speaker || '')}', '${escapeHtml(vid.excerpt || '')}')" tabindex="0" role="button" aria-label="Watch session: ${escapeHtml(vid.title)}">
+          <div class="video-thumb-container">
+            <img src="${vid.thumbnail || 'https://img.youtube.com/vi/' + vid.youtubeId + '/hqdefault.jpg'}" alt="${escapeHtml(vid.title)}" class="video-thumb" loading="lazy">
+            <span class="video-badge-pill">${escapeHtml(vid.category || 'Session')}</span>
+            ${vid.duration ? `<span class="video-duration-pill">${escapeHtml(vid.duration)}</span>` : ''}
+            <div class="video-play-btn-circle" aria-label="Play Video">
+              <svg width="22" height="22" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+            </div>
+          </div>
+          <div class="video-card-body">
+            <div class="video-card-meta">
+              <span class="video-speaker">${escapeHtml(vid.speaker || 'GIDA')}</span>
+              ${vid.date ? `<span class="video-date">${escapeHtml(vid.date)}</span>` : ''}
+            </div>
+            <h4 class="video-card-title">${escapeHtml(vid.title)}</h4>
+            <p class="video-card-excerpt">${escapeHtml(vid.excerpt || '')}</p>
+          </div>
+        </article>
+      `).join('');
+    }
+  }
+
+  // --- LEADERSHIP CAROUSEL CONTROLLER ---
+  let carouselTimer = null;
+  let currentLeadIndex = 0;
+
+  function initLeadershipCarousel(totalCards) {
+    const track = document.getElementById('leadershipTrack');
+    const prevBtn = document.getElementById('leadershipPrevBtn');
+    const nextBtn = document.getElementById('leadershipNextBtn');
+    const dotsWrap = document.getElementById('leadershipDots');
+    const wrapper = track ? track.closest('.leadership-carousel-wrapper') : null;
+
+    if (!track || totalCards <= 0) return;
+
+    function getCardsPerView() {
+      if (window.innerWidth >= 992) return 3;
+      if (window.innerWidth >= 640) return 2;
+      return 1;
+    }
+
+    function getMaxIndex() {
+      const perView = getCardsPerView();
+      return Math.max(0, totalCards - perView);
+    }
+
+    function renderDots() {
+      if (!dotsWrap) return;
+      const maxIdx = getMaxIndex();
+      if (maxIdx <= 0) {
+        dotsWrap.innerHTML = '';
+        return;
+      }
+      let dotsHtml = '';
+      for (let i = 0; i <= maxIdx; i++) {
+        dotsHtml += `<button class="carousel-dot ${i === currentLeadIndex ? 'active' : ''}" data-index="${i}" aria-label="Go to slide ${i + 1}"></button>`;
+      }
+      dotsWrap.innerHTML = dotsHtml;
+      dotsWrap.querySelectorAll('.carousel-dot').forEach(dot => {
+        dot.onclick = () => {
+          currentLeadIndex = parseInt(dot.getAttribute('data-index'), 10);
+          updateTrackPosition();
+          resetAutoTimer();
+        };
+      });
+    }
+
+    function updateTrackPosition() {
+      const maxIdx = getMaxIndex();
+      if (currentLeadIndex > maxIdx) currentLeadIndex = maxIdx;
+      if (currentLeadIndex < 0) currentLeadIndex = 0;
+
+      const firstCard = track.querySelector('.leadership-card');
+      if (!firstCard) return;
+
+      const cardWidth = firstCard.offsetWidth;
+      const gap = 24; // gap defined in CSS
+      const offset = currentLeadIndex * (cardWidth + gap);
+      track.style.transform = `translateX(-${offset}px)`;
+
+      if (prevBtn) prevBtn.disabled = currentLeadIndex === 0;
+      if (nextBtn) nextBtn.disabled = currentLeadIndex >= maxIdx;
+
+      if (dotsWrap) {
+        const dots = dotsWrap.querySelectorAll('.carousel-dot');
+        dots.forEach((d, idx) => {
+          if (idx === currentLeadIndex) d.classList.add('active');
+          else d.classList.remove('active');
+        });
+      }
+    }
+
+    if (prevBtn) {
+      prevBtn.onclick = () => {
+        const maxIdx = getMaxIndex();
+        if (currentLeadIndex > 0) {
+          currentLeadIndex--;
+        } else {
+          currentLeadIndex = maxIdx;
+        }
+        updateTrackPosition();
+        resetAutoTimer();
+      };
+    }
+
+    if (nextBtn) {
+      nextBtn.onclick = () => {
+        const maxIdx = getMaxIndex();
+        if (currentLeadIndex < maxIdx) {
+          currentLeadIndex++;
+        } else {
+          currentLeadIndex = 0;
+        }
+        updateTrackPosition();
+        resetAutoTimer();
+      };
+    }
+
+    function autoSlide() {
+      const maxIdx = getMaxIndex();
+      if (maxIdx <= 0) return;
+      if (currentLeadIndex < maxIdx) {
+        currentLeadIndex++;
+      } else {
+        currentLeadIndex = 0;
+      }
+      updateTrackPosition();
+    }
+
+    function startAutoTimer() {
+      stopAutoTimer();
+      carouselTimer = setInterval(autoSlide, 5500);
+    }
+
+    function stopAutoTimer() {
+      if (carouselTimer) clearInterval(carouselTimer);
+      carouselTimer = null;
+    }
+
+    function resetAutoTimer() {
+      stopAutoTimer();
+      startAutoTimer();
+    }
+
+    if (wrapper) {
+      wrapper.onmouseenter = stopAutoTimer;
+      wrapper.onmouseleave = startAutoTimer;
+      wrapper.ontouchstart = stopAutoTimer;
+      wrapper.ontouchend = () => setTimeout(startAutoTimer, 2000);
+
+      // Touch swipe gestures
+      let touchStartX = 0;
+      let touchEndX = 0;
+      wrapper.addEventListener('touchstart', (e) => {
+        touchStartX = e.changedTouches[0].screenX;
+      }, { passive: true });
+      wrapper.addEventListener('touchend', (e) => {
+        touchEndX = e.changedTouches[0].screenX;
+        if (touchStartX - touchEndX > 45) {
+          if (nextBtn) nextBtn.click();
+        } else if (touchEndX - touchStartX > 45) {
+          if (prevBtn) prevBtn.click();
+        }
+      }, { passive: true });
+    }
+
+    let resizeDebounce = null;
+    window.addEventListener('resize', () => {
+      clearTimeout(resizeDebounce);
+      resizeDebounce = setTimeout(() => {
+        renderDots();
+        updateTrackPosition();
+      }, 150);
+    });
+
+    renderDots();
+    updateTrackPosition();
+    startAutoTimer();
+  }
+
+  // --- HELPER: Convert Markdown into Clean Semantic HTML ---
   function formatMarkdownProse(markdownText) {
     if (!markdownText) return '';
     let html = '';
@@ -553,6 +866,55 @@
     paragraphs.forEach(para => {
       para = para.trim();
       if (!para) return;
+
+      // YouTube embed tag [youtube:ID]
+      const ytMatch = para.match(/^\[youtube:([a-zA-Z0-9_-]+)\]$/);
+      if (ytMatch) {
+        const ytId = ytMatch[1];
+        html += `
+          <div class="gida-video-player-wrap" style="border-radius:12px; overflow:hidden; margin:28px 0; box-shadow:0 8px 24px rgba(0,0,0,0.12);">
+            <iframe src="https://www.youtube.com/embed/${escapeHtml(ytId)}?rel=0" title="Embedded Video" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="position:absolute; top:0; left:0; width:100%; height:100%; border:none;"></iframe>
+          </div>
+        `;
+        return;
+      }
+
+      // Document / PDF attachment card [pdf:Title|URL] or [doc:Title|URL]
+      const docMatch = para.match(/^\[(pdf|doc):([^|]+)\|([^\]]+)\]$/);
+      if (docMatch) {
+        const docTitle = docMatch[2];
+        const docUrl = docMatch[3];
+        html += `
+          <div class="article-attached-doc">
+            <div class="article-doc-icon">
+              <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
+            </div>
+            <div class="article-doc-info">
+              <div class="article-doc-title">${escapeHtml(docTitle)}</div>
+              <div class="article-doc-meta">Official Attached Document / PDF</div>
+            </div>
+            <div class="article-doc-btns">
+              <a href="${escapeHtml(docUrl)}" target="_blank" rel="noopener" class="btn btn-outline" style="padding:6px 14px; font-size:0.85rem;">View Document</a>
+              <a href="${escapeHtml(docUrl)}" download class="btn btn-gold" style="padding:6px 14px; font-size:0.85rem;">Download PDF</a>
+            </div>
+          </div>
+        `;
+        return;
+      }
+
+      // Standalone image with caption ![Caption](url)
+      const imgMatch = para.match(/^!\[(.*?)\]\((.*?)\)$/);
+      if (imgMatch) {
+        const caption = imgMatch[1];
+        const imgSrc = imgMatch[2];
+        html += `
+          <figure class="article-figure">
+            <img src="${escapeHtml(imgSrc)}" alt="${escapeHtml(caption)}">
+            ${caption ? `<figcaption>${escapeHtml(caption)}</figcaption>` : ''}
+          </figure>
+        `;
+        return;
+      }
 
       if (para.startsWith('### ')) {
         html += `<h3>${escapeHtml(para.replace('### ', ''))}</h3>`;
@@ -580,6 +942,8 @@
     out = out.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
     // Italic *text*
     out = out.replace(/\*(.*?)\*/g, '<em>$1</em>');
+    // Inline link [text](url)
+    out = out.replace(/\[(.*?)\]\((.*?)\)/g, '<a href="$2" target="_blank" rel="noopener">$1</a>');
     return out;
   }
 
@@ -591,6 +955,95 @@
       .replace(/>/g, '&gt;')
       .replace(/"/g, '&quot;');
   }
+
+  // --- MODAL CONTROLLERS ---
+  window.openLeadershipModal = function(id) {
+    const list = (activeCmsData && activeCmsData.leadershipMessages) || [];
+    const item = list.find(m => String(m.id) === String(id));
+    if (!item) return;
+    const modal = document.getElementById('leadershipMessageModal');
+    if (!modal) return;
+
+    const photo = document.getElementById('modalLeaderPhoto');
+    if (photo) photo.src = item.photo || 'assets/img/avatar-placeholder.png';
+    const name = document.getElementById('modalLeaderName');
+    if (name) name.textContent = item.name;
+    const role = document.getElementById('modalLeaderRole');
+    if (role) role.textContent = item.role || '';
+    const org = document.getElementById('modalLeaderOrg');
+    if (org) org.textContent = item.organization || '';
+    const cat = document.getElementById('modalLeaderCategory');
+    if (cat) cat.textContent = item.category || 'Leadership Voice';
+    const body = document.getElementById('modalLeaderFullProse');
+    if (body) {
+      body.innerHTML = formatMarkdownProse(item.fullMessage || item.excerpt || '');
+    }
+
+    modal.classList.add('active');
+    modal.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+  };
+
+  window.closeLeadershipModal = function() {
+    const modal = document.getElementById('leadershipMessageModal');
+    if (!modal) return;
+    modal.classList.remove('active');
+    modal.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+  };
+
+  window.openVideoModal = function(youtubeId, title, speaker, desc) {
+    const modal = document.getElementById('videoPlayerModal');
+    const iframeWrap = document.getElementById('videoIframeContainer');
+    if (!modal || !iframeWrap) return;
+
+    iframeWrap.innerHTML = `
+      <iframe src="https://www.youtube.com/embed/${encodeURIComponent(youtubeId)}?autoplay=1&rel=0&modestbranding=1" 
+        title="${escapeHtml(title || 'GIDA Video Session')}" 
+        frameborder="0" 
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+        allowfullscreen 
+        style="position:absolute; top:0; left:0; width:100%; height:100%; border:none;">
+      </iframe>
+    `;
+
+    const titleEl = document.getElementById('modalVideoTitle');
+    if (titleEl) titleEl.textContent = title || '';
+    const spkEl = document.getElementById('modalVideoSpeaker');
+    if (spkEl) spkEl.textContent = speaker || '';
+    const descEl = document.getElementById('modalVideoDesc');
+    if (descEl) descEl.textContent = desc || '';
+
+    modal.classList.add('active');
+    modal.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+  };
+
+  window.closeVideoModal = function() {
+    const modal = document.getElementById('videoPlayerModal');
+    const iframeWrap = document.getElementById('videoIframeContainer');
+    if (iframeWrap) iframeWrap.innerHTML = '';
+    if (modal) {
+      modal.classList.remove('active');
+      modal.setAttribute('aria-hidden', 'true');
+    }
+    document.body.style.overflow = '';
+  };
+
+  // Close modals on Escape key and overlay click
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+      window.closeLeadershipModal();
+      window.closeVideoModal();
+    }
+  });
+
+  document.addEventListener('click', function(e) {
+    if (e.target && e.target.classList && e.target.classList.contains('gida-modal-overlay')) {
+      if (e.target.id === 'leadershipMessageModal') window.closeLeadershipModal();
+      if (e.target.id === 'videoPlayerModal') window.closeVideoModal();
+    }
+  });
 
   // Run on DOM ready
   if (document.readyState === 'loading') {

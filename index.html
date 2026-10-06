@@ -136,27 +136,49 @@
     </div>
   </section>
 
-  <!-- CEO / EXECUTIVE LEADERSHIP MESSAGE (ITEM 3) -->
-  <section class="ceo-message-section section-pad" id="ceo-section">
+  <!-- LEADERSHIP & VOICES / MESSAGES & PERSPECTIVES CAROUSEL -->
+  <section class="leadership-section section-pad" id="leadership-section">
     <div class="wrap">
-      <div class="ceo-card reveal">
-        <div class="ceo-figure">
-          <img src="assets/img/ceo-bukola.png" alt="Bukola F. Sanni — Lead Inclusion Developement, GIDA" class="ceo-img" id="cms-ceo-img">
+      <div class="leadership-head-row">
+        <div>
+          <p class="eyebrow reveal" id="cms-leadership-kicker">Messages &amp; Perspectives</p>
+          <h2 class="h-2 reveal" id="cms-leadership-title">Leadership &amp; Voices</h2>
         </div>
-        <div class="ceo-content">
-          <span class="ceo-kicker">Message from Leadership</span>
-          <h2 class="ceo-title" id="cms-ceo-title">Building Resilient Rural Communities From Within</h2>
-          <blockquote class="ceo-quote" id="cms-ceo-quote">
-            “GIDA’s approach to inclusive development goes beyond representation, focusing on real ownership, opportunity, and participation for women, youth, persons differently abled, and marginalized communities.”
-          </blockquote>
-          <p class="ceo-body" id="cms-ceo-body">
-            That belief sits at the center of everything we do; it’s why our institutional promise is simple: Where People Prosper. Through strong safeguarding standards, community-centered programmes, and equitable partnerships, GIDA works to ensure development creates lasting value and shared prosperity for everyone.
-          </p>
-          <div class="ceo-byline">
-            <div class="ceo-name" id="cms-ceo-name">Bukola F. Sanni</div>
-            <div class="ceo-role" id="cms-ceo-role">Lead Inclusion Developement, GIDA.</div>
-          </div>
+        <div class="carousel-nav-group reveal">
+          <button class="carousel-btn" id="leadershipPrevBtn" aria-label="Previous leadership message" title="Previous message">
+            <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
+          </button>
+          <button class="carousel-btn" id="leadershipNextBtn" aria-label="Next leadership message" title="Next message">
+            <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+          </button>
         </div>
+      </div>
+
+      <!-- CAROUSEL TRACK -->
+      <div class="leadership-carousel-wrapper reveal">
+        <div class="leadership-carousel-track" id="leadershipTrack">
+          <!-- Hydrated dynamically from published leadershipMessages in cms-data.json -->
+        </div>
+      </div>
+
+      <!-- CAROUSEL DOTS -->
+      <div class="leadership-dots-container" id="leadershipDots"></div>
+    </div>
+  </section>
+
+  <!-- FEATURED VIDEO SESSIONS / WATCH & LEARN -->
+  <section class="video-section section-pad-sm" id="homeVideoSection">
+    <div class="wrap">
+      <div class="section-head-simple mb-l" style="display:flex; justify-content:space-between; align-items:flex-end; flex-wrap:wrap; gap:16px;">
+        <div>
+          <p class="eyebrow reveal" id="cms-video-kicker">Watch &amp; Learn</p>
+          <h2 class="h-2 reveal" id="cms-video-title">Featured Sessions &amp; Video Insights</h2>
+        </div>
+        <a href="blog.html?filter=videos" class="btn btn-ghost reveal" style="padding:8px 0; font-weight:700;">Explore All Sessions &rarr;</a>
+      </div>
+
+      <div class="video-grid reveal-stagger" id="homeVideoGrid">
+        <!-- Hydrated dynamically from published videos in cms-data.json -->
       </div>
     </div>
   </section>
@@ -319,6 +341,42 @@
     </div>
   </div>
 </footer>
+
+<!-- 1. LEADERSHIP MESSAGE FULL DETAIL MODAL -->
+<div id="leadershipMessageModal" class="gida-modal-overlay" aria-hidden="true" role="dialog">
+  <div class="gida-modal-dialog">
+    <button class="gida-modal-close-btn" onclick="closeLeadershipModal()" aria-label="Close message">&times;</button>
+    <div style="display:flex; align-items:center; gap:20px; margin-bottom:24px; padding-bottom:20px; border-bottom:1px solid rgba(20,36,32,0.08); flex-wrap:wrap;">
+      <div style="width:84px; height:84px; border-radius:18px; overflow:hidden; flex-shrink:0; box-shadow:0 6px 16px rgba(0,0,0,0.08); border:1px solid rgba(20,36,32,0.08);">
+        <img id="modalLeaderPhoto" src="assets/img/ceo-bukola.png" alt="Leader Photo" style="width:100%; height:100%; object-fit:cover; display:block;">
+      </div>
+      <div style="flex:1; min-width:200px;">
+        <span id="modalLeaderCategory" style="display:inline-block; font-size:0.75rem; font-weight:800; text-transform:uppercase; letter-spacing:0.06em; color:var(--teal-dark, #00686e); background:rgba(0,130,138,0.1); padding:3px 10px; border-radius:100px; margin-bottom:6px;">Leadership Voice</span>
+        <h3 id="modalLeaderName" style="font-family:var(--font-head); font-size:1.45rem; font-weight:800; color:var(--green-dark, #0d231d); margin-bottom:4px; line-height:1.2;">Bukola F. Sanni</h3>
+        <div id="modalLeaderRole" style="font-size:0.95rem; font-weight:600; color:#475569;">Lead Inclusion Development</div>
+        <div id="modalLeaderOrg" style="font-size:0.85rem; color:#64748b; margin-top:2px;">Growth Innovation for Development Action</div>
+      </div>
+    </div>
+    <div id="modalLeaderFullProse" style="font-size:1.02rem; line-height:1.8; color:var(--ink-soft, #334155); white-space:pre-line;">
+      <!-- Populated dynamically -->
+    </div>
+  </div>
+</div>
+
+<!-- 2. IN-WEBSITE VIDEO LIGHTBOX PLAYER MODAL -->
+<div id="videoPlayerModal" class="gida-modal-overlay" aria-hidden="true" role="dialog">
+  <div class="gida-modal-dialog gida-video-modal-dialog">
+    <button class="gida-modal-close-btn" onclick="closeVideoModal()" aria-label="Close video player" style="top:12px; right:12px; background:rgba(0,0,0,0.6); color:#fff;">&times;</button>
+    <div class="gida-video-player-wrap" id="videoIframeContainer">
+      <!-- 16:9 iframe injected on user click -->
+    </div>
+    <div class="gida-video-meta-body">
+      <span id="modalVideoSpeaker" class="gida-video-meta-speaker">Speaker Info</span>
+      <h3 id="modalVideoTitle" class="gida-video-meta-title">Session Title</h3>
+      <p id="modalVideoDesc" class="gida-video-meta-desc">Session Description</p>
+    </div>
+  </div>
+</div>
 
 <script src="assets/js/main.js"></script>
 <script src="assets/js/cms-engine.js"></script>

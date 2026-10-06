@@ -31,6 +31,121 @@
     "photo": "assets/img/ceo-bukola.png",
     "visible": true
   },
+  "leadershipSection": {
+    "kicker": "Messages & Perspectives",
+    "title": "Leadership & Voices",
+    "description": "Strategic insights, institutional commitments, and field perspectives from GIDA leadership, advisory council, and key stakeholders.",
+    "visible": true
+  },
+  "leadershipMessages": [
+    {
+      "id": 1,
+      "name": "Bukola F. Sanni",
+      "role": "Lead Inclusion Developement",
+      "organization": "Growth Innovation for Development Action (GIDA)",
+      "photo": "assets/img/ceo-bukola.png",
+      "quote": "GIDA’s approach to inclusive development goes beyond representation, focusing on real ownership, opportunity, and participation for women, youth, persons differently abled, and marginalized communities.",
+      "excerpt": "GIDA’s approach to inclusive development goes beyond representation, focusing on real ownership, opportunity, and participation for women, youth, persons differently abled, and marginalized communities.",
+      "fullMessage": "GIDA’s approach to inclusive development goes beyond representation, focusing on real ownership, opportunity, and participation for women, youth, persons differently abled, and marginalized communities.\n\nThat belief sits at the center of everything we do; it’s why our institutional promise is simple: Where People Prosper. Through strong safeguarding standards, community-centered programmes, and equitable partnerships, GIDA works to ensure development creates lasting value and shared prosperity for everyone.",
+      "date": "October 2026",
+      "category": "Executive Leadership",
+      "featured": true,
+      "status": "published",
+      "order": 1
+    },
+    {
+      "id": 2,
+      "name": "Dr. Mansur Kabir",
+      "role": "Chair, Technical Advisory Council",
+      "organization": "Agro-Ecological Research Alliance",
+      "photo": "assets/img/director.jpg",
+      "quote": "Sustainable prosperity requires bridging rigorous scientific agronomy with deep community ownership and market incentives.",
+      "excerpt": "Sustainable prosperity requires bridging rigorous scientific agronomy with deep community ownership and market incentives.",
+      "fullMessage": "Addressing systemic rural vulnerability in northern agricultural corridors demands more than technological handouts. We must build decentralized soil health testing, low-cost bio-fertilizer synthesis, and water harvesting structures that rural producers themselves can operate and expand.\n\nGIDA's collaborative model brings together agronomists, community elders, and private input off-takers to turn ecological resilience into everyday economic security.",
+      "date": "September 2026",
+      "category": "Advisory & Governance",
+      "featured": false,
+      "status": "published",
+      "order": 2
+    },
+    {
+      "id": 3,
+      "name": "Amina Bello",
+      "role": "Lead, Market Systems & GESI",
+      "organization": "GIDA Inclusive Finance Unit",
+      "photo": "assets/img/market.jpg",
+      "quote": "When market systems are co-designed around women's daily financial realities, entire household economies transform.",
+      "excerpt": "When market systems are co-designed around women's daily financial realities, entire household economies transform.",
+      "fullMessage": "Women in rural aggregation hubs are the backbone of food security, yet traditional formal banking structures consistently misread their risk profiles. Through initiatives like CreditHer and decentralized solar cold storage hubs, we are proving that alternative data, peer guarantees, and flexible Pay-As-You-Store models yield superior repayment and unprecedented household prosperity.",
+      "date": "August 2026",
+      "category": "Partner & Expert Voice",
+      "featured": false,
+      "status": "published",
+      "order": 3
+    }
+  ],
+  "videoSection": {
+    "kicker": "Watch & Learn",
+    "title": "Featured Sessions & Video Insights",
+    "description": "Recorded webinars, technical dialogues, and field documentaries from GIDA programmes, sprints, and stakeholder forums.",
+    "visible": true
+  },
+  "videos": [
+    {
+      "id": 1791219800000,
+      "title": "Beyond Gender-Blind Finance: Activating Gender-Disaggregated Data",
+      "youtubeUrl": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+      "youtubeId": "dQw4w9WgXcQ",
+      "thumbnail": "assets/img/agri.jpg",
+      "category": "Dialogue & Webinar",
+      "speaker": "Bukola F. Sanni & Technical Panelists",
+      "event": "AIR × CBN Design Sprint Dialogue",
+      "duration": "38 mins",
+      "date": "October 2026",
+      "excerpt": "Exploring alternative credit-assessment methodologies, VSLA transaction data, and flexible financing models to unlock productive capital for women-led agribusinesses.",
+      "description": "Watch the complete session recording exploring how gender-disaggregated data, alternative credit assessments, and flexible financing models can expand formal credit access for female smallholders and agribusiness entrepreneurs across Sub-Saharan Africa.",
+      "featured": true,
+      "featuredOnHome": true,
+      "status": "published",
+      "order": 1
+    },
+    {
+      "id": 1791219800001,
+      "title": "Regenerative Soil Systems & Microbial Testing at the Farm Gate",
+      "youtubeUrl": "https://www.youtube.com/watch?v=y881t8ilMyc",
+      "youtubeId": "y881t8ilMyc",
+      "thumbnail": "assets/img/hero-slide.jpg",
+      "category": "Field Masterclass",
+      "speaker": "GIDA Agronomy Technical Unit",
+      "event": "Northern Corridors Farmer Summit",
+      "duration": "24 mins",
+      "date": "September 2026",
+      "excerpt": "Practical field demonstration of rapid colorimetric soil assays and indigenous microorganism culturing that boosted sorghum yields by 38%.",
+      "description": "Technical field masterclass demonstrating rapid on-farm soil testing, indigenous microorganism fermentation, and cover-crop nitrogen fixation methods deployed across 12,000 smallholders.",
+      "featured": false,
+      "featuredOnHome": true,
+      "status": "published",
+      "order": 2
+    },
+    {
+      "id": 1791219800002,
+      "title": "Decentralized Solar Cold Storage & Women-Led Aggregation Hubs",
+      "youtubeUrl": "https://www.youtube.com/watch?v=7X8II6J-6mU",
+      "youtubeId": "7X8II6J-6mU",
+      "thumbnail": "assets/img/market.jpg",
+      "category": "Impact Documentary",
+      "speaker": "Horticultural Cooperative Leaders & Engineers",
+      "event": "Green Infrastructure Showcase",
+      "duration": "16 mins",
+      "date": "August 2026",
+      "excerpt": "How rural female cooperatives curtailed perishable crop spoilage by 85% using 100% solar walk-in cold rooms and Pay-As-You-Store fees.",
+      "description": "A field documentary highlighting the deployment and cooperative governance of decentralized 100% solar cold storage hubs across perishable crop trading junctions.",
+      "featured": false,
+      "featuredOnHome": true,
+      "status": "published",
+      "order": 3
+    }
+  ],
   "articles": [
     {
       "id": 1791211692687,
