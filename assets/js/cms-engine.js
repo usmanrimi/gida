@@ -125,12 +125,10 @@
                 ${m.organization ? `<div class="leadership-author-org">${escapeHtml(m.organization)}</div>` : ''}
               </div>
             </div>
-            ${m.expertise ? `<div class="leadership-card-expertise">${escapeHtml(m.expertise)}</div>` : ''}
             <div class="leadership-quote-body">
               ${escapeHtml(m.excerpt || m.quote || '')}
             </div>
             <div class="leadership-card-footer">
-              <span class="leadership-category-pill">${escapeHtml(m.category || 'Leadership')}</span>
               <button type="button" class="leadership-read-btn" onclick="openLeadershipModal('${m.id}')" aria-label="Read full message from ${escapeHtml(m.name)}">
                 ${escapeHtml(m.ctaText || 'Read Full Message')}
                 <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
