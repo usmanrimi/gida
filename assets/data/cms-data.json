@@ -3,12 +3,12 @@
     "src": "assets/img/hero-slide.jpg",
     "alt": "Smiling rural market trader in Northern Nigeria — Where People Prosper",
     "title": "Where People Prosper",
-    "kicker": "Where People Prosper",
+    "kicker": "",
     "headline": "Where people prosper.",
     "desc": "Cultivating resilient rural market systems, low-cost green infrastructure, community and planetary health, and gender-transformative livelihoods."
   },
   "homepage": {
-    "kicker": "Where People Prosper",
+    "kicker": "",
     "headline": "Where people prosper.",
     "desc": "Cultivating resilient rural market systems, low-cost green infrastructure, community and planetary health, and gender-transformative livelihoods.",
     "prosperity": "GIDA defines prosperity holistically, as equitable economic wealth, physical and biological health, social dignity, and environmental resilience, working together rather than in isolation."
@@ -33,7 +33,7 @@
   },
   "leadershipSection": {
     "kicker": "Messages & Perspectives",
-    "title": "Leadership & Voices",
+    "title": "Leadership",
     "description": "Strategic insights, institutional commitments, and field perspectives from GIDA leadership, advisory council, and key stakeholders.",
     "visible": true
   },
@@ -74,7 +74,7 @@
     }
   ],
   "videoSection": {
-    "kicker": "Watch & Learn",
+    "kicker": "",
     "title": "Featured Sessions & Video Insights",
     "description": "Recorded webinars, technical dialogues, and field documentaries from GIDA programmes, sprints, and stakeholder forums.",
     "visible": true

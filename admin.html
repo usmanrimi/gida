@@ -466,7 +466,7 @@
               <form id="formHomepage" onsubmit="saveHomepage(event)">
                 <div class="form-group">
                   <label>Hero Kicker / Badge</label>
-                  <input type="text" id="hpKicker" value="Where People Prosper">
+                  <input type="text" id="hpKicker" value="" placeholder="Optional Kicker Badge">
                 </div>
                 <div class="form-group">
                   <label>Main Headline (Display)</label>
@@ -550,7 +550,7 @@
           <!-- SECTION PARAMETERS -->
           <div class="content-card">
             <div class="card-head">
-              <h3>Leadership &amp; Voices Section Settings</h3>
+              <h3>Leadership Section Settings</h3>
               <div style="display:flex;align-items:center;gap:8px;">
                 <label style="font-size:0.85rem;font-weight:600;display:flex;align-items:center;gap:6px;cursor:pointer;">
                   <input type="checkbox" id="leadSecVisible" checked style="width:auto;"> Display Section on Homepage
@@ -562,11 +562,11 @@
                 <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
                   <div class="form-group">
                     <label>Section Eyebrow / Kicker</label>
-                    <input type="text" id="leadSecKicker" value="Leadership &amp; Voices" required>
+                    <input type="text" id="leadSecKicker" value="Messages &amp; Perspectives">
                   </div>
                   <div class="form-group">
                     <label>Main Section Title</label>
-                    <input type="text" id="leadSecTitle" value="Messages &amp; Perspectives" required>
+                    <input type="text" id="leadSecTitle" value="Leadership" required>
                   </div>
                 </div>
                 <div class="form-group">
@@ -741,7 +741,7 @@
                 <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
                   <div class="form-group">
                     <label>Section Eyebrow / Kicker</label>
-                    <input type="text" id="videoSecKicker" value="Watch &amp; Learn" required>
+                    <input type="text" id="videoSecKicker" value="" placeholder="Optional Eyebrow Badge">
                   </div>
                   <div class="form-group">
                     <label>Main Section Title</label>
@@ -1634,12 +1634,12 @@ const DEFAULT_STORE = {
     src: "assets/img/gida-logo-official.png",
     alt: "GIDA Official Organization Emblem & Identity",
     title: "GIDA Official Seal",
-    kicker: "Where People Prosper",
+    kicker: "",
     headline: "Where people prosper.",
     desc: "Cultivating resilient rural market systems, low-cost green infrastructure, community and planetary health, and gender-transformative livelihoods."
   },
   homepage: {
-    kicker: "Where People Prosper",
+    kicker: "",
     headline: "Where people prosper.",
     desc: "Cultivating resilient rural market systems, low-cost green infrastructure, community and planetary health, and gender-transformative livelihoods.",
     prosperity: "GIDA defines prosperity holistically, as equitable economic wealth, physical and biological health, social dignity, and environmental resilience, working together rather than in isolation."
@@ -1663,8 +1663,8 @@ const DEFAULT_STORE = {
     visible: true
   },
   leadershipSection: {
-    title: "Messages & Perspectives",
-    kicker: "Leadership & Voices",
+    title: "Leadership",
+    kicker: "Messages & Perspectives",
     desc: "Guidance, strategic vision, and field perspectives from executive leadership, technical experts, and core development partners.",
     visible: true
   },
@@ -1704,7 +1704,7 @@ const DEFAULT_STORE = {
   ],
   videoSection: {
     title: "Featured Sessions & Video Insights",
-    kicker: "Watch & Learn",
+    kicker: "",
     desc: "Recorded webinars, technical dialogues, and field documentaries from GIDA programmes, sprints, and stakeholder forums."
   },
   videos: [
@@ -2552,13 +2552,13 @@ function renderStats() {
   if (document.getElementById('statImages')) document.getElementById('statImages').innerText = store.images ? store.images.length : 0;
 }
 
-// --- LEADERSHIP & VOICES SECTION ---
+// --- LEADERSHIP SECTION ---
 function renderLeadershipSection() {
   if (!store.leadershipSection) store.leadershipSection = DEFAULT_STORE.leadershipSection;
   const k = document.getElementById('leadSecKicker');
-  if (k) k.value = store.leadershipSection.kicker || 'Leadership & Voices';
+  if (k) k.value = store.leadershipSection.kicker || 'Messages & Perspectives';
   const t = document.getElementById('leadSecTitle');
-  if (t) t.value = store.leadershipSection.title || 'Messages & Perspectives';
+  if (t) t.value = store.leadershipSection.title || 'Leadership';
   const d = document.getElementById('leadSecDesc');
   if (d) d.value = store.leadershipSection.desc || '';
   const v = document.getElementById('leadSecVisible');
@@ -2567,7 +2567,7 @@ function renderLeadershipSection() {
 
 function saveLeadershipSection(e) {
   e.preventDefault();
-  if (!confirm("Do you confirm updating the Leadership & Voices section headers?")) return;
+  if (!confirm("Do you confirm updating the Leadership section headers?")) return;
   store.leadershipSection = {
     kicker: document.getElementById('leadSecKicker').value,
     title: document.getElementById('leadSecTitle').value,
@@ -2815,7 +2815,7 @@ function updateCeoPhotoFromUrl(url) {}
 function renderVideoSection() {
   if (!store.videoSection) store.videoSection = DEFAULT_STORE.videoSection;
   const k = document.getElementById('videoSecKicker');
-  if (k) k.value = store.videoSection.kicker || 'Watch & Learn';
+  if (k) k.value = store.videoSection.kicker || '';
   const t = document.getElementById('videoSecTitle');
   if (t) t.value = store.videoSection.title || 'Featured Sessions & Video Insights';
   const d = document.getElementById('videoSecDesc');

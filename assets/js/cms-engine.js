@@ -189,7 +189,14 @@
 
     if (cms.homepage) {
       const hpKicker = document.getElementById('cms-hero-tag') || document.querySelector('.hero-tag') || document.querySelector('.hero-sub-kicker');
-      if (hpKicker && cms.homepage.kicker) hpKicker.textContent = cms.homepage.kicker;
+      if (hpKicker) {
+        if (cms.homepage.kicker) {
+          hpKicker.textContent = cms.homepage.kicker;
+          hpKicker.style.display = '';
+        } else {
+          hpKicker.style.display = 'none';
+        }
+      }
       
       const hpHead = document.getElementById('cms-hero-headline') || document.querySelector('.hero h1') || document.querySelector('.h-display') || document.querySelector('.hero-headline');
       if (hpHead && cms.homepage.headline) {
@@ -251,7 +258,14 @@
     // --- C0. HOMEPAGE VIDEO SHOWCASE (index.html) ---
     if (cms.videoSection) {
       const vk = document.getElementById('cms-video-kicker');
-      if (vk && cms.videoSection.kicker) vk.textContent = cms.videoSection.kicker;
+      if (vk) {
+        if (cms.videoSection.kicker) {
+          vk.textContent = cms.videoSection.kicker;
+          vk.style.display = '';
+        } else {
+          vk.style.display = 'none';
+        }
+      }
       const vt = document.getElementById('cms-video-title');
       if (vt && cms.videoSection.title) vt.textContent = cms.videoSection.title;
       const vd = document.getElementById('cms-video-desc');
