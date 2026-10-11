@@ -519,7 +519,7 @@
   <!-- PAGE HEAD -->
   <section class="reg-page-head">
     <div class="wrap text-center" style="max-width:880px; margin:0 auto;">
-      <p class="crumb" style="color:var(--gold); font-weight:700; text-transform:uppercase; letter-spacing:0.08em; font-size:0.8rem; margin-bottom:12px;">Official Event Registration · Hybrid Session</p>
+      <p class="crumb" style="color:var(--gold); font-weight:700; text-transform:uppercase; letter-spacing:0.08em; font-size:0.8rem; margin-bottom:12px;">Official Event Registration</p>
       <h1 class="h-display" style="font-size:clamp(1.75rem, 3.2vw, 2.55rem); line-height:1.2; margin-bottom:16px;">
         International Day for Rural Women 2026: Rural Women Rising: Strengthening the Frontline in Nigeria
       </h1>
@@ -1070,13 +1070,31 @@
         <div class="confirm-icon-box">
           <svg width="36" height="36" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
         </div>
-        <h2 class="confirm-title">Registration Confirmed!</h2>
-        <p style="font-size:1.05rem; color:#475569; max-width:620px; margin:0 auto;">
+        <h2 class="confirm-title">Registration Confirmed</h2>
+        <p style="font-size:1.05rem; color:#475569; max-width:620px; margin:0 auto 16px;">
           Thank you for registering for <strong>International Day for Rural Women 2026</strong>: <em>Rural Women Rising — Strengthening the Frontline in Nigeria</em>.
         </p>
 
         <div class="confirm-ref-badge" id="confirmRefIdBadge">
           Reference ID: GIDA-RW2026-1001
+        </div>
+
+        <!-- GOOGLE MEET ONLINE PARTICIPATION BOX -->
+        <div style="background:#f0fdf4; border:1px solid #bbf7d0; border-radius:12px; padding:18px 22px; margin:22px auto; max-width:640px; text-align:left;">
+          <div style="display:flex; align-items:center; gap:10px; margin-bottom:8px;">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="#15803d"><path d="M17 10.5V7c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1v10c0 .55.45 1 1 1h12c.55 0 1-.45 1-1v-3.5l4 4v-11l-4 4z"/></svg>
+            <strong style="color:#14532d; font-size:1.02rem;">Join Online via Google Meet</strong>
+          </div>
+          <p style="margin:0 0 12px; font-size:0.9rem; color:#166534; line-height:1.5;">
+            Use the official link below to join the live proceedings on October 15, 2026:
+          </p>
+          <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap;">
+            <a href="https://meet.google.com/zvz-geyn-qky" target="_blank" rel="noopener noreferrer" style="display:inline-flex; align-items:center; gap:8px; background:#15803d; color:#fff; padding:9px 18px; border-radius:8px; font-weight:700; text-decoration:none; font-size:0.92rem; box-shadow:0 2px 6px rgba(21,128,61,0.2);">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M19 19H5V5h7V3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"/></svg>
+              <span>Join Google Meet</span>
+            </a>
+            <span style="font-size:0.85rem; color:#166534; font-family:monospace; word-break:break-all;">https://meet.google.com/zvz-geyn-qky</span>
+          </div>
         </div>
 
         <div class="confirm-details-box">
@@ -1101,20 +1119,24 @@
             <span class="val" id="confirmSubmittedAt">—</span>
           </div>
           <div class="confirm-detail-row">
-            <span class="lbl">Event Date &amp; Format:</span>
-            <span class="val">October 15, 2026 · Hybrid Session</span>
+            <span class="lbl">Event Date:</span>
+            <span class="val">October 15, 2026</span>
           </div>
         </div>
 
-        <div style="display:flex; justify-content:center; gap:14px; flex-wrap:wrap;">
+        <div style="display:flex; justify-content:center; gap:12px; flex-wrap:wrap; margin-top:24px;">
+          <a id="btnAddToCalendar" href="#" target="_blank" rel="noopener noreferrer" class="btn btn-gold" style="padding:10px 22px; display:inline-flex; align-items:center; gap:8px;">
+            <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+            <span>Add to Google Calendar</span>
+          </a>
           <button type="button" class="btn btn-outline on-light" onclick="window.print()" style="padding:10px 22px;">
-            🖨️ Print Registration Slip
+            🖨️ Print Slip
           </button>
-          <a href="index.html" class="btn btn-gold" style="padding:10px 22px;">
+          <a href="index.html" class="btn btn-outline on-light" style="padding:10px 22px;">
             Return to Homepage
           </a>
           <button type="button" class="btn-step-prev" onclick="registerAnotherDelegate()" style="padding:10px 18px;">
-            Register Another Delegate
+            Register Another
           </button>
         </div>
       </div>
@@ -1753,6 +1775,21 @@ async function handleRegistrationSubmit(e) {
       document.getElementById('confirmDelegateOrg').innerText = reg.organization || payload.organization;
       document.getElementById('confirmDelegateRole').innerText = reg.designation || payload.designation;
       document.getElementById('confirmSubmittedAt').innerText = new Date(reg.submittedAt || Date.now()).toLocaleString('en-NG', { timeZone: 'UTC', timeZoneName: 'short' });
+
+      // Populate Google Calendar link
+      const calTitle = encodeURIComponent("International Day for Rural Women 2026: Rural Women Rising — Strengthening the Frontline in Nigeria");
+      const calDetails = encodeURIComponent(
+        "Growth Innovation for Development Action (GIDA) Multi-Stakeholder Dialogue.\n\n" +
+        "Theme: Rural Women Rising — Strengthening the Frontline in Nigeria\n" +
+        "Keynote: Promise or Publicity: PreCEFI as a Leading Institution in Bridging Financial Inclusion Gaps\n\n" +
+        "Online Meeting: https://meet.google.com/zvz-geyn-qky\n" +
+        "Delegate Reference ID: " + refId
+      );
+      const calLocation = encodeURIComponent("https://meet.google.com/zvz-geyn-qky");
+      const calDates = "20261015T090000Z/20261015T130000Z";
+      const calUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${calTitle}&dates=${calDates}&details=${calDetails}&location=${calLocation}`;
+      const calBtn = document.getElementById('btnAddToCalendar');
+      if (calBtn) calBtn.href = calUrl;
 
       // Hide form & stepper, show confirmation
       document.getElementById('eventRegistrationForm').style.display = 'none';

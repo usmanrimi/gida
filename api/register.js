@@ -297,21 +297,28 @@ module.exports = async (req, res) => {
     const webhookUrl = getSheetsWebhookUrl();
     const sheetsResult = await sendToGoogleSheets(newRecord, webhookUrl);
 
-    newRecord.googleSheetsSynced = Boolean(sheetsResult.success);
-    if (!sheetsResult.success && sheetsResult.error) {
-      newRecord.googleSheetsError = sheetsResult.error;
+    if (!sheetsResult.success) {
+      const errMsg = sheetsResult.error || 'Failed to record registration in Google Sheets.';
+      newRecord.googleSheetsSynced = false;
+      newRecord.googleSheetsError = errMsg;
+      await saveRegistrations(records);
+      return res.status(502).json({
+        success: false,
+        message: 'Could not record registration in Google Sheet: ' + errMsg,
+        error: errMsg
+      });
     }
+
+    newRecord.googleSheetsSynced = true;
+    delete newRecord.googleSheetsError;
     await saveRegistrations(records);
 
     return res.status(200).json({
       success: true,
       registrationId: newId,
       registration: newRecord,
-      googleSheetsSynced: Boolean(sheetsResult.success),
-      googleSheetsError: sheetsResult.success ? null : sheetsResult.error,
-      message: sheetsResult.success
-        ? 'Registration successfully recorded in Google Sheets.'
-        : 'Registration confirmed and reserved.'
+      googleSheetsSynced: true,
+      message: 'Registration confirmed and recorded in Google Sheet.'
     });
   } catch (err) {
     console.error('[API REGISTER ERROR]', err);

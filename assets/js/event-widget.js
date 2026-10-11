@@ -312,7 +312,7 @@
       </p>
       <div class="gida-event-meta-box">
         <div><strong>Date:</strong> October 15, 2026</div>
-        <div><strong>Venue:</strong> Abuja, Nigeria &amp; Virtual Hybrid</div>
+        <div><strong>Venue:</strong> Kano, Nigeria &amp; Online (Google Meet)</div>
       </div>
       <div class="gida-event-actions">
         <a href="${regUrl}" class="gida-btn-register" id="gidaBtnRegisterNow">

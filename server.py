@@ -692,24 +692,33 @@ class GidaCMSHandler(http.server.SimpleHTTPRequestHandler):
             webhook_url = get_sheets_webhook_url()
             sheets_result = send_to_google_sheets(new_record, webhook_url)
 
-            new_record["googleSheetsSynced"] = bool(sheets_result.get("success"))
-            if not sheets_result.get("success") and sheets_result.get("error"):
-                new_record["googleSheetsError"] = sheets_result.get("error")
-                print(f"[SHEETS SYNC NOTICE] Registration {new_id} saved locally. Sheets sync: {sheets_result.get('error')}")
-            else:
-                print(f"[SHEETS SYNC SUCCESS] Registration {new_id} successfully mirrored to Google Sheets.")
+            if not sheets_result.get("success"):
+                err_msg = sheets_result.get("error") or "Google Sheets synchronization failed."
+                print(f"[SHEETS SYNC ERROR] Registration rejected: {err_msg}")
+                # Save to local records marked as unsynced
+                new_record["googleSheetsSynced"] = False
+                new_record["googleSheetsError"] = err_msg
+                records.append(new_record)
+                save_registrations(records)
+                self.send_json_response({
+                    "success": False,
+                    "message": f"Could not record registration in Google Sheet: {err_msg}",
+                    "error": err_msg
+                }, status=502)
+                return
 
+            new_record["googleSheetsSynced"] = True
+            new_record.pop("googleSheetsError", None)
             records.append(new_record)
             save_registrations(records)
 
-            print(f"[REGISTRATION SUCCESS] Registered {new_id} for {email} ({organization}). Sheets synced: {sheets_result.get('success')}")
+            print(f"[REGISTRATION SUCCESS] Registered {new_id} for {email} ({organization}) and saved to Google Sheets.")
             self.send_json_response({
                 "success": True,
                 "registrationId": new_id,
                 "registration": new_record,
-                "googleSheetsSynced": bool(sheets_result.get("success")),
-                "googleSheetsError": None if sheets_result.get("success") else sheets_result.get("error"),
-                "message": "Registration successfully recorded in Google Sheets." if sheets_result.get("success") else "Registration confirmed and reserved."
+                "googleSheetsSynced": True,
+                "message": "Registration confirmed and recorded in Google Sheet."
             }, status=200)
 
         except Exception as e:
