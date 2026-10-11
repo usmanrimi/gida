@@ -2213,7 +2213,8 @@ const DEFAULT_STORE = {
     linkedin: 'https://linkedin.com/company/gida-action',
     facebook: 'https://facebook.com/gidaaction',
     instagram: 'https://instagram.com/gida_action'
-  }
+  },
+  googleSheetsWebhookUrl: 'https://script.google.com/macros/s/AKfycbxY4abu_7rFcG9ixvysi5hkQTu_xNImrGs1rq57j8WhTHrt8zFDRxSI2gGFN2TTAmzPUw/exec'
 };
 
 let store = DEFAULT_STORE;
@@ -2225,6 +2226,9 @@ try {
     if (!Array.isArray(store.leadershipMessages) || store.leadershipMessages.length === 0) store.leadershipMessages = DEFAULT_STORE.leadershipMessages;
     if (!store.videoSection) store.videoSection = DEFAULT_STORE.videoSection;
     if (!Array.isArray(store.videos) || store.videos.length === 0) store.videos = DEFAULT_STORE.videos;
+    if (!store.googleSheetsWebhookUrl || store.googleSheetsWebhookUrl.includes('AKfycbzWW5wzRbD1KU5iYMkGTSoKyZeI3YBVPxeEI9keJg3KCKRqc_cJ_FX1HcUNUZfzA887')) {
+      store.googleSheetsWebhookUrl = DEFAULT_STORE.googleSheetsWebhookUrl;
+    }
   }
 } catch(e) {
   store = DEFAULT_STORE;

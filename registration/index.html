@@ -1724,9 +1724,9 @@ async function handleRegistrationSubmit(e) {
         const cmsRes = await fetch('assets/data/cms-data.json').catch(() => null);
         if (cmsRes && cmsRes.ok) {
           const cmsData = await cmsRes.json().catch(() => ({}));
-          fallbackUrl = cmsData.googleSheetsWebhookUrl || '';
+          fallbackUrl = cmsData.googleSheetsWebhookUrl || 'https://script.google.com/macros/s/AKfycbxY4abu_7rFcG9ixvysi5hkQTu_xNImrGs1rq57j8WhTHrt8zFDRxSI2gGFN2TTAmzPUw/exec';
         }
-        if (fallbackUrl) {
+        if (!fallbackUrl) fallbackUrl = 'https://script.google.com/macros/s/AKfycbxY4abu_7rFcG9ixvysi5hkQTu_xNImrGs1rq57j8WhTHrt8zFDRxSI2gGFN2TTAmzPUw/exec';
           await fetch(fallbackUrl, {
             method: 'POST',
             mode: 'no-cors',
