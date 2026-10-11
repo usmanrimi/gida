@@ -1,0 +1,1789 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Register · Rural Women Rising 2026 — GIDA</title>
+<meta name="description" content="Official Event Registration for International Day for Rural Women 2026: Rural Women Rising — Strengthening the Frontline in Nigeria. Keynote Theme: Promise or Publicity: PreCEFI as a Leading Institution in Bridging Financial Inclusion Gaps.">
+<link rel="icon" href="assets/img/logo.png">
+<link rel="stylesheet" href="assets/css/style.css">
+<style>
+/* ==========================================================================
+   EVENT REGISTRATION COMPONENT STYLES
+   ========================================================================== */
+.reg-page-head {
+  background: linear-gradient(135deg, rgba(13,35,29,0.92) 0%, rgba(0,104,110,0.85) 100%), url('assets/img/women-farmers.jpg') center/cover no-repeat;
+  color: #fff;
+  padding: 130px 0 60px;
+}
+.reg-container {
+  max-width: 920px;
+  margin: -40px auto 80px;
+  position: relative;
+  z-index: 10;
+}
+.reg-card {
+  background: #ffffff;
+  border-radius: 20px;
+  box-shadow: 0 16px 48px rgba(13,35,29,0.08), 0 2px 8px rgba(0,0,0,0.04);
+  border: 1px solid rgba(20,36,32,0.08);
+  overflow: hidden;
+}
+
+/* Stepper Progress Bar */
+.stepper-header {
+  background: #f8fafc;
+  border-bottom: 1px solid rgba(20,36,32,0.08);
+  padding: 22px 28px 16px;
+}
+.stepper-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+  gap: 8px;
+  overflow-x: auto;
+  padding-bottom: 8px;
+  scrollbar-width: thin;
+}
+.stepper-step {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 6px 10px;
+  border-radius: 8px;
+  color: #64748b;
+  font-family: var(--font-head);
+  font-size: 0.82rem;
+  font-weight: 700;
+  white-space: nowrap;
+  transition: all 0.2s ease;
+}
+.stepper-step:hover {
+  color: var(--teal-dark);
+  background: rgba(0,130,138,0.06);
+}
+.stepper-step.active {
+  color: var(--teal-dark);
+  background: rgba(0,130,138,0.12);
+}
+.stepper-step.completed {
+  color: #15803d;
+}
+.step-num {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: #e2e8f0;
+  color: #475569;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.76rem;
+  font-weight: 800;
+  transition: all 0.2s;
+}
+.stepper-step.active .step-num {
+  background: var(--teal);
+  color: #fff;
+}
+.stepper-step.completed .step-num {
+  background: #16a34a;
+  color: #fff;
+}
+.progress-bar-wrap {
+  height: 6px;
+  background: #e2e8f0;
+  border-radius: 10px;
+  overflow: hidden;
+  margin-top: 14px;
+}
+.progress-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--teal) 0%, var(--gold) 100%);
+  width: 14.28%;
+  transition: width 0.35s ease;
+}
+
+/* Form Body */
+.reg-form-body {
+  padding: 36px 40px;
+}
+@media (max-width: 640px) {
+  .reg-form-body {
+    padding: 24px 20px;
+  }
+  .stepper-header {
+    padding: 16px 18px 12px;
+  }
+}
+
+.section-head-box {
+  margin-bottom: 28px;
+  padding-bottom: 16px;
+  border-bottom: 2px solid rgba(0,130,138,0.12);
+}
+.section-tag {
+  display: inline-block;
+  font-size: 0.74rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--teal-dark);
+  background: rgba(0,130,138,0.1);
+  padding: 3px 10px;
+  border-radius: 100px;
+  margin-bottom: 6px;
+}
+.section-head-title {
+  font-family: var(--font-head);
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: var(--green-dark);
+  margin-bottom: 6px;
+}
+.section-head-desc {
+  font-size: 0.92rem;
+  color: #64748b;
+  line-height: 1.55;
+}
+
+/* Questions & Fields */
+.q-block {
+  margin-bottom: 30px;
+}
+.q-label {
+  display: block;
+  font-family: var(--font-head);
+  font-size: 1.02rem;
+  font-weight: 700;
+  color: var(--green-dark);
+  margin-bottom: 8px;
+  line-height: 1.4;
+}
+.q-label .req {
+  color: #dc2626;
+  font-weight: 900;
+  margin-left: 3px;
+}
+.q-hint {
+  font-size: 0.82rem;
+  color: #64748b;
+  margin-bottom: 10px;
+  line-height: 1.45;
+}
+
+/* Custom Text Inputs */
+.form-input-text, .form-textarea {
+  width: 100%;
+  border: 1.5px solid #cbd5e1;
+  border-radius: 10px;
+  padding: 12px 16px;
+  font-size: 0.95rem;
+  font-family: var(--font-body);
+  color: #0f172a;
+  background: #fff;
+  transition: all 0.2s ease;
+  box-sizing: border-box;
+}
+.form-input-text:focus, .form-textarea:focus {
+  outline: none;
+  border-color: var(--teal);
+  box-shadow: 0 0 0 3px rgba(0,130,138,0.15);
+}
+.form-input-text.has-error, .form-textarea.has-error {
+  border-color: #ef4444;
+  background: #fef2f2;
+}
+.field-error-msg {
+  color: #dc2626;
+  font-size: 0.8rem;
+  font-weight: 600;
+  margin-top: 5px;
+  display: none;
+}
+.field-error-msg.visible {
+  display: block;
+}
+
+/* Choice Cards (Radio & Checkbox) */
+.choice-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.choice-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 12px 16px;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 10px;
+  background: #fff;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.choice-card:hover {
+  border-color: var(--teal);
+  background: #f8fafc;
+}
+.choice-card input[type="radio"],
+.choice-card input[type="checkbox"] {
+  margin-top: 3px;
+  width: 18px;
+  height: 18px;
+  accent-color: var(--teal-dark);
+  cursor: pointer;
+  flex-shrink: 0;
+}
+.choice-card.selected {
+  border-color: var(--teal);
+  background: rgba(0,130,138,0.05);
+  box-shadow: 0 2px 6px rgba(0,130,138,0.08);
+}
+.choice-label-text {
+  font-size: 0.92rem;
+  color: #334155;
+  font-weight: 500;
+  line-height: 1.45;
+  user-select: none;
+}
+.choice-card.selected .choice-label-text {
+  color: var(--green-dark);
+  font-weight: 600;
+}
+
+/* Word Counter & Limiter Badges */
+.counter-badge {
+  display: inline-block;
+  font-size: 0.78rem;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 6px;
+  background: #f1f5f9;
+  color: #475569;
+  margin-top: 6px;
+}
+.counter-badge.warn {
+  background: #fef2f2;
+  color: #dc2626;
+}
+
+/* Bottom Stepper Controls */
+.stepper-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 36px;
+  padding-top: 24px;
+  border-top: 1px solid rgba(20,36,32,0.08);
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.btn-step-prev {
+  background: #fff;
+  border: 1.5px solid #cbd5e1;
+  color: #475569;
+  padding: 11px 22px;
+  border-radius: 10px;
+  font-family: var(--font-head);
+  font-size: 0.92rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.btn-step-prev:hover {
+  background: #f8fafc;
+  color: #0f172a;
+  border-color: #94a3b8;
+}
+.btn-step-next {
+  background: var(--teal);
+  border: 1.5px solid var(--teal);
+  color: #fff;
+  padding: 11px 26px;
+  border-radius: 10px;
+  font-family: var(--font-head);
+  font-size: 0.92rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.btn-step-next:hover {
+  background: var(--teal-dark);
+  border-color: var(--teal-dark);
+  transform: translateY(-1px);
+}
+.btn-step-submit {
+  background: linear-gradient(135deg, var(--gold) 0%, #b86518 100%);
+  border: none;
+  color: #fff;
+  padding: 13px 32px;
+  border-radius: 10px;
+  font-family: var(--font-head);
+  font-size: 1rem;
+  font-weight: 800;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 4px 14px rgba(217,130,43,0.3);
+}
+.btn-step-submit:hover:not(:disabled) {
+  filter: brightness(1.08);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(217,130,43,0.4);
+}
+.btn-step-submit:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Global Alert Banners */
+.alert-banner {
+  padding: 14px 18px;
+  border-radius: 10px;
+  margin-bottom: 24px;
+  font-size: 0.92rem;
+  line-height: 1.5;
+  display: none;
+}
+.alert-banner.error {
+  background: #fef2f2;
+  color: #991b1b;
+  border: 1px solid #fecaca;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.alert-banner.info {
+  background: #f0fdf4;
+  color: #166534;
+  border: 1px solid #bbf7d0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* Review Step Table Styles */
+.review-group {
+  margin-bottom: 24px;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  overflow: hidden;
+}
+.review-group-head {
+  background: #f8fafc;
+  padding: 12px 18px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #e2e8f0;
+}
+.review-group-title {
+  font-family: var(--font-head);
+  font-size: 0.92rem;
+  font-weight: 800;
+  color: var(--green-dark);
+}
+.review-edit-btn {
+  background: none;
+  border: none;
+  color: var(--teal-dark);
+  font-size: 0.8rem;
+  font-weight: 700;
+  cursor: pointer;
+  text-decoration: underline;
+}
+.review-group-body {
+  padding: 14px 18px;
+  background: #fff;
+}
+.review-row {
+  margin-bottom: 12px;
+}
+.review-row:last-child {
+  margin-bottom: 0;
+}
+.review-row-q {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #64748b;
+  margin-bottom: 3px;
+}
+.review-row-a {
+  font-size: 0.92rem;
+  color: #0f172a;
+  white-space: pre-line;
+}
+
+/* Confirmation Slip Card */
+.confirm-card {
+  text-align: center;
+  padding: 50px 30px;
+}
+.confirm-icon-box {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: #dcfce7;
+  color: #15803d;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+.confirm-title {
+  font-family: var(--font-head);
+  font-size: 1.85rem;
+  font-weight: 800;
+  color: var(--green-dark);
+  margin-bottom: 8px;
+}
+.confirm-ref-badge {
+  display: inline-block;
+  background: rgba(0,130,138,0.1);
+  color: var(--teal-dark);
+  border: 1.5px dashed var(--teal);
+  padding: 8px 18px;
+  border-radius: 8px;
+  font-size: 1.15rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  margin: 16px 0 24px;
+}
+.confirm-details-box {
+  max-width: 580px;
+  margin: 0 auto 30px;
+  text-align: left;
+  background: #f8fafc;
+  border-radius: 12px;
+  padding: 20px 24px;
+  border: 1px solid #e2e8f0;
+}
+.confirm-detail-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 0;
+  border-bottom: 1px solid #e2e8f0;
+  font-size: 0.9rem;
+}
+.confirm-detail-row:last-child {
+  border-bottom: none;
+}
+.confirm-detail-row .lbl {
+  color: #64748b;
+  font-weight: 600;
+}
+.confirm-detail-row .val {
+  color: #0f172a;
+  font-weight: 700;
+  text-align: right;
+}
+</style>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="site-header">
+  <nav class="nav wrap" aria-label="Primary">
+    <a class="brand" href="index.html" aria-label="GIDA Home">
+      <img src="assets/img/logo.png" alt="GIDA — Growth Innovation for Development Action">
+    </a>
+    <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false"><span></span></button>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="about.html">About Us</a>
+      <a href="programs.html">Pillars &amp; Programs</a>
+      <a href="safeguarding.html">Safeguarding &amp; Publications</a>
+      <a href="blog.html">Blog</a>
+      <a href="career.html">Careers</a>
+      <a href="contact.html">Contact Us</a>
+    </div>
+  </nav>
+</header>
+
+<main id="main">
+
+  <!-- PAGE HEAD -->
+  <section class="reg-page-head">
+    <div class="wrap text-center" style="max-width:880px; margin:0 auto;">
+      <p class="crumb" style="color:var(--gold); font-weight:700; text-transform:uppercase; letter-spacing:0.08em; font-size:0.8rem; margin-bottom:12px;">Official Event Registration · Hybrid Session</p>
+      <h1 class="h-display" style="font-size:clamp(1.75rem, 3.2vw, 2.55rem); line-height:1.2; margin-bottom:16px;">
+        International Day for Rural Women 2026: Rural Women Rising: Strengthening the Frontline in Nigeria
+      </h1>
+      <p style="font-size:1.05rem; color:rgba(255,255,255,0.9); line-height:1.6; max-width:760px; margin:0 auto 20px;">
+        <strong>Keynote Theme:</strong> Promise or Publicity: PreCEFI as a Leading Institution in Bridging Financial Inclusion Gaps
+      </p>
+      <div style="display:flex; justify-content:center; gap:12px; flex-wrap:wrap; font-size:0.84rem; font-weight:700;">
+        <span style="background:rgba(255,255,255,0.15); padding:5px 12px; border-radius:100px; backdrop-filter:blur(4px);">📅 October 15, 2026</span>
+        <span style="background:rgba(255,255,255,0.15); padding:5px 12px; border-radius:100px; backdrop-filter:blur(4px);">📍 Kano, Nigeria &amp; Virtual Broadcast</span>
+        <span style="background:rgba(255,255,255,0.15); padding:5px 12px; border-radius:100px; backdrop-filter:blur(4px);">👥 Multi-Stakeholder Dialogue</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- FORM CONTAINER -->
+  <section class="wrap reg-container">
+    <div class="reg-card">
+
+      <!-- DRAFT NOTIFICATION -->
+      <div id="draftNoticeBanner" class="alert-banner info" style="margin: 16px 24px 0;">
+        <span>📝 An auto-saved registration draft was restored.</span>
+        <button type="button" onclick="clearRegistrationDraft()" style="background:none; border:none; color:#15803d; font-weight:700; cursor:pointer; text-decoration:underline; font-size:0.82rem;">Reset Form</button>
+      </div>
+
+      <!-- STEPPER HEADER -->
+      <div class="stepper-header" id="stepperNavBox">
+        <div class="stepper-nav" role="tablist">
+          <button type="button" class="stepper-step active" data-step="1" onclick="jumpToStep(1)">
+            <span class="step-num">1</span> <span>Identity</span>
+          </button>
+          <button type="button" class="stepper-step" data-step="2" onclick="jumpToStep(2)">
+            <span class="step-num">2</span> <span>FI Role</span>
+          </button>
+          <button type="button" class="stepper-step" data-step="3" onclick="jumpToStep(3)">
+            <span class="step-num">3</span> <span>Bottlenecks</span>
+          </button>
+          <button type="button" class="stepper-step" data-step="4" onclick="jumpToStep(4)">
+            <span class="step-num">4</span> <span>Synergies</span>
+          </button>
+          <button type="button" class="stepper-step" data-step="5" onclick="jumpToStep(5)">
+            <span class="step-num">5</span> <span>Frontline</span>
+          </button>
+          <button type="button" class="stepper-step" data-step="6" onclick="jumpToStep(6)">
+            <span class="step-num">6</span> <span>Commitments</span>
+          </button>
+          <button type="button" class="stepper-step" data-step="7" onclick="jumpToStep(7)">
+            <span class="step-num">7</span> <span>Review &amp; Submit</span>
+          </button>
+        </div>
+        <div class="progress-bar-wrap">
+          <div class="progress-bar-fill" id="progressBarFill"></div>
+        </div>
+      </div>
+
+      <!-- GLOBAL SERVER ERROR BANNER -->
+      <div id="serverErrorBanner" class="alert-banner error" style="margin: 20px 32px 0;">
+        <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+        <span id="serverErrorMessage">Please check the indicated fields and try submitting again.</span>
+      </div>
+
+      <!-- MULTI-STEP FORM -->
+      <form id="eventRegistrationForm" onsubmit="handleRegistrationSubmit(event)" novalidate>
+        <div class="reg-form-body">
+
+          <!-- ========================================================
+               STEP 1: SECTION 1: DELEGATE & INSTITUTIONAL IDENTITY
+               ======================================================== -->
+          <div class="form-step-pane" id="stepPane1">
+            <div class="section-head-box">
+              <span class="section-tag">Section 1</span>
+              <h2 class="section-head-title">Delegate &amp; Institutional Identity</h2>
+              <p class="section-head-desc">Captures essential contact information and geographic reach to map ecosystem density across Nigeria.</p>
+            </div>
+
+            <!-- Q1 -->
+            <div class="q-block">
+              <label class="q-label" for="q1_fullName">1. Full Name: <span class="req">*</span></label>
+              <input type="text" id="q1_fullName" class="form-input-text" placeholder="e.g. Dr. Amina Bello" required autocomplete="name">
+              <div class="field-error-msg" id="err_q1">Please enter your full name.</div>
+            </div>
+
+            <!-- Q2 -->
+            <div class="q-block">
+              <label class="q-label" for="q2_email">2. Official Email Address: <span class="req">*</span></label>
+              <input type="email" id="q2_email" class="form-input-text" placeholder="e.g. amina.bello@institution.org" required autocomplete="email">
+              <div class="field-error-msg" id="err_q2">Please enter a valid official email address.</div>
+            </div>
+
+            <!-- Q3 -->
+            <div class="q-block">
+              <label class="q-label" for="q3_phone">3. Phone Number / WhatsApp: <span class="req">*</span></label>
+              <input type="tel" id="q3_phone" class="form-input-text" placeholder="e.g. +234 803 123 4567" required autocomplete="tel">
+              <div class="field-error-msg" id="err_q3">Please enter a valid phone number or WhatsApp contact.</div>
+            </div>
+
+            <!-- Q4 -->
+            <div class="q-block">
+              <label class="q-label" for="q4_organization">4. Organization / Institution Name: <span class="req">*</span></label>
+              <input type="text" id="q4_organization" class="form-input-text" placeholder="e.g. Rural Finance Alliance" required autocomplete="organization">
+              <div class="field-error-msg" id="err_q4">Please enter your organization or institution name.</div>
+            </div>
+
+            <!-- Q5 -->
+            <div class="q-block">
+              <label class="q-label" for="q5_designation">5. Job Title / Designation: <span class="req">*</span></label>
+              <input type="text" id="q5_designation" class="form-input-text" placeholder="e.g. Head of Inclusive Finance" required autocomplete="organization-title">
+              <div class="field-error-msg" id="err_q5">Please enter your job title or designation.</div>
+            </div>
+
+            <!-- Q6 -->
+            <div class="q-block">
+              <label class="q-label">6. Primary Operational Footprint in Nigeria: <span class="req">*</span></label>
+              <p class="q-hint">Select all regions where your organization actively delivers programs or financial services.</p>
+              <div class="choice-list" id="q6_group">
+                <label class="choice-card">
+                  <input type="checkbox" name="q6_footprint" value="North-West (Kano, Kaduna, Katsina, etc.)">
+                  <span class="choice-label-text">North-West (Kano, Kaduna, Katsina, etc.)</span>
+                </label>
+                <label class="choice-card">
+                  <input type="checkbox" name="q6_footprint" value="North-East (Borno, Adamawa, Bauchi, etc.)">
+                  <span class="choice-label-text">North-East (Borno, Adamawa, Bauchi, etc.)</span>
+                </label>
+                <label class="choice-card">
+                  <input type="checkbox" name="q6_footprint" value="North-Central (FCT, Plateau, Benue, etc.)">
+                  <span class="choice-label-text">North-Central (FCT, Plateau, Benue, etc.)</span>
+                </label>
+                <label class="choice-card">
+                  <input type="checkbox" name="q6_footprint" value="South-West (Lagos, Oyo, Ogun, etc.)">
+                  <span class="choice-label-text">South-West (Lagos, Oyo, Ogun, etc.)</span>
+                </label>
+                <label class="choice-card">
+                  <input type="checkbox" name="q6_footprint" value="South-South (Rivers, Delta, Akwa Ibom, etc.)">
+                  <span class="choice-label-text">South-South (Rivers, Delta, Akwa Ibom, etc.)</span>
+                </label>
+                <label class="choice-card">
+                  <input type="checkbox" name="q6_footprint" value="South-East (Enugu, Anambra, Imo, etc.)">
+                  <span class="choice-label-text">South-East (Enugu, Anambra, Imo, etc.)</span>
+                </label>
+                <label class="choice-card">
+                  <input type="checkbox" name="q6_footprint" value="Nationwide / Federal level">
+                  <span class="choice-label-text">Nationwide / Federal level</span>
+                </label>
+              </div>
+              <div class="field-error-msg" id="err_q6">Please select at least one operational footprint region.</div>
+            </div>
+
+            <!-- Stepper Actions -->
+            <div class="stepper-actions">
+              <div></div>
+              <button type="button" class="btn-step-next" onclick="goToStep(2)">
+                Continue to Section 2 &rarr;
+              </button>
+            </div>
+          </div>
+
+          <!-- ========================================================
+               STEP 2: SECTION 2: INSTITUTIONAL ROLE IN THE FI ECOSYSTEM
+               ======================================================== -->
+          <div class="form-step-pane" id="stepPane2" style="display:none;">
+            <div class="section-head-box">
+              <span class="section-tag">Section 2</span>
+              <h2 class="section-head-title">Institutional Role in the Financial Inclusion (FI) Ecosystem</h2>
+              <p class="section-head-desc">Categorizes participants to analyze institutional representation in the post-event report.</p>
+            </div>
+
+            <!-- Q7 -->
+            <div class="q-block">
+              <label class="q-label">7. Which stakeholder archetype best describes your organization? <span class="req">*</span></label>
+              <div class="choice-list" id="q7_group">
+                <label class="choice-card">
+                  <input type="radio" name="q7_archetype" value="Financial Service Provider (Commercial Bank, Microfinance Bank, DFI)">
+                  <span class="choice-label-text">Financial Service Provider (Commercial Bank, Microfinance Bank, DFI)</span>
+                </label>
+                <label class="choice-card">
+                  <input type="radio" name="q7_archetype" value="FinTech / Mobile Money Operator (MMO) / Payment Service Bank (PSB)">
+                  <span class="choice-label-text">FinTech / Mobile Money Operator (MMO) / Payment Service Bank (PSB)</span>
+                </label>
+                <label class="choice-card">
+                  <input type="radio" name="q7_archetype" value="NGO / CSO / Development Agency">
+                  <span class="choice-label-text">NGO / CSO / Development Agency</span>
+                </label>
+                <label class="choice-card">
+                  <input type="radio" name="q7_archetype" value="Government Ministry, Department, or Agency (MDA) / Regulatory Body">
+                  <span class="choice-label-text">Government Ministry, Department, or Agency (MDA) / Regulatory Body</span>
+                </label>
+                <label class="choice-card">
+                  <input type="radio" name="q7_archetype" value="Donor / Impact Investor / Philanthropic Foundation">
+                  <span class="choice-label-text">Donor / Impact Investor / Philanthropic Foundation</span>
+                </label>
+                <label class="choice-card">
+                  <input type="radio" name="q7_archetype" value="Agricultural Value Chain Actor / Cooperative Federation">
+                  <span class="choice-label-text">Agricultural Value Chain Actor / Cooperative Federation</span>
+                </label>
+                <label class="choice-card">
+                  <input type="radio" name="q7_archetype" value="Research Institution / Academia / Think Tank">
+                  <span class="choice-label-text">Research Institution / Academia / Think Tank</span>
+                </label>
+                <label class="choice-card" id="q7_other_card">
+                  <input type="radio" name="q7_archetype" value="Other (Please specify)" id="q7_other_radio">
+                  <span class="choice-label-text">Other (Please specify)</span>
+                </label>
+              </div>
+              <div id="q7_other_input_box" style="margin-top:10px; display:none;">
+                <input type="text" id="q7_other_text" class="form-input-text" placeholder="Please specify your organization type">
+              </div>
+              <div class="field-error-msg" id="err_q7">Please select a stakeholder archetype.</div>
+            </div>
+
+            <!-- Q8 -->
+            <div class="q-block">
+              <label class="q-label">8. What primary financial products/services do you deliver to rural demographics? <span class="req">*</span></label>
+              <p class="q-hint">Multiple Choice — Select all that apply to your current operational portfolio.</p>
+              <div class="choice-list" id="q8_group">
+                <label class="choice-card">
+                  <input type="checkbox" name="q8_products" value="Micro-credit & Agricultural Loan Facilities">
+                  <span class="choice-label-text">Micro-credit &amp; Agricultural Loan Facilities</span>
+                </label>
+                <label class="choice-card">
+                  <input type="checkbox" name="q8_products" value="Savings & Asset-Building Accounts">
+                  <span class="choice-label-text">Savings &amp; Asset-Building Accounts</span>
+                </label>
+                <label class="choice-card">
+                  <input type="checkbox" name="q8_products" value="Mobile Wallets & Agent Banking">
+                  <span class="choice-label-text">Mobile Wallets &amp; Agent Banking</span>
+                </label>
+                <label class="choice-card">
+                  <input type="checkbox" name="q8_products" value="Asset Financing / Buy-Now-Pay-Later (BNPL) Models">
+                  <span class="choice-label-text">Asset Financing / Buy-Now-Pay-Later (BNPL) Models</span>
+                </label>
+                <label class="choice-card">
+                  <input type="checkbox" name="q8_products" value="Agricultural / Index-Based Micro-Insurance">
+                  <span class="choice-label-text">Agricultural / Index-Based Micro-Insurance</span>
+                </label>
+                <label class="choice-card">
+                  <input type="checkbox" name="q8_products" value="Financial Literacy & Digital Skills Training">
+                  <span class="choice-label-text">Financial Literacy &amp; Digital Skills Training</span>
+                </label>
+                <label class="choice-card">
+                  <input type="checkbox" name="q8_products" value="Technical Assistance / Capacity Building for FSPs">
+                  <span class="choice-label-text">Technical Assistance / Capacity Building for FSPs</span>
+                </label>
+                <label class="choice-card">
+                  <input type="checkbox" name="q8_products" value="Policy Advocacy & Regulatory Design">
+                  <span class="choice-label-text">Policy Advocacy &amp; Regulatory Design</span>
+                </label>
+              </div>
+              <div class="field-error-msg" id="err_q8">Please select at least one primary financial product or service.</div>
+            </div>
+
+            <!-- Stepper Actions -->
+            <div class="stepper-actions">
+              <button type="button" class="btn-step-prev" onclick="goToStep(1)">&larr; Back to Section 1</button>
+              <button type="button" class="btn-step-next" onclick="goToStep(3)">Continue to Section 3 &rarr;</button>
+            </div>
+          </div>
+
+          <!-- ========================================================
+               STEP 3: SECTION 3: GROUND-LEVEL CHALLENGES & BOTTLENECKS
+               ======================================================== -->
+          <div class="form-step-pane" id="stepPane3" style="display:none;">
+            <div class="section-head-box">
+              <span class="section-tag">Section 3</span>
+              <h2 class="section-head-title">Ground-Level Challenges &amp; Systemic Bottlenecks</h2>
+              <p class="section-head-desc">Gathers empirical data on barriers to achieving Nigeria's 95% inclusion mandate for rural women.</p>
+            </div>
+
+            <!-- Q9 -->
+            <div class="q-block">
+              <label class="q-label">9. In your experience, what are the TOP 3 barriers preventing rural women from accessing formal financial services? <span class="req">*</span></label>
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+                <span class="q-hint" style="margin:0;">Select up to 3 options</span>
+                <span class="counter-badge" id="q9_counter">Selected: 0 / 3</span>
+              </div>
+              <div class="choice-list" id="q9_group">
+                <label class="choice-card">
+                  <input type="checkbox" name="q9_barriers" value="Identity Verification / Lack of NIN, BVN, or official documentation" onchange="enforceTop3Barriers(this)">
+                  <span class="choice-label-text">Identity Verification / Lack of NIN, BVN, or official documentation</span>
+                </label>
+                <label class="choice-card">
+                  <input type="checkbox" name="q9_barriers" value="High transaction costs and low profitability in last-mile rural delivery" onchange="enforceTop3Barriers(this)">
+                  <span class="choice-label-text">High transaction costs and low profitability in last-mile rural delivery</span>
+                </label>
+                <label class="choice-card">
+                  <input type="checkbox" name="q9_barriers" value="Lack of traditional collateral (land titles, formal assets)" onchange="enforceTop3Barriers(this)">
+                  <span class="choice-label-text">Lack of traditional collateral (land titles, formal assets)</span>
+                </label>
+                <label class="choice-card">
+                  <input type="checkbox" name="q9_barriers" value="Low literacy and digital confidence among target beneficiaries" onchange="enforceTop3Barriers(this)">
+                  <span class="choice-label-text">Low literacy and digital confidence among target beneficiaries</span>
+                </label>
+                <label class="choice-card">
+                  <input type="checkbox" name="q9_barriers" value="Restrictive socio-cultural norms and household power dynamics" onchange="enforceTop3Barriers(this)">
+                  <span class="choice-label-text">Restrictive socio-cultural norms and household power dynamics</span>
+                </label>
+                <label class="choice-card">
+                  <input type="checkbox" name="q9_barriers" value="Poor telecom/internet infrastructure and power connectivity" onchange="enforceTop3Barriers(this)">
+                  <span class="choice-label-text">Poor telecom/internet infrastructure and power connectivity</span>
+                </label>
+                <label class="choice-card">
+                  <input type="checkbox" name="q9_barriers" value="Rigid regulatory KYC requirements for low-tier accounts" onchange="enforceTop3Barriers(this)">
+                  <span class="choice-label-text">Rigid regulatory KYC requirements for low-tier accounts</span>
+                </label>
+                <label class="choice-card">
+                  <input type="checkbox" name="q9_barriers" value="Inappropriate financial product design for seasonal agricultural cycles" onchange="enforceTop3Barriers(this)">
+                  <span class="choice-label-text">Inappropriate financial product design for seasonal agricultural cycles</span>
+                </label>
+              </div>
+              <div class="field-error-msg" id="err_q9">Please select between 1 and 3 barriers.</div>
+            </div>
+
+            <!-- Q10 -->
+            <div class="q-block">
+              <label class="q-label" for="q10_challenge">10. What is the single biggest operational challenge your organization faces when scaling services to rural women? <span class="req">*</span></label>
+              <textarea id="q10_challenge" class="form-textarea" rows="3" placeholder="Describe the single biggest operational challenge..." oninput="updateQ10WordCount(this)"></textarea>
+              <div style="display:flex; justify-content:space-between; align-items:center;">
+                <span class="q-hint" style="margin:4px 0 0;">Long Text — Max 50 words</span>
+                <span class="counter-badge" id="q10_word_count">0 / 50 words</span>
+              </div>
+              <div class="field-error-msg" id="err_q10">Please describe your operational challenge (maximum 50 words).</div>
+            </div>
+
+            <!-- Stepper Actions -->
+            <div class="stepper-actions">
+              <button type="button" class="btn-step-prev" onclick="goToStep(2)">&larr; Back to Section 2</button>
+              <button type="button" class="btn-step-next" onclick="goToStep(4)">Continue to Section 4 &rarr;</button>
+            </div>
+          </div>
+
+          <!-- ========================================================
+               STEP 4: SECTION 4: COLLABORATION, PUBLIC FUNDS & SYNERGIES
+               ======================================================== -->
+          <div class="form-step-pane" id="stepPane4" style="display:none;">
+            <div class="section-head-box">
+              <span class="section-tag">Section 4</span>
+              <h2 class="section-head-title">Collaboration, Public Funds &amp; Ecosystem Synergies</h2>
+              <p class="section-head-desc">Identifies pipeline opportunities for multi-stakeholder partnerships and joint public-fund access.</p>
+            </div>
+
+            <!-- Q11 -->
+            <div class="q-block">
+              <label class="q-label">11. What assets, capabilities, or resources can your organization OFFER to a collaborative FI ecosystem? <span class="req">*</span></label>
+              <p class="q-hint">Multiple Choice — Select all that apply.</p>
+              <div class="choice-list" id="q11_group">
+                <label class="choice-card">
+                  <input type="checkbox" name="q11_offer" value="Last-mile agent network and rural distribution channels">
+                  <span class="choice-label-text">Last-mile agent network and rural distribution channels</span>
+                </label>
+                <label class="choice-card">
+                  <input type="checkbox" name="q11_offer" value="Grant capital, de-risking guarantees, or subsidized funding">
+                  <span class="choice-label-text">Grant capital, de-risking guarantees, or subsidized funding</span>
+                </label>
+                <label class="choice-card">
+                  <input type="checkbox" name="q11_offer" value="Proprietary digital technology platform / API integration">
+                  <span class="choice-label-text">Proprietary digital technology platform / API integration</span>
+                </label>
+                <label class="choice-card">
+                  <input type="checkbox" name="q11_offer" value="Gender-disaggregated field data and research insights">
+                  <span class="choice-label-text">Gender-disaggregated field data and research insights</span>
+                </label>
+                <label class="choice-card">
+                  <input type="checkbox" name="q11_offer" value="Direct community mobilization and grass-root trust">
+                  <span class="choice-label-text">Direct community mobilization and grass-root trust</span>
+                </label>
+                <label class="choice-card">
+                  <input type="checkbox" name="q11_offer" value="Policy design and regulatory advocacy influence">
+                  <span class="choice-label-text">Policy design and regulatory advocacy influence</span>
+                </label>
+              </div>
+              <div class="field-error-msg" id="err_q11">Please select at least one capability or resource offered.</div>
+            </div>
+
+            <!-- Q12 -->
+            <div class="q-block">
+              <label class="q-label">12. What support or resource do you NEED MOST from ecosystem partners to expand your rural FI impact? <span class="req">*</span></label>
+              <p class="q-hint">Single Choice</p>
+              <div class="choice-list" id="q12_group">
+                <label class="choice-card">
+                  <input type="radio" name="q12_needed" value="Blended finance / Concessional capital to lower interest rates">
+                  <span class="choice-label-text">Blended finance / Concessional capital to lower interest rates</span>
+                </label>
+                <label class="choice-card">
+                  <input type="radio" name="q12_needed" value="First-loss guarantees to de-risk rural lending">
+                  <span class="choice-label-text">First-loss guarantees to de-risk rural lending</span>
+                </label>
+                <label class="choice-card">
+                  <input type="radio" name="q12_needed" value="Technical assistance to design gender-responsive financial products">
+                  <span class="choice-label-text">Technical assistance to design gender-responsive financial products</span>
+                </label>
+                <label class="choice-card">
+                  <input type="radio" name="q12_needed" value="Last-mile agent network partnerships">
+                  <span class="choice-label-text">Last-mile agent network partnerships</span>
+                </label>
+                <label class="choice-card">
+                  <input type="radio" name="q12_needed" value="Policy support and regulatory waivers/sandboxes">
+                  <span class="choice-label-text">Policy support and regulatory waivers/sandboxes</span>
+                </label>
+              </div>
+              <div class="field-error-msg" id="err_q12">Please select the support or resource you need most.</div>
+            </div>
+
+            <!-- Q13 -->
+            <div class="q-block">
+              <label class="q-label">13. Is your organization interested in joining a consortium to access public/development funds for rural women's financial resilience? <span class="req">*</span></label>
+              <p class="q-hint">Single Choice</p>
+              <div class="choice-list" id="q13_group">
+                <label class="choice-card">
+                  <input type="radio" name="q13_consortium" value="Yes, high interest">
+                  <span class="choice-label-text">Yes, high interest</span>
+                </label>
+                <label class="choice-card">
+                  <input type="radio" name="q13_consortium" value="Maybe, pending further details">
+                  <span class="choice-label-text">Maybe, pending further details</span>
+                </label>
+                <label class="choice-card">
+                  <input type="radio" name="q13_consortium" value="No, attending for informational purposes only">
+                  <span class="choice-label-text">No, attending for informational purposes only</span>
+                </label>
+              </div>
+              <div class="field-error-msg" id="err_q13">Please select your consortium participation preference.</div>
+            </div>
+
+            <!-- Stepper Actions -->
+            <div class="stepper-actions">
+              <button type="button" class="btn-step-prev" onclick="goToStep(3)">&larr; Back to Section 3</button>
+              <button type="button" class="btn-step-next" onclick="goToStep(5)">Continue to Section 5 &rarr;</button>
+            </div>
+          </div>
+
+          <!-- ========================================================
+               STEP 5: SECTION 5: VOICE OF THE FRONTLINE
+               ======================================================== -->
+          <div class="form-step-pane" id="stepPane5" style="display:none;">
+            <div class="section-head-box">
+              <span class="section-tag">Section 5</span>
+              <h2 class="section-head-title">Voice of the Frontline (Qualitative Insights for the Report)</h2>
+              <p class="section-head-desc">Captures authentic narratives and unmet needs to inform policy recommendations.</p>
+            </div>
+
+            <!-- Q14 -->
+            <div class="q-block">
+              <label class="q-label" for="q14_opportunity">14. What is one practical, overlooked opportunity in rural financial inclusion that stakeholders should prioritize at this event? <span class="req">*</span></label>
+              <textarea id="q14_opportunity" class="form-textarea" rows="4" placeholder="Share your insights on an overlooked opportunity..."></textarea>
+              <div class="field-error-msg" id="err_q14">Please provide your perspective on an overlooked opportunity.</div>
+            </div>
+
+            <!-- Q15 -->
+            <div class="q-block">
+              <label class="q-label" for="q15_model">15. Can you share one successful project, tool, or pilot model that has proven effective for rural women in your operational areas? <span class="req">*</span></label>
+              <textarea id="q15_model" class="form-textarea" rows="4" placeholder="Share a successful project, tool, or pilot model..."></textarea>
+              <div class="field-error-msg" id="err_q15">Please share a successful project, tool, or pilot model.</div>
+            </div>
+
+            <!-- Stepper Actions -->
+            <div class="stepper-actions">
+              <button type="button" class="btn-step-prev" onclick="goToStep(4)">&larr; Back to Section 4</button>
+              <button type="button" class="btn-step-next" onclick="goToStep(6)">Continue to Section 6 &rarr;</button>
+            </div>
+          </div>
+
+          <!-- ========================================================
+               STEP 6: SECTION 6: POST-EVENT ENGAGEMENT COMMITMENTS
+               ======================================================== -->
+          <div class="form-step-pane" id="stepPane6" style="display:none;">
+            <div class="section-head-box">
+              <span class="section-tag">Section 6</span>
+              <h2 class="section-head-title">Post-Event Engagement Commitments</h2>
+            </div>
+
+            <!-- Q16 -->
+            <div class="q-block">
+              <label class="q-label">16. Would you like your organization’s profile and collaborative preferences featured in the 2026 State of Rural Women’s FI Ecosystem Report? <span class="req">*</span></label>
+              <div class="choice-list" id="q16_group">
+                <label class="choice-card">
+                  <input type="radio" name="q16_consent" value="Yes, publish our organization profile and operational area">
+                  <span class="choice-label-text">Yes, publish our organization profile and operational area</span>
+                </label>
+                <label class="choice-card">
+                  <input type="radio" name="q16_consent" value="No, keep our submissions aggregated and anonymous">
+                  <span class="choice-label-text">No, keep our submissions aggregated and anonymous</span>
+                </label>
+              </div>
+              <div class="field-error-msg" id="err_q16">Please select your report feature preference.</div>
+            </div>
+
+            <!-- Q17 -->
+            <div class="q-block">
+              <label class="q-label">17. Are you interested in participating in post-event working groups to draft action frameworks for the 95% inclusion mandate? <span class="req">*</span></label>
+              <div class="choice-list" id="q17_group">
+                <label class="choice-card">
+                  <input type="radio" name="q17_wg" value="Yes">
+                  <span class="choice-label-text">Yes</span>
+                </label>
+                <label class="choice-card">
+                  <input type="radio" name="q17_wg" value="No">
+                  <span class="choice-label-text">No</span>
+                </label>
+              </div>
+              <div class="field-error-msg" id="err_q17">Please select your participation preference.</div>
+            </div>
+
+            <!-- Stepper Actions -->
+            <div class="stepper-actions">
+              <button type="button" class="btn-step-prev" onclick="goToStep(5)">&larr; Back to Section 5</button>
+              <button type="button" class="btn-step-next" onclick="goToStep(7)">Review Your Answers &rarr;</button>
+            </div>
+          </div>
+
+          <!-- ========================================================
+               STEP 7: REVIEW & CONFIRMATION STEP
+               ======================================================== -->
+          <div class="form-step-pane" id="stepPane7" style="display:none;">
+            <div class="section-head-box">
+              <span class="section-tag">Step 7 of 7</span>
+              <h2 class="section-head-title">Review &amp; Confirm Registration</h2>
+              <p class="section-head-desc">Please review your responses before submitting. You can jump back to any section using the edit buttons.</p>
+            </div>
+
+            <div id="reviewContainer">
+              <!-- Dynamically populated by generateReviewSummary() -->
+            </div>
+
+            <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:12px; padding:18px 20px; margin-top:24px;">
+              <div style="display:flex; align-items:flex-start; gap:12px;">
+                <input type="checkbox" id="consentCheckbox" required checked style="margin-top:4px; width:18px; height:18px; accent-color:var(--teal);">
+                <label for="consentCheckbox" style="font-size:0.88rem; color:#334155; line-height:1.5;">
+                  I confirm that the details entered above are accurate and represent my official institutional delegation for International Day for Rural Women 2026.
+                </label>
+              </div>
+            </div>
+
+            <!-- Stepper Actions -->
+            <div class="stepper-actions">
+              <button type="button" class="btn-step-prev" onclick="goToStep(6)">&larr; Back to Section 6</button>
+              <button type="submit" class="btn-step-submit" id="btnSubmitRegistration">
+                <span id="btnSubmitSpinner" style="display:none;">⏳</span>
+                <span id="btnSubmitText">Confirm &amp; Submit Registration</span>
+              </button>
+            </div>
+          </div>
+
+        </div>
+      </form>
+
+      <!-- ========================================================
+           SUCCESS THANK-YOU CONFIRMATION CARD (REVEALED ON SUBMIT)
+           ======================================================== -->
+      <div id="confirmationCard" class="confirm-card" style="display:none;">
+        <div class="confirm-icon-box">
+          <svg width="36" height="36" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+        </div>
+        <h2 class="confirm-title">Registration Confirmed!</h2>
+        <p style="font-size:1.05rem; color:#475569; max-width:620px; margin:0 auto;">
+          Thank you for registering for <strong>International Day for Rural Women 2026</strong>: <em>Rural Women Rising — Strengthening the Frontline in Nigeria</em>.
+        </p>
+
+        <div class="confirm-ref-badge" id="confirmRefIdBadge">
+          Reference ID: GIDA-RW2026-1001
+        </div>
+
+        <div class="confirm-details-box">
+          <div class="confirm-detail-row">
+            <span class="lbl">Delegate Name:</span>
+            <span class="val" id="confirmDelegateName">—</span>
+          </div>
+          <div class="confirm-detail-row">
+            <span class="lbl">Official Email:</span>
+            <span class="val" id="confirmDelegateEmail">—</span>
+          </div>
+          <div class="confirm-detail-row">
+            <span class="lbl">Organization:</span>
+            <span class="val" id="confirmDelegateOrg">—</span>
+          </div>
+          <div class="confirm-detail-row">
+            <span class="lbl">Designation:</span>
+            <span class="val" id="confirmDelegateRole">—</span>
+          </div>
+          <div class="confirm-detail-row">
+            <span class="lbl">Submission Timestamp:</span>
+            <span class="val" id="confirmSubmittedAt">—</span>
+          </div>
+          <div class="confirm-detail-row">
+            <span class="lbl">Event Date &amp; Format:</span>
+            <span class="val">October 15, 2026 · Hybrid Session</span>
+          </div>
+        </div>
+
+        <div style="display:flex; justify-content:center; gap:14px; flex-wrap:wrap;">
+          <button type="button" class="btn btn-outline on-light" onclick="window.print()" style="padding:10px 22px;">
+            🖨️ Print Registration Slip
+          </button>
+          <a href="index.html" class="btn btn-gold" style="padding:10px 22px;">
+            Return to Homepage
+          </a>
+          <button type="button" class="btn-step-prev" onclick="registerAnotherDelegate()" style="padding:10px 18px;">
+            Register Another Delegate
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-brand"><div class="footer-logo-card"><img src="assets/img/logo.png" alt="GIDA — Growth Innovation for Development Action"></div></div>
+        <p style="max-width:34ch">Cultivating rural market systems, green infrastructure, community health, and gender-inclusive livelihoods. Where people prosper.</p>
+      </div>
+      <div class="footer-col">
+        <h5>Explore</h5>
+        <a href="about.html">About Us</a>
+        <a href="programs.html">Pillars &amp; Programs</a>
+        <a href="safeguarding.html">Safeguarding &amp; Publications</a>
+        <a href="blog.html">Blog &amp; Stories</a>
+        <a href="career.html">Careers</a>
+        <a href="contact.html">Contact Us</a>
+      </div>
+      <div class="footer-col">
+        <h5>Safeguarding</h5>
+        <a href="safeguarding.html#reporting">Report a concern</a>
+        <a href="safeguarding.html#pillars">Policy pillars</a>
+        <p>safeguarding@gida-action.org</p>
+      </div>
+      <div class="footer-col">
+        <h5>Organization</h5>
+        <p>Company Limited by Guarantee (LTD/GTE)</p>
+        <p>Kano, Nigeria (Headquarters)</p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 Growth Innovation for Development Action. All rights reserved.</span>
+      <span>Where People Prosper</span>
+    </div>
+  </div>
+</footer>
+
+<script src="assets/js/main.js"></script>
+<script>
+// ==========================================================================
+// CLIENT-SIDE FORM CONTROLLER & AUTO-SAVE ENGINE
+// ==========================================================================
+const DRAFT_KEY = 'gida_reg_draft_2026';
+let currentStep = 1;
+const totalSteps = 7;
+
+document.addEventListener('DOMContentLoaded', () => {
+  setupInteractiveCards();
+  restoreDraft();
+  updateStepperUI(1);
+});
+
+// Highlight cards on radio/checkbox change
+function setupInteractiveCards() {
+  document.querySelectorAll('.choice-card input').forEach(input => {
+    input.addEventListener('change', () => {
+      syncCardSelections();
+      saveDraft();
+    });
+  });
+
+  // Watch text inputs for auto-save
+  const textInputs = ['q1_fullName', 'q2_email', 'q3_phone', 'q4_organization', 'q5_designation', 'q7_other_text', 'q10_challenge', 'q14_opportunity', 'q15_model'];
+  textInputs.forEach(id => {
+    const el = document.getElementById(id);
+    if (el) {
+      el.addEventListener('input', () => {
+        hideError(el);
+        saveDraft();
+      });
+    }
+  });
+
+  // Handle Q7 other toggle
+  document.querySelectorAll('input[name="q7_archetype"]').forEach(r => {
+    r.addEventListener('change', () => {
+      const isOther = r.value.includes('Other');
+      const box = document.getElementById('q7_other_input_box');
+      if (box) box.style.display = isOther ? 'block' : 'none';
+      if (isOther) document.getElementById('q7_other_text')?.focus();
+    });
+  });
+}
+
+function syncCardSelections() {
+  document.querySelectorAll('.choice-card').forEach(card => {
+    const input = card.querySelector('input');
+    if (input) {
+      if (input.checked) {
+        card.classList.add('selected');
+      } else {
+        card.classList.remove('selected');
+      }
+    }
+  });
+}
+
+// Q9 Enforce Max 3 Barriers
+function enforceTop3Barriers(changedCheckbox) {
+  const selected = document.querySelectorAll('input[name="q9_barriers"]:checked');
+  const counter = document.getElementById('q9_counter');
+  if (selected.length > 3) {
+    changedCheckbox.checked = false;
+    alert('Please select up to 3 barriers only.');
+  }
+  const currentCount = document.querySelectorAll('input[name="q9_barriers"]:checked').length;
+  if (counter) {
+    counter.innerText = `Selected: ${currentCount} / 3`;
+    if (currentCount === 3) counter.classList.add('warn');
+    else counter.classList.remove('warn');
+  }
+  syncCardSelections();
+  saveDraft();
+}
+
+// Q10 Word count update
+function updateQ10WordCount(el) {
+  const words = el.value.trim().split(/\s+/).filter(Boolean);
+  const badge = document.getElementById('q10_word_count');
+  if (badge) {
+    badge.innerText = `${words.length} / 50 words`;
+    if (words.length > 50) {
+      badge.classList.add('warn');
+    } else {
+      badge.classList.remove('warn');
+    }
+  }
+}
+
+// Stepper Navigation
+function goToStep(stepNum) {
+  if (stepNum > currentStep) {
+    if (!validateStep(currentStep)) {
+      return;
+    }
+  }
+  currentStep = stepNum;
+  updateStepperUI(stepNum);
+  if (stepNum === 7) {
+    generateReviewSummary();
+  }
+  window.scrollTo({ top: document.querySelector('.reg-card').offsetTop - 90, behavior: 'smooth' });
+}
+
+function jumpToStep(targetStep) {
+  if (targetStep < currentStep) {
+    goToStep(targetStep);
+  } else {
+    // Validate up to targetStep - 1
+    for (let s = currentStep; s < targetStep; s++) {
+      if (!validateStep(s)) {
+        goToStep(s);
+        return;
+      }
+    }
+    goToStep(targetStep);
+  }
+}
+
+function updateStepperUI(stepNum) {
+  // Hide all step panes
+  for (let s = 1; s <= totalSteps; s++) {
+    const pane = document.getElementById(`stepPane${s}`);
+    if (pane) pane.style.display = s === stepNum ? 'block' : 'none';
+  }
+
+  // Update Stepper buttons
+  document.querySelectorAll('.stepper-step').forEach(btn => {
+    const step = parseInt(btn.dataset.step, 10);
+    btn.classList.remove('active', 'completed');
+    if (step === stepNum) {
+      btn.classList.add('active');
+    } else if (step < stepNum) {
+      btn.classList.add('completed');
+    }
+  });
+
+  // Update progress bar
+  const pct = Math.round((stepNum / totalSteps) * 100);
+  const bar = document.getElementById('progressBarFill');
+  if (bar) bar.style.width = pct + '%';
+}
+
+// Validation per Step
+function validateStep(step) {
+  let valid = true;
+  hideAllErrors();
+
+  if (step === 1) {
+    const fullName = document.getElementById('q1_fullName')?.value.trim();
+    if (!fullName || fullName.length < 2) {
+      showError('q1_fullName', 'err_q1');
+      valid = false;
+    }
+
+    const email = document.getElementById('q2_email')?.value.trim();
+    const emailRegex = /^[^@\s]+@[^@\s]+\.[^@\s]+$/;
+    if (!email || !emailRegex.test(email)) {
+      showError('q2_email', 'err_q2');
+      valid = false;
+    }
+
+    const phone = document.getElementById('q3_phone')?.value.trim();
+    if (!phone || phone.length < 7) {
+      showError('q3_phone', 'err_q3');
+      valid = false;
+    }
+
+    const org = document.getElementById('q4_organization')?.value.trim();
+    if (!org || org.length < 2) {
+      showError('q4_organization', 'err_q4');
+      valid = false;
+    }
+
+    const des = document.getElementById('q5_designation')?.value.trim();
+    if (!des || des.length < 2) {
+      showError('q5_designation', 'err_q5');
+      valid = false;
+    }
+
+    const footprints = document.querySelectorAll('input[name="q6_footprint"]:checked');
+    if (footprints.length === 0) {
+      document.getElementById('err_q6').classList.add('visible');
+      valid = false;
+    }
+  } else if (step === 2) {
+    const archetype = document.querySelector('input[name="q7_archetype"]:checked');
+    if (!archetype) {
+      document.getElementById('err_q7').classList.add('visible');
+      valid = false;
+    } else if (archetype.value.includes('Other')) {
+      const otherVal = document.getElementById('q7_other_text')?.value.trim();
+      if (!otherVal) {
+        showError('q7_other_text', 'err_q7');
+        document.getElementById('err_q7').innerText = 'Please specify your organization type.';
+        document.getElementById('err_q7').classList.add('visible');
+        valid = false;
+      }
+    }
+
+    const products = document.querySelectorAll('input[name="q8_products"]:checked');
+    if (products.length === 0) {
+      document.getElementById('err_q8').classList.add('visible');
+      valid = false;
+    }
+  } else if (step === 3) {
+    const barriers = document.querySelectorAll('input[name="q9_barriers"]:checked');
+    if (barriers.length === 0 || barriers.length > 3) {
+      document.getElementById('err_q9').classList.add('visible');
+      valid = false;
+    }
+
+    const challenge = document.getElementById('q10_challenge')?.value.trim();
+    if (!challenge) {
+      showError('q10_challenge', 'err_q10');
+      valid = false;
+    } else {
+      const words = challenge.split(/\s+/).filter(Boolean);
+      if (words.length > 50) {
+        showError('q10_challenge', 'err_q10');
+        document.getElementById('err_q10').innerText = `Please limit response to 50 words maximum (currently ${words.length} words).`;
+        valid = false;
+      }
+    }
+  } else if (step === 4) {
+    const offers = document.querySelectorAll('input[name="q11_offer"]:checked');
+    if (offers.length === 0) {
+      document.getElementById('err_q11').classList.add('visible');
+      valid = false;
+    }
+
+    const needed = document.querySelector('input[name="q12_needed"]:checked');
+    if (!needed) {
+      document.getElementById('err_q12').classList.add('visible');
+      valid = false;
+    }
+
+    const consortium = document.querySelector('input[name="q13_consortium"]:checked');
+    if (!consortium) {
+      document.getElementById('err_q13').classList.add('visible');
+      valid = false;
+    }
+  } else if (step === 5) {
+    const opp = document.getElementById('q14_opportunity')?.value.trim();
+    if (!opp || opp.length < 5) {
+      showError('q14_opportunity', 'err_q14');
+      valid = false;
+    }
+
+    const model = document.getElementById('q15_model')?.value.trim();
+    if (!model || model.length < 5) {
+      showError('q15_model', 'err_q15');
+      valid = false;
+    }
+  } else if (step === 6) {
+    const consent = document.querySelector('input[name="q16_consent"]:checked');
+    if (!consent) {
+      document.getElementById('err_q16').classList.add('visible');
+      valid = false;
+    }
+
+    const wg = document.querySelector('input[name="q17_wg"]:checked');
+    if (!wg) {
+      document.getElementById('err_q17').classList.add('visible');
+      valid = false;
+    }
+  }
+
+  return valid;
+}
+
+function showError(inputId, errId) {
+  const input = document.getElementById(inputId);
+  const err = document.getElementById(errId);
+  if (input) input.classList.add('has-error');
+  if (err) err.classList.add('visible');
+}
+
+function hideError(input) {
+  if (input) input.classList.remove('has-error');
+}
+
+function hideAllErrors() {
+  document.querySelectorAll('.field-error-msg').forEach(el => el.classList.remove('visible'));
+  document.querySelectorAll('.has-error').forEach(el => el.classList.remove('has-error'));
+  const sErr = document.getElementById('serverErrorBanner');
+  if (sErr) sErr.style.display = 'none';
+}
+
+// Generate Review Step 7 Table
+function generateReviewSummary() {
+  const container = document.getElementById('reviewContainer');
+  if (!container) return;
+
+  const data = gatherFormData();
+
+  container.innerHTML = `
+    <!-- Section 1 -->
+    <div class="review-group">
+      <div class="review-group-head">
+        <span class="review-group-title">Section 1: Delegate &amp; Institutional Identity</span>
+        <button type="button" class="review-edit-btn" onclick="goToStep(1)">Edit Section 1</button>
+      </div>
+      <div class="review-group-body">
+        <div class="review-row"><div class="review-row-q">1. Full Name</div><div class="review-row-a"><strong>${escapeHtml(data.fullName)}</strong></div></div>
+        <div class="review-row"><div class="review-row-q">2. Official Email</div><div class="review-row-a">${escapeHtml(data.email)}</div></div>
+        <div class="review-row"><div class="review-row-q">3. Phone Number / WhatsApp</div><div class="review-row-a">${escapeHtml(data.phone)}</div></div>
+        <div class="review-row"><div class="review-row-q">4. Organization</div><div class="review-row-a">${escapeHtml(data.organization)}</div></div>
+        <div class="review-row"><div class="review-row-q">5. Job Title / Designation</div><div class="review-row-a">${escapeHtml(data.designation)}</div></div>
+        <div class="review-row"><div class="review-row-q">6. Primary Operational Footprint</div><div class="review-row-a">${data.operationalFootprint.map(f => `• ${escapeHtml(f)}`).join('<br>')}</div></div>
+      </div>
+    </div>
+
+    <!-- Section 2 -->
+    <div class="review-group">
+      <div class="review-group-head">
+        <span class="review-group-title">Section 2: Institutional Role in FI Ecosystem</span>
+        <button type="button" class="review-edit-btn" onclick="goToStep(2)">Edit Section 2</button>
+      </div>
+      <div class="review-group-body">
+        <div class="review-row"><div class="review-row-q">7. Stakeholder Archetype</div><div class="review-row-a"><strong>${escapeHtml(data.stakeholderArchetype)}${data.stakeholderArchetypeOther ? ` (${escapeHtml(data.stakeholderArchetypeOther)})` : ''}</strong></div></div>
+        <div class="review-row"><div class="review-row-q">8. Primary Financial Products/Services Delivered</div><div class="review-row-a">${data.financialProducts.map(p => `• ${escapeHtml(p)}`).join('<br>')}</div></div>
+      </div>
+    </div>
+
+    <!-- Section 3 -->
+    <div class="review-group">
+      <div class="review-group-head">
+        <span class="review-group-title">Section 3: Ground-Level Challenges &amp; Bottlenecks</span>
+        <button type="button" class="review-edit-btn" onclick="goToStep(3)">Edit Section 3</button>
+      </div>
+      <div class="review-group-body">
+        <div class="review-row"><div class="review-row-q">9. Top Barriers Preventing Rural Women FI (Up to 3)</div><div class="review-row-a">${data.topBarriers.map(b => `• ${escapeHtml(b)}`).join('<br>')}</div></div>
+        <div class="review-row"><div class="review-row-q">10. Biggest Operational Challenge Faced</div><div class="review-row-a">${escapeHtml(data.biggestOperationalChallenge)}</div></div>
+      </div>
+    </div>
+
+    <!-- Section 4 -->
+    <div class="review-group">
+      <div class="review-group-head">
+        <span class="review-group-title">Section 4: Collaboration, Public Funds &amp; Synergies</span>
+        <button type="button" class="review-edit-btn" onclick="goToStep(4)">Edit Section 4</button>
+      </div>
+      <div class="review-group-body">
+        <div class="review-row"><div class="review-row-q">11. Assets &amp; Capabilities Offered</div><div class="review-row-a">${data.offerCapabilities.map(o => `• ${escapeHtml(o)}`).join('<br>')}</div></div>
+        <div class="review-row"><div class="review-row-q">12. Support &amp; Resource Needed Most</div><div class="review-row-a">${escapeHtml(data.neededSupport)}</div></div>
+        <div class="review-row"><div class="review-row-q">13. Consortium Participation Interest</div><div class="review-row-a"><strong>${escapeHtml(data.consortiumInterest)}</strong></div></div>
+      </div>
+    </div>
+
+    <!-- Section 5 -->
+    <div class="review-group">
+      <div class="review-group-head">
+        <span class="review-group-title">Section 5: Voice of the Frontline</span>
+        <button type="button" class="review-edit-btn" onclick="goToStep(5)">Edit Section 5</button>
+      </div>
+      <div class="review-group-body">
+        <div class="review-row"><div class="review-row-q">14. Practical Overlooked Opportunity</div><div class="review-row-a">${escapeHtml(data.overlookedOpportunity)}</div></div>
+        <div class="review-row"><div class="review-row-q">15. Successful Project, Tool, or Pilot Model</div><div class="review-row-a">${escapeHtml(data.successfulModel)}</div></div>
+      </div>
+    </div>
+
+    <!-- Section 6 -->
+    <div class="review-group">
+      <div class="review-group-head">
+        <span class="review-group-title">Section 6: Post-Event Engagement Commitments</span>
+        <button type="button" class="review-edit-btn" onclick="goToStep(6)">Edit Section 6</button>
+      </div>
+      <div class="review-group-body">
+        <div class="review-row"><div class="review-row-q">16. 2026 Ecosystem Report Feature Preference</div><div class="review-row-a"><strong>${escapeHtml(data.reportFeatureConsent)}</strong></div></div>
+        <div class="review-row"><div class="review-row-q">17. Post-Event Working Group Interest</div><div class="review-row-a"><strong>${escapeHtml(data.workingGroupInterest)}</strong></div></div>
+      </div>
+    </div>
+  `;
+}
+
+function gatherFormData() {
+  const getCheckedValues = (name) => Array.from(document.querySelectorAll(`input[name="${name}"]:checked`)).map(cb => cb.value);
+  const getRadioValue = (name) => {
+    const el = document.querySelector(`input[name="${name}"]:checked`);
+    return el ? el.value : '';
+  };
+
+  return {
+    fullName: document.getElementById('q1_fullName')?.value.trim() || '',
+    email: document.getElementById('q2_email')?.value.trim().toLowerCase() || '',
+    phone: document.getElementById('q3_phone')?.value.trim() || '',
+    organization: document.getElementById('q4_organization')?.value.trim() || '',
+    designation: document.getElementById('q5_designation')?.value.trim() || '',
+    operationalFootprint: getCheckedValues('q6_footprint'),
+    stakeholderArchetype: getRadioValue('q7_archetype'),
+    stakeholderArchetypeOther: document.getElementById('q7_other_text')?.value.trim() || '',
+    financialProducts: getCheckedValues('q8_products'),
+    topBarriers: getCheckedValues('q9_barriers'),
+    biggestOperationalChallenge: document.getElementById('q10_challenge')?.value.trim() || '',
+    offerCapabilities: getCheckedValues('q11_offer'),
+    neededSupport: getRadioValue('q12_needed'),
+    consortiumInterest: getRadioValue('q13_consortium'),
+    overlookedOpportunity: document.getElementById('q14_opportunity')?.value.trim() || '',
+    successfulModel: document.getElementById('q15_model')?.value.trim() || '',
+    reportFeatureConsent: getRadioValue('q16_consent'),
+    workingGroupInterest: getRadioValue('q17_wg')
+  };
+}
+
+// Auto-Save Draft to LocalStorage
+function saveDraft() {
+  try {
+    const data = gatherFormData();
+    localStorage.setItem(DRAFT_KEY, JSON.stringify(data));
+  } catch(e) {}
+}
+
+function restoreDraft() {
+  try {
+    const raw = localStorage.getItem(DRAFT_KEY);
+    if (!raw) return;
+    const data = JSON.parse(raw);
+    if (!data || typeof data !== 'object') return;
+
+    if (data.fullName) document.getElementById('q1_fullName').value = data.fullName;
+    if (data.email) document.getElementById('q2_email').value = data.email;
+    if (data.phone) document.getElementById('q3_phone').value = data.phone;
+    if (data.organization) document.getElementById('q4_organization').value = data.organization;
+    if (data.designation) document.getElementById('q5_designation').value = data.designation;
+
+    if (Array.isArray(data.operationalFootprint)) {
+      data.operationalFootprint.forEach(val => {
+        const cb = document.querySelector(`input[name="q6_footprint"][value="${val}"]`);
+        if (cb) cb.checked = true;
+      });
+    }
+
+    if (data.stakeholderArchetype) {
+      const rb = document.querySelector(`input[name="q7_archetype"][value="${data.stakeholderArchetype}"]`);
+      if (rb) rb.checked = true;
+      if (data.stakeholderArchetype.includes('Other')) {
+        const box = document.getElementById('q7_other_input_box');
+        if (box) box.style.display = 'block';
+        if (data.stakeholderArchetypeOther) document.getElementById('q7_other_text').value = data.stakeholderArchetypeOther;
+      }
+    }
+
+    if (Array.isArray(data.financialProducts)) {
+      data.financialProducts.forEach(val => {
+        const cb = document.querySelector(`input[name="q8_products"][value="${val}"]`);
+        if (cb) cb.checked = true;
+      });
+    }
+
+    if (Array.isArray(data.topBarriers)) {
+      data.topBarriers.forEach(val => {
+        const cb = document.querySelector(`input[name="q9_barriers"][value="${val}"]`);
+        if (cb) cb.checked = true;
+      });
+      const counter = document.getElementById('q9_counter');
+      if (counter) counter.innerText = `Selected: ${data.topBarriers.length} / 3`;
+    }
+
+    if (data.biggestOperationalChallenge) {
+      const el = document.getElementById('q10_challenge');
+      el.value = data.biggestOperationalChallenge;
+      updateQ10WordCount(el);
+    }
+
+    if (Array.isArray(data.offerCapabilities)) {
+      data.offerCapabilities.forEach(val => {
+        const cb = document.querySelector(`input[name="q11_offer"][value="${val}"]`);
+        if (cb) cb.checked = true;
+      });
+    }
+
+    if (data.neededSupport) {
+      const rb = document.querySelector(`input[name="q12_needed"][value="${data.neededSupport}"]`);
+      if (rb) rb.checked = true;
+    }
+
+    if (data.consortiumInterest) {
+      const rb = document.querySelector(`input[name="q13_consortium"][value="${data.consortiumInterest}"]`);
+      if (rb) rb.checked = true;
+    }
+
+    if (data.overlookedOpportunity) document.getElementById('q14_opportunity').value = data.overlookedOpportunity;
+    if (data.successfulModel) document.getElementById('q15_model').value = data.successfulModel;
+
+    if (data.reportFeatureConsent) {
+      const rb = document.querySelector(`input[name="q16_consent"][value="${data.reportFeatureConsent}"]`);
+      if (rb) rb.checked = true;
+    }
+
+    if (data.workingGroupInterest) {
+      const rb = document.querySelector(`input[name="q17_wg"][value="${data.workingGroupInterest}"]`);
+      if (rb) rb.checked = true;
+    }
+
+    syncCardSelections();
+
+    // Show draft restored banner
+    const b = document.getElementById('draftNoticeBanner');
+    if (b && (data.fullName || data.organization)) b.style.display = 'flex';
+  } catch(e) {}
+}
+
+function clearRegistrationDraft() {
+  if (!confirm("Reset form and clear all saved draft answers?")) return;
+  localStorage.removeItem(DRAFT_KEY);
+  window.location.reload();
+}
+
+// Form Submission Handler
+async function handleRegistrationSubmit(e) {
+  e.preventDefault();
+  hideAllErrors();
+
+  const consent = document.getElementById('consentCheckbox');
+  if (consent && !consent.checked) {
+    alert('Please confirm your delegation acknowledgment before submitting.');
+    consent.focus();
+    return;
+  }
+
+  // Final check of all steps
+  for (let s = 1; s <= 6; s++) {
+    if (!validateStep(s)) {
+      goToStep(s);
+      return;
+    }
+  }
+
+  const payload = gatherFormData();
+
+  const submitBtn = document.getElementById('btnSubmitRegistration');
+  const spinner = document.getElementById('btnSubmitSpinner');
+  const btnText = document.getElementById('btnSubmitText');
+
+  if (submitBtn) submitBtn.disabled = true;
+  if (spinner) spinner.style.display = 'inline-block';
+  if (btnText) btnText.innerText = 'Persisting Registration...';
+
+  try {
+    const res = await fetch('/api/register', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(payload)
+    });
+
+    const result = await res.json().catch(() => ({}));
+
+    if (res.ok && result.success) {
+      // Clear draft on successful persistence
+      localStorage.removeItem(DRAFT_KEY);
+
+      // Populate confirmation card
+      const reg = result.registration || payload;
+      const refId = result.registrationId || reg.id || 'GIDA-RW2026-1001';
+
+      document.getElementById('confirmRefIdBadge').innerText = `Reference ID: ${refId}`;
+      document.getElementById('confirmDelegateName').innerText = reg.fullName || payload.fullName;
+      document.getElementById('confirmDelegateEmail').innerText = reg.email || payload.email;
+      document.getElementById('confirmDelegateOrg').innerText = reg.organization || payload.organization;
+      document.getElementById('confirmDelegateRole').innerText = reg.designation || payload.designation;
+      document.getElementById('confirmSubmittedAt').innerText = new Date(reg.submittedAt || Date.now()).toLocaleString('en-NG', { timeZone: 'UTC', timeZoneName: 'short' });
+
+      // Hide form & stepper, show confirmation
+      document.getElementById('eventRegistrationForm').style.display = 'none';
+      document.getElementById('stepperNavBox').style.display = 'none';
+      const draftNotice = document.getElementById('draftNoticeBanner');
+      if (draftNotice) draftNotice.style.display = 'none';
+
+      const confCard = document.getElementById('confirmationCard');
+      confCard.style.display = 'block';
+
+      window.scrollTo({ top: document.querySelector('.reg-card').offsetTop - 90, behavior: 'smooth' });
+    } else {
+      // Server error handling: Preserve form data, highlight errors, never show false success
+      const sErr = document.getElementById('serverErrorBanner');
+      const sMsg = document.getElementById('serverErrorMessage');
+      if (sErr && sMsg) {
+        sMsg.innerText = result.message || 'Submission could not be completed. Please review your entries and try again.';
+        sErr.style.display = 'flex';
+      }
+      if (result.errors) {
+        Object.keys(result.errors).forEach(field => {
+          // Highlight invalid field if applicable
+          const input = document.querySelector(`[name="${field}"], #${field}`);
+          if (input) input.classList.add('has-error');
+        });
+      }
+      window.scrollTo({ top: document.querySelector('.reg-card').offsetTop - 90, behavior: 'smooth' });
+    }
+  } catch (err) {
+    console.error('[REGISTRATION NETWORK ERROR]', err);
+    const sErr = document.getElementById('serverErrorBanner');
+    const sMsg = document.getElementById('serverErrorMessage');
+    if (sErr && sMsg) {
+      sMsg.innerText = 'Network error: Unable to reach the registration server. All your entered answers have been safely preserved. Please check your connection and click Submit again.';
+      sErr.style.display = 'flex';
+    }
+    window.scrollTo({ top: document.querySelector('.reg-card').offsetTop - 90, behavior: 'smooth' });
+  } finally {
+    if (submitBtn) submitBtn.disabled = false;
+    if (spinner) spinner.style.display = 'none';
+    if (btnText) btnText.innerText = 'Confirm & Submit Registration';
+  }
+}
+
+function registerAnotherDelegate() {
+  localStorage.removeItem(DRAFT_KEY);
+  window.location.reload();
+}
+
+function escapeHtml(str) {
+  if (!str) return '';
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+</script>
+</body>
+</html>

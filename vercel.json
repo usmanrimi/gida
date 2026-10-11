@@ -3,6 +3,22 @@
   "trailingSlash": false,
   "rewrites": [
     {
+      "source": "/api/admin/registrations/export",
+      "destination": "/api/admin-registrations.js"
+    },
+    {
+      "source": "/api/admin/registrations",
+      "destination": "/api/admin-registrations.js"
+    },
+    {
+      "source": "/register",
+      "destination": "/register.html"
+    },
+    {
+      "source": "/event-registration",
+      "destination": "/register.html"
+    },
+    {
       "source": "/admin/:subpath*",
       "destination": "/admin.html"
     },

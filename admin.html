@@ -314,6 +314,10 @@
 
         <!-- GROUP 3: CONTENT -->
         <div class="menu-heading">Content</div>
+        <button class="nav-btn" data-tab="registrations">
+          <svg width="20" height="20" fill="none" stroke-width="1.75" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path></svg>
+          Event Registrations <span class="badge-count" id="navRegBadge" style="background:var(--teal);color:#fff;font-size:0.72rem;padding:2px 7px;border-radius:100px;margin-left:auto;font-weight:700;">0</span>
+        </button>
         <button class="nav-btn" data-tab="articles">
           <svg width="20" height="20" fill="none" stroke-width="1.75" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"></path></svg>
           Blog / Articles
@@ -433,6 +437,10 @@
               <div class="title">Open Vacancies</div>
               <div class="value" id="statVacancies">3</div>
             </div>
+            <div class="stat-box" onclick="switchTab('registrations')" style="cursor:pointer;" title="View event registrations">
+              <div class="title">Event Registrations</div>
+              <div class="value" id="statRegistrations">0</div>
+            </div>
             <div class="stat-box">
               <div class="title">Managed Media Assets</div>
               <div class="value" id="statImages">8</div>
@@ -444,6 +452,7 @@
               <h3>Quick Administrative Actions</h3>
             </div>
             <div class="card-body" style="display:flex;gap:12px;flex-wrap:wrap;">
+              <button class="btn-action" style="padding:10px 18px;font-weight:700;color:var(--teal-dark);border-color:var(--teal);background:rgba(0,130,138,0.08);" onclick="switchTab('registrations')">View Event Registrations</button>
               <button class="btn-action" style="padding:10px 18px;font-weight:700;" onclick="switchTab('articles')">Manage Blog Articles</button>
               <button class="btn-action" style="padding:10px 18px;font-weight:700;" onclick="switchTab('videos')">Manage Videos &amp; Sessions</button>
               <button class="btn-action" style="padding:10px 18px;font-weight:700;" onclick="switchTab('leadership')">Manage Leadership &amp; Voices</button>
@@ -1028,6 +1037,134 @@
           </div>
         </section>
 
+        <!-- TAB: EVENT REGISTRATIONS (RURAL WOMEN RISING 2026) -->
+        <section id="tab-registrations" class="tab-pane">
+          <div class="content-card">
+            <div class="card-head" style="flex-wrap:wrap;gap:12px;">
+              <div>
+                <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+                  <h3 style="margin:0;">International Day for Rural Women 2026 — Registrations</h3>
+                  <span id="regCountBadge" class="badge-status badge-published">0 Total Registrations</span>
+                </div>
+                <p style="font-size:0.86rem;color:var(--text-muted);margin-top:4px;">
+                  Real-time delegate registrations, institutional categorization, and ecosystem questionnaire submissions.
+                </p>
+              </div>
+              <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;">
+                <button type="button" class="btn-action" onclick="fetchRegistrations(true)" title="Refresh data from database">
+                  🔄 Refresh
+                </button>
+                <button type="button" class="btn-action" onclick="exportRegistrationsCsv(false)" title="Export currently filtered list">
+                  📥 Export Filtered (CSV)
+                </button>
+                <button type="button" class="btn-gold-sm" onclick="exportRegistrationsCsv(true)" title="Export full database to Excel-compatible CSV">
+                  📊 Export All (Excel CSV)
+                </button>
+              </div>
+            </div>
+
+            <!-- SEARCH, FILTERS & SORT CONTROLS -->
+            <div class="card-body" style="padding-bottom:12px;background:#f8fafc;border-bottom:1px solid var(--border);">
+              <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(190px, 1fr));gap:12px;align-items:flex-end;">
+                <div>
+                  <label style="font-size:0.78rem;font-weight:700;color:var(--text-muted);display:block;margin-bottom:4px;">Search Delegates</label>
+                  <input type="text" id="regSearchInput" placeholder="Name, Email, Org, Ref ID..." oninput="handleRegFilterChange()" style="width:100%;padding:8px 12px;border:1px solid var(--border);border-radius:8px;font-size:0.86rem;">
+                </div>
+                <div>
+                  <label style="font-size:0.78rem;font-weight:700;color:var(--text-muted);display:block;margin-bottom:4px;">Stakeholder Archetype</label>
+                  <select id="regFilterArchetype" onchange="handleRegFilterChange()" style="width:100%;padding:8px 10px;border:1px solid var(--border);border-radius:8px;font-size:0.86rem;">
+                    <option value="all">All Stakeholder Types</option>
+                    <option value="Financial Service Provider">Financial Service Provider (Bank, MFB, DFI)</option>
+                    <option value="FinTech">FinTech / MMO / PSB</option>
+                    <option value="NGO">NGO / CSO / Development Agency</option>
+                    <option value="Government">Government MDA / Regulatory</option>
+                    <option value="Donor">Donor / Impact Investor / Foundation</option>
+                    <option value="Agricultural">Ag Value Chain Actor / Cooperative</option>
+                    <option value="Research">Research / Academia / Think Tank</option>
+                    <option value="Other">Other Category</option>
+                  </select>
+                </div>
+                <div>
+                  <label style="font-size:0.78rem;font-weight:700;color:var(--text-muted);display:block;margin-bottom:4px;">Operational Footprint</label>
+                  <select id="regFilterFootprint" onchange="handleRegFilterChange()" style="width:100%;padding:8px 10px;border:1px solid var(--border);border-radius:8px;font-size:0.86rem;">
+                    <option value="all">All Operational Regions</option>
+                    <option value="North-West">North-West</option>
+                    <option value="North-East">North-East</option>
+                    <option value="North-Central">North-Central</option>
+                    <option value="South-West">South-West</option>
+                    <option value="South-South">South-South</option>
+                    <option value="South-East">South-East</option>
+                    <option value="Nationwide">Nationwide / Federal</option>
+                  </select>
+                </div>
+                <div>
+                  <label style="font-size:0.78rem;font-weight:700;color:var(--text-muted);display:block;margin-bottom:4px;">Report Feature Consent</label>
+                  <select id="regFilterConsent" onchange="handleRegFilterChange()" style="width:100%;padding:8px 10px;border:1px solid var(--border);border-radius:8px;font-size:0.86rem;">
+                    <option value="all">All Consent Types</option>
+                    <option value="publish">Publish Profile &amp; Area (Yes)</option>
+                    <option value="anonymous">Aggregated &amp; Anonymous (No)</option>
+                  </select>
+                </div>
+                <div>
+                  <label style="font-size:0.78rem;font-weight:700;color:var(--text-muted);display:block;margin-bottom:4px;">Working Group Interest</label>
+                  <select id="regFilterWg" onchange="handleRegFilterChange()" style="width:100%;padding:8px 10px;border:1px solid var(--border);border-radius:8px;font-size:0.86rem;">
+                    <option value="all">All Preferences</option>
+                    <option value="Yes">Interested (Yes)</option>
+                    <option value="No">Not Interested (No)</option>
+                  </select>
+                </div>
+                <div>
+                  <label style="font-size:0.78rem;font-weight:700;color:var(--text-muted);display:block;margin-bottom:4px;">Sort Order</label>
+                  <select id="regSortBy" onchange="handleRegFilterChange()" style="width:100%;padding:8px 10px;border:1px solid var(--border);border-radius:8px;font-size:0.86rem;">
+                    <option value="newest">Newest Submitted</option>
+                    <option value="oldest">Oldest Submitted</option>
+                    <option value="name">Delegate Name (A-Z)</option>
+                    <option value="org">Organization (A-Z)</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <!-- REGISTRATIONS TABLE -->
+            <div class="card-body" style="padding:0;">
+              <div style="overflow-x:auto;-webkit-overflow-scrolling:touch;">
+                <table class="data-table" style="width:100%;min-width:1100px;border-collapse:collapse;">
+                  <thead>
+                    <tr>
+                      <th style="width:130px;min-width:130px;">Ref ID</th>
+                      <th style="min-width:200px;">Delegate Name &amp; Role</th>
+                      <th style="min-width:180px;">Organization</th>
+                      <th style="min-width:190px;">Stakeholder Archetype</th>
+                      <th style="min-width:160px;">Operational Footprint</th>
+                      <th style="min-width:110px;">Report Feature</th>
+                      <th style="min-width:90px;">Working Group</th>
+                      <th style="min-width:130px;">Submitted (UTC)</th>
+                      <th style="min-width:160px;text-align:right;">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody id="registrationsTableBody">
+                    <tr>
+                      <td colspan="9" style="text-align:center;padding:36px;color:var(--text-muted);">
+                        Loading registrations from database...
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <!-- EMPTY FILTER STATE -->
+              <div id="regEmptyState" style="display:none;text-align:center;padding:48px 24px;">
+                <div style="font-size:2rem;margin-bottom:8px;">📋</div>
+                <h4 style="color:var(--text);margin-bottom:4px;">No Registrations Found</h4>
+                <p style="font-size:0.88rem;color:var(--text-muted);max-width:440px;margin:0 auto 16px;">
+                  No event registration entries match the currently selected search query or filter options.
+                </p>
+                <button type="button" class="btn-action" onclick="resetRegFilters()">Reset Filters</button>
+              </div>
+            </div>
+          </div>
+        </section>
+
       </div>
     </main>
   </div>
@@ -1036,6 +1173,50 @@
 <!-- ==========================================
      MODALS FOR CRUD ACTIONS
 ========================================== -->
+
+<!-- REGISTRATION FULL RESPONSE DETAIL MODAL -->
+<div id="registrationDetailModal" class="modal-overlay">
+  <div class="modal-box" style="max-width:840px;max-height:90vh;overflow-y:auto;padding:28px 32px;">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;border-bottom:1px solid var(--border);padding-bottom:16px;margin-bottom:20px;gap:16px;flex-wrap:wrap;">
+      <div>
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:4px;">
+          <h3 id="modalRegName" style="margin:0;font-size:1.35rem;color:var(--green-dark);">Delegate Name</h3>
+          <span id="modalRegRefId" style="background:rgba(0,130,138,0.12);color:var(--teal-dark);padding:3px 10px;border-radius:6px;font-weight:800;font-size:0.84rem;">GIDA-RW2026-1001</span>
+        </div>
+        <div id="modalRegOrg" style="font-size:0.95rem;color:#475569;font-weight:600;">Organization Name</div>
+        <div id="modalRegMeta" style="font-size:0.82rem;color:var(--text-muted);margin-top:2px;">Submitted at: —</div>
+      </div>
+      <button type="button" class="btn-action" onclick="closeModal('registrationDetailModal')" style="padding:6px 14px;font-size:1rem;">&times; Close</button>
+    </div>
+
+    <div id="modalRegBodyContent" style="display:flex;flex-direction:column;gap:18px;">
+      <!-- Populated dynamically by openRegistrationDetailModal() -->
+    </div>
+
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-top:28px;padding-top:16px;border-top:1px solid var(--border);flex-wrap:wrap;gap:10px;">
+      <button type="button" class="btn-action delete" id="btnModalDeleteReg" onclick="deleteCurrentModalReg()">Delete Registration</button>
+      <div style="display:flex;gap:10px;">
+        <button type="button" class="btn-outline-sm" onclick="printCurrentRegistration()">🖨️ Print Response Slip</button>
+        <button type="button" class="btn-gold-sm" onclick="closeModal('registrationDetailModal')">Done</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- REGISTRATION DELETE CONFIRMATION MODAL -->
+<div id="regDeleteModal" class="modal-overlay">
+  <div class="modal-box" style="max-width:480px;text-align:center;">
+    <div style="width:54px;height:54px;border-radius:50%;background:#fee2e2;color:#dc2626;display:inline-flex;align-items:center;justify-content:center;margin-bottom:14px;font-size:1.4rem;">⚠️</div>
+    <h4 style="margin-bottom:8px;color:#991b1b;">Confirm Deletion</h4>
+    <p id="regDeletePromptText" style="font-size:0.9rem;color:var(--text-muted);line-height:1.5;margin-bottom:22px;">
+      Are you sure you want to permanently delete this event registration? This action cannot be undone.
+    </p>
+    <div style="display:flex;justify-content:center;gap:12px;">
+      <button type="button" class="btn-modal-cancel" onclick="closeModal('regDeleteModal')">Cancel</button>
+      <button type="button" class="btn-action delete" id="btnConfirmDeleteReg" style="padding:9px 20px;font-weight:700;">Confirm &amp; Delete</button>
+    </div>
+  </div>
+</div>
 
 <!-- 0. GITHUB CONNECT & PUSH MODAL -->
 <div id="githubModal" class="modal-overlay">
@@ -1999,7 +2180,10 @@ function getAdminRequestedTab() {
     'news': 'articles',
     'reports': 'publications',
     'careers': 'vacancies',
-    'jobs': 'vacancies'
+    'jobs': 'vacancies',
+    'registrations': 'registrations',
+    'events': 'registrations',
+    'event-registrations': 'registrations'
   };
   if (path) {
     const segment = path.split('/')[0].toLowerCase();
@@ -2497,6 +2681,9 @@ document.querySelectorAll('.nav-btn').forEach(btn => {
     const target = document.getElementById(tabId);
     if(target) target.classList.add('active');
     document.getElementById('currentSectionTitle').innerText = btn.innerText.trim();
+    if (btn.dataset.tab === 'registrations') {
+      fetchRegistrations();
+    }
     
     // Close sidebar on mobile/tablet after selection
     if (window.innerWidth <= 1024) {
@@ -2540,6 +2727,7 @@ function renderAll() {
   renderSocialForm();
   renderSettingsForm();
   renderManagedImages(currentFilterSection);
+  fetchRegistrations();
 }
 
 function renderStats() {
@@ -4152,8 +4340,6 @@ function importData(input) {
     };
     reader.readAsText(input.files[0]);
   }
-}
-
 function resetToDefaults() {
   if (confirm('Reset all CMS content and media to factory defaults? Any custom drafts will be replaced.')) {
     store = JSON.parse(JSON.stringify(DEFAULT_STORE));
@@ -4161,6 +4347,441 @@ function resetToDefaults() {
     renderAll();
     showToast('Database reset to defaults');
   }
+}
+
+// ==========================================
+// EVENT REGISTRATIONS MANAGEMENT ENGINE
+// ==========================================
+let allRegistrations = [];
+let currentModalRegId = null;
+
+async function fetchRegistrations(showToastMsg = false) {
+  const token = sessionStorage.getItem('gida_admin_token');
+  if (!token) return;
+
+  try {
+    const res = await fetch('/api/admin/registrations', {
+      headers: {
+        'Authorization': 'Bearer ' + token
+      },
+      cache: 'no-store'
+    });
+
+    if (res.ok) {
+      const data = await res.json();
+      allRegistrations = Array.isArray(data.registrations) ? data.registrations : [];
+      
+      const total = data.total || allRegistrations.length;
+      if (document.getElementById('statRegistrations')) {
+        document.getElementById('statRegistrations').innerText = total;
+      }
+      if (document.getElementById('navRegBadge')) {
+        document.getElementById('navRegBadge').innerText = total;
+      }
+      if (document.getElementById('regCountBadge')) {
+        document.getElementById('regCountBadge').innerText = `${total} Total Registrations`;
+      }
+
+      renderRegistrationsTable();
+      if (showToastMsg) showToast(`✓ Loaded ${total} registrations from database`);
+    } else if (res.status === 401) {
+      console.warn('[REGISTRATIONS AUTH EXPIRED]');
+    }
+  } catch (err) {
+    console.error('[FETCH REGISTRATIONS ERROR]', err);
+    if (showToastMsg) showToast('Failed to load registrations from server');
+  }
+}
+
+function handleRegFilterChange() {
+  renderRegistrationsTable();
+}
+
+function resetRegFilters() {
+  const s = document.getElementById('regSearchInput');
+  const a = document.getElementById('regFilterArchetype');
+  const f = document.getElementById('regFilterFootprint');
+  const c = document.getElementById('regFilterConsent');
+  const w = document.getElementById('regFilterWg');
+  const o = document.getElementById('regSortBy');
+
+  if (s) s.value = '';
+  if (a) a.value = 'all';
+  if (f) f.value = 'all';
+  if (c) c.value = 'all';
+  if (w) w.value = 'all';
+  if (o) o.value = 'newest';
+
+  renderRegistrationsTable();
+  showToast('Filters reset');
+}
+
+function renderRegistrationsTable() {
+  const tbody = document.getElementById('registrationsTableBody');
+  const emptyBox = document.getElementById('regEmptyState');
+  if (!tbody) return;
+
+  const searchQ = (document.getElementById('regSearchInput')?.value || '').trim().toLowerCase();
+  const filterArchetype = document.getElementById('regFilterArchetype')?.value || 'all';
+  const filterFootprint = document.getElementById('regFilterFootprint')?.value || 'all';
+  const filterConsent = document.getElementById('regFilterConsent')?.value || 'all';
+  const filterWg = document.getElementById('regFilterWg')?.value || 'all';
+  const sortBy = document.getElementById('regSortBy')?.value || 'newest';
+
+  let filtered = allRegistrations.filter(r => {
+    if (searchQ) {
+      const haystack = [
+        r.id, r.fullName, r.email, r.phone, r.organization, r.designation
+      ].join(' ').toLowerCase();
+      if (!haystack.includes(searchQ)) return false;
+    }
+    if (filterArchetype !== 'all') {
+      if (!String(r.stakeholderArchetype || '').toLowerCase().includes(filterArchetype.toLowerCase())) {
+        return false;
+      }
+    }
+    if (filterFootprint !== 'all') {
+      const fps = (r.operationalFootprint || []).map(f => String(f).toLowerCase());
+      if (!fps.some(f => f.includes(filterFootprint.toLowerCase()))) {
+        return false;
+      }
+    }
+    if (filterConsent !== 'all') {
+      const c = String(r.reportFeatureConsent || '').toLowerCase();
+      if (filterConsent === 'publish' && !c.includes('publish')) return false;
+      if (filterConsent === 'anonymous' && !c.includes('anonymous') && !c.includes('aggregated')) return false;
+    }
+    if (filterWg !== 'all') {
+      if (String(r.workingGroupInterest || '').toLowerCase() !== filterWg.toLowerCase()) {
+        return false;
+      }
+    }
+    return true;
+  });
+
+  if (sortBy === 'oldest') {
+    filtered.sort((a, b) => new Date(a.submittedAt).getTime() - new Date(b.submittedAt).getTime());
+  } else if (sortBy === 'name') {
+    filtered.sort((a, b) => String(a.fullName || '').localeCompare(String(b.fullName || '')));
+  } else if (sortBy === 'org') {
+    filtered.sort((a, b) => String(a.organization || '').localeCompare(String(b.organization || '')));
+  } else {
+    filtered.sort((a, b) => new Date(b.submittedAt).getTime() - new Date(a.submittedAt).getTime());
+  }
+
+  if (filtered.length === 0) {
+    tbody.innerHTML = '';
+    if (emptyBox) emptyBox.style.display = 'block';
+    return;
+  }
+
+  if (emptyBox) emptyBox.style.display = 'none';
+
+  tbody.innerHTML = filtered.map(r => {
+    const isConsentPublish = String(r.reportFeatureConsent || '').toLowerCase().includes('publish');
+    const isWgYes = String(r.workingGroupInterest || '').toLowerCase() === 'yes';
+    const subDate = r.submittedAt ? new Date(r.submittedAt).toLocaleString('en-NG', { dateStyle: 'short', timeStyle: 'short', timeZone: 'UTC' }) : '—';
+    const fps = Array.isArray(r.operationalFootprint) ? r.operationalFootprint : [];
+
+    return `
+      <tr>
+        <td>
+          <span style="font-family:monospace;font-weight:700;font-size:0.84rem;color:var(--teal-dark);background:rgba(0,130,138,0.08);padding:3px 8px;border-radius:6px;display:inline-block;">
+            ${escapeHtml(r.id)}
+          </span>
+        </td>
+        <td>
+          <div style="font-weight:700;color:var(--text);font-size:0.92rem;">${escapeHtml(r.fullName)}</div>
+          <div style="font-size:0.8rem;color:var(--text-muted);">${escapeHtml(r.designation || '—')}</div>
+          <div style="font-size:0.78rem;color:var(--teal);margin-top:2px;">
+            <a href="mailto:${escapeHtml(r.email)}" style="color:inherit;text-decoration:none;">${escapeHtml(r.email)}</a> • ${escapeHtml(r.phone)}
+          </div>
+        </td>
+        <td>
+          <strong style="color:#1e293b;font-size:0.9rem;">${escapeHtml(r.organization || '—')}</strong>
+        </td>
+        <td>
+          <span style="font-size:0.8rem;color:#334155;background:#f1f5f9;padding:3px 8px;border-radius:6px;display:inline-block;max-width:210px;line-height:1.35;" title="${escapeHtml(r.stakeholderArchetype || '')}">
+            ${escapeHtml(r.stakeholderArchetype || '—')}
+            ${r.stakeholderArchetypeOther ? `<br><em style="color:#64748b;font-size:0.75rem;">(${escapeHtml(r.stakeholderArchetypeOther)})</em>` : ''}
+          </span>
+        </td>
+        <td>
+          <div style="display:flex;flex-wrap:wrap;gap:4px;max-width:180px;">
+            ${fps.map(f => {
+              const shortName = f.split('(')[0].trim();
+              return `<span style="font-size:0.72rem;background:rgba(27,77,62,0.06);color:var(--green-deep);padding:2px 6px;border-radius:4px;font-weight:600;" title="${escapeHtml(f)}">${escapeHtml(shortName)}</span>`;
+            }).join('') || '<span style="color:#94a3b8;font-size:0.8rem;">—</span>'}
+          </div>
+        </td>
+        <td>
+          <span class="badge-status ${isConsentPublish ? 'badge-published' : 'badge-draft'}" style="font-size:0.72rem;white-space:nowrap;">
+            ${isConsentPublish ? 'Profile Public' : 'Anonymous'}
+          </span>
+        </td>
+        <td>
+          <span class="badge-status ${isWgYes ? 'badge-published' : 'badge-draft'}" style="font-size:0.72rem;">
+            ${isWgYes ? 'Yes' : 'No'}
+          </span>
+        </td>
+        <td>
+          <span style="font-size:0.78rem;color:#64748b;white-space:nowrap;">${subDate}</span>
+        </td>
+        <td style="text-align:right;white-space:nowrap;">
+          <div style="display:inline-flex;gap:6px;">
+            <button type="button" class="btn-action" onclick="openRegistrationDetailModal('${escapeHtml(r.id)}')" title="View complete 17-question submission">
+              View
+            </button>
+            <button type="button" class="btn-action delete" onclick="confirmDeleteReg('${escapeHtml(r.id)}')" title="Delete registration">
+              Delete
+            </button>
+          </div>
+        </td>
+      </tr>
+    `;
+  }).join('');
+}
+
+function openRegistrationDetailModal(id) {
+  const r = allRegistrations.find(item => item.id === id);
+  if (!r) return;
+
+  currentModalRegId = id;
+
+  document.getElementById('modalRegName').innerText = r.fullName || 'Delegate';
+  document.getElementById('modalRegRefId').innerText = r.id || '—';
+  document.getElementById('modalRegOrg').innerText = `${r.organization || '—'} · ${r.designation || '—'}`;
+  document.getElementById('modalRegMeta').innerText = `Email: ${r.email || '—'} | Phone: ${r.phone || '—'} | Submitted: ${r.submittedAt ? new Date(r.submittedAt).toUTCString() : '—'}`;
+
+  const fps = Array.isArray(r.operationalFootprint) ? r.operationalFootprint : [];
+  const prods = Array.isArray(r.financialProducts) ? r.financialProducts : [];
+  const barriers = Array.isArray(r.topBarriers) ? r.topBarriers : [];
+  const caps = Array.isArray(r.offerCapabilities) ? r.offerCapabilities : [];
+
+  const bodyEl = document.getElementById('modalRegBodyContent');
+  bodyEl.innerHTML = `
+    <!-- SECTION 1 -->
+    <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;padding:16px 20px;">
+      <div style="font-weight:800;color:var(--green-dark);font-size:0.95rem;margin-bottom:12px;border-bottom:1px solid #e2e8f0;padding-bottom:6px;">
+        Section 1: Delegate &amp; Institutional Identity
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;font-size:0.88rem;">
+        <div><strong>1. Full Name:</strong> <br>${escapeHtml(r.fullName)}</div>
+        <div><strong>2. Official Email:</strong> <br><a href="mailto:${escapeHtml(r.email)}" style="color:var(--teal);">${escapeHtml(r.email)}</a></div>
+        <div><strong>3. Phone / WhatsApp:</strong> <br>${escapeHtml(r.phone)}</div>
+        <div><strong>4. Organization:</strong> <br>${escapeHtml(r.organization)}</div>
+        <div><strong>5. Job Title / Role:</strong> <br>${escapeHtml(r.designation)}</div>
+      </div>
+      <div style="margin-top:10px;font-size:0.88rem;">
+        <strong>6. Primary Operational Footprint:</strong>
+        <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:6px;">
+          ${fps.map(f => `<span style="background:#e2e8f0;color:#1e293b;padding:3px 8px;border-radius:6px;font-size:0.8rem;font-weight:600;">${escapeHtml(f)}</span>`).join('') || '—'}
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION 2 -->
+    <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;padding:16px 20px;">
+      <div style="font-weight:800;color:var(--green-dark);font-size:0.95rem;margin-bottom:12px;border-bottom:1px solid #e2e8f0;padding-bottom:6px;">
+        Section 2: Institutional Role in the FI Ecosystem
+      </div>
+      <div style="font-size:0.88rem;margin-bottom:10px;">
+        <strong>7. Stakeholder Archetype:</strong><br>
+        <span style="display:inline-block;background:rgba(0,130,138,0.1);color:var(--teal-dark);padding:4px 10px;border-radius:6px;font-weight:700;margin-top:3px;">
+          ${escapeHtml(r.stakeholderArchetype)}
+        </span>
+        ${r.stakeholderArchetypeOther ? `<div style="margin-top:4px;color:#475569;"><em>Specification:</em> ${escapeHtml(r.stakeholderArchetypeOther)}</div>` : ''}
+      </div>
+      <div style="font-size:0.88rem;">
+        <strong>8. Primary Financial Products &amp; Services Delivered:</strong>
+        <ul style="margin:6px 0 0 20px;padding:0;line-height:1.5;">
+          ${prods.map(p => `<li>${escapeHtml(p)}</li>`).join('') || '<li>None specified</li>'}
+        </ul>
+      </div>
+    </div>
+
+    <!-- SECTION 3 -->
+    <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;padding:16px 20px;">
+      <div style="font-weight:800;color:var(--green-dark);font-size:0.95rem;margin-bottom:12px;border-bottom:1px solid #e2e8f0;padding-bottom:6px;">
+        Section 3: Ground-Level Challenges &amp; Bottlenecks
+      </div>
+      <div style="font-size:0.88rem;margin-bottom:12px;">
+        <strong>9. Top 3 Barriers to Rural Women Financial Inclusion:</strong>
+        <ul style="margin:6px 0 0 20px;padding:0;line-height:1.5;">
+          ${barriers.map(b => `<li style="font-weight:600;color:#0f172a;">${escapeHtml(b)}</li>`).join('') || '<li>None specified</li>'}
+        </ul>
+      </div>
+      <div style="font-size:0.88rem;">
+        <strong>10. Single Biggest Operational Challenge (Max 50 Words):</strong>
+        <div style="background:#fff;border:1px solid #cbd5e1;border-radius:8px;padding:10px 14px;margin-top:6px;color:#334155;line-height:1.6;white-space:pre-line;">
+          ${escapeHtml(r.biggestOperationalChallenge || '—')}
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION 4 -->
+    <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;padding:16px 20px;">
+      <div style="font-weight:800;color:var(--green-dark);font-size:0.95rem;margin-bottom:12px;border-bottom:1px solid #e2e8f0;padding-bottom:6px;">
+        Section 4: Collaboration, Public Funds &amp; Synergies
+      </div>
+      <div style="font-size:0.88rem;margin-bottom:10px;">
+        <strong>11. Assets, Capabilities &amp; Resources Offered:</strong>
+        <ul style="margin:6px 0 0 20px;padding:0;line-height:1.5;">
+          ${caps.map(c => `<li>${escapeHtml(c)}</li>`).join('') || '<li>None specified</li>'}
+        </ul>
+      </div>
+      <div style="font-size:0.88rem;margin-bottom:10px;">
+        <strong>12. Support / Resource Needed Most:</strong><br>
+        <div style="background:rgba(217,130,43,0.1);color:#b45309;padding:6px 12px;border-radius:6px;font-weight:700;display:inline-block;margin-top:4px;">
+          ${escapeHtml(r.neededSupport || '—')}
+        </div>
+      </div>
+      <div style="font-size:0.88rem;">
+        <strong>13. Consortium Participation Interest:</strong> <br>
+        <strong style="color:var(--green-dark);">${escapeHtml(r.consortiumInterest || '—')}</strong>
+      </div>
+    </div>
+
+    <!-- SECTION 5 -->
+    <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;padding:16px 20px;">
+      <div style="font-weight:800;color:var(--green-dark);font-size:0.95rem;margin-bottom:12px;border-bottom:1px solid #e2e8f0;padding-bottom:6px;">
+        Section 5: Voice of the Frontline (Qualitative Insights)
+      </div>
+      <div style="font-size:0.88rem;margin-bottom:12px;">
+        <strong>14. Practical Overlooked Opportunity to Prioritize:</strong>
+        <div style="background:#fff;border:1px solid #cbd5e1;border-radius:8px;padding:10px 14px;margin-top:6px;color:#334155;line-height:1.6;white-space:pre-line;">
+          ${escapeHtml(r.overlookedOpportunity || '—')}
+        </div>
+      </div>
+      <div style="font-size:0.88rem;">
+        <strong>15. Successful Project, Tool, or Pilot Model:</strong>
+        <div style="background:#fff;border:1px solid #cbd5e1;border-radius:8px;padding:10px 14px;margin-top:6px;color:#334155;line-height:1.6;white-space:pre-line;">
+          ${escapeHtml(r.successfulModel || '—')}
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION 6 -->
+    <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;padding:16px 20px;">
+      <div style="font-weight:800;color:var(--green-dark);font-size:0.95rem;margin-bottom:12px;border-bottom:1px solid #e2e8f0;padding-bottom:6px;">
+        Section 6: Post-Event Engagement Commitments
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;font-size:0.88rem;">
+        <div>
+          <strong>16. Feature Profile in 2026 Ecosystem Report:</strong><br>
+          <span style="display:inline-block;background:#e2e8f0;color:#0f172a;padding:4px 10px;border-radius:6px;font-weight:700;margin-top:3px;">
+            ${escapeHtml(r.reportFeatureConsent || '—')}
+          </span>
+        </div>
+        <div>
+          <strong>17. Post-Event Working Group Interest:</strong><br>
+          <span style="display:inline-block;background:#e2e8f0;color:#0f172a;padding:4px 10px;border-radius:6px;font-weight:700;margin-top:3px;">
+            ${escapeHtml(r.workingGroupInterest || '—')}
+          </span>
+        </div>
+      </div>
+    </div>
+  `;
+
+  document.getElementById('registrationDetailModal').style.display = 'flex';
+}
+
+function deleteCurrentModalReg() {
+  if (currentModalRegId) {
+    confirmDeleteReg(currentModalRegId);
+  }
+}
+
+function confirmDeleteReg(id) {
+  const r = allRegistrations.find(item => item.id === id);
+  const promptEl = document.getElementById('regDeletePromptText');
+  const btn = document.getElementById('btnConfirmDeleteReg');
+
+  if (promptEl) {
+    promptEl.innerHTML = `Are you sure you want to permanently delete registration <strong>${escapeHtml(id)}</strong> for <strong>${escapeHtml(r ? r.fullName : 'this delegate')}</strong> (${escapeHtml(r ? r.organization : '')})?<br><br>This will permanently remove the record from the database.`;
+  }
+
+  if (btn) {
+    btn.onclick = () => executeDeleteReg(id);
+  }
+
+  document.getElementById('regDeleteModal').style.display = 'flex';
+}
+
+async function executeDeleteReg(id) {
+  const token = sessionStorage.getItem('gida_admin_token');
+  if (!token) return;
+
+  const btn = document.getElementById('btnConfirmDeleteReg');
+  if (btn) {
+    btn.disabled = true;
+    btn.innerText = 'Deleting...';
+  }
+
+  try {
+    const res = await fetch(`/api/admin/registrations?id=${encodeURIComponent(id)}`, {
+      method: 'DELETE',
+      headers: {
+        'Authorization': 'Bearer ' + token
+      }
+    });
+
+    const result = await res.json().catch(() => ({}));
+    if (res.ok && result.success) {
+      closeModal('regDeleteModal');
+      closeModal('registrationDetailModal');
+      showToast(`✓ Registration ${id} deleted successfully`);
+      await fetchRegistrations();
+    } else {
+      alert('Delete failed: ' + (result.message || 'Server error'));
+    }
+  } catch (err) {
+    console.error('[DELETE ERROR]', err);
+    alert('Network error while deleting registration.');
+  } finally {
+    if (btn) {
+      btn.disabled = false;
+      btn.innerText = 'Confirm & Delete';
+    }
+  }
+}
+
+function exportRegistrationsCsv(exportAll) {
+  const token = sessionStorage.getItem('gida_admin_token');
+  if (!token) {
+    alert('Admin session expired. Please sign in again.');
+    return;
+  }
+
+  let url = `/api/admin/registrations/export?token=${encodeURIComponent(token)}`;
+
+  if (!exportAll) {
+    const searchQ = (document.getElementById('regSearchInput')?.value || '').trim();
+    const filterArchetype = document.getElementById('regFilterArchetype')?.value || 'all';
+    const filterFootprint = document.getElementById('regFilterFootprint')?.value || 'all';
+    const filterConsent = document.getElementById('regFilterConsent')?.value || 'all';
+    const filterWg = document.getElementById('regFilterWg')?.value || 'all';
+
+    if (searchQ) url += `&q=${encodeURIComponent(searchQ)}`;
+    if (filterArchetype !== 'all') url += `&archetype=${encodeURIComponent(filterArchetype)}`;
+    if (filterFootprint !== 'all') url += `&footprint=${encodeURIComponent(filterFootprint)}`;
+    if (filterConsent !== 'all') url += `&consent=${encodeURIComponent(filterConsent)}`;
+    if (filterWg !== 'all') url += `&workingGroup=${encodeURIComponent(filterWg)}`;
+  }
+
+  // Trigger download via hidden anchor
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = exportAll ? 'gida-all-event-registrations-2026.csv' : 'gida-filtered-event-registrations-2026.csv';
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+
+  showToast(exportAll ? 'Exporting all registrations to CSV...' : 'Exporting filtered registrations to CSV...');
+}
+
+function printCurrentRegistration() {
+  window.print();
 }
 
 // Initial authentication check
