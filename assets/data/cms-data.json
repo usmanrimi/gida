@@ -1,5 +1,4 @@
 {
-  "googleSheetsWebhookUrl": "https://script.google.com/macros/s/AKfycbxY4abu_7rFcG9ixvysi5hkQTu_xNImrGs1rq57j8WhTHrt8zFDRxSI2gGFN2TTAmzPUw/exec",
   "heroVisual": {
     "src": "assets/img/hero-slide.jpg",
     "alt": "Smiling rural market trader in Northern Nigeria — Where People Prosper",
@@ -499,8 +498,9 @@
     "facebook": "https://facebook.com/gidaaction",
     "instagram": "https://instagram.com/gida_action"
   },
+  "googleSheetsWebhookUrl": "https://script.google.com/macros/s/AKfycbxY4abu_7rFcG9ixvysi5hkQTu_xNImrGs1rq57j8WhTHrt8zFDRxSI2gGFN2TTAmzPUw/exec",
   "settings": {},
-  "updatedAt": "2026-10-11T19:47:57.574376Z",
+  "updatedAt": "2026-10-11T20:27:16.234677Z",
   "stats": [
     {
       "label": "Direct smallholder producers empowered",
@@ -522,6 +522,5 @@
       "value": 45,
       "suffix": "+"
     }
-  ],
-  "googleSheetsWebhookUrl": "https://script.google.com/macros/s/AKfycbxY4abu_7rFcG9ixvysi5hkQTu_xNImrGs1rq57j8WhTHrt8zFDRxSI2gGFN2TTAmzPUw/exec"
+  ]
 }

@@ -33,7 +33,9 @@
     "successfulModel": "Can you share one successful project, tool, or pilot model that has proven effective for rural women in your operational areas? *",
     "reportFeatureConsent": "Yes, publish our organization profile and operational area",
     "workingGroupInterest": "Yes",
-    "status": "confirmed"
+    "status": "confirmed",
+    "googleSheetsSynced": false,
+    "googleSheetsError": "Google Web App returned 401 Unauthorized: In Google Apps Script, click Deploy > Manage deployments > Edit > set 'Who has access' to 'Anyone'."
   },
   {
     "id": "GIDA-RW2026-1002",
@@ -65,7 +67,9 @@
     "successfulModel": "What is the single biggest",
     "reportFeatureConsent": "Yes, publish our organization profile and operational area",
     "workingGroupInterest": "Yes",
-    "status": "confirmed"
+    "status": "confirmed",
+    "googleSheetsSynced": false,
+    "googleSheetsError": "Google Web App returned 401 Unauthorized: In Google Apps Script, click Deploy > Manage deployments > Edit > set 'Who has access' to 'Anyone'."
   },
   {
     "id": "GIDA-RW2026-1003",
