@@ -13,7 +13,7 @@ function getSheetsWebhookUrl() {
       return (cmsData.googleSheetsWebhookUrl || '').trim();
     }
   } catch (e) {}
-  return 'https://script.google.com/macros/s/AKfycbxY4abu_7rFcG9ixvysi5hkQTu_xNImrGs1rq57j8WhTHrt8zFDRxSI2gGFN2TTAmzPUw/exec';
+  return 'https://script.google.com/macros/s/AKfycbzRFIBzhiU8B7MuITKV41Pq9Enm4nzwdBOeOIdz4VvbRA2Qk1gqa0D-AmxPRWDhBwVxXQ/exec';
 }
 
 async function sendToGoogleSheets(record, webhookUrl) {

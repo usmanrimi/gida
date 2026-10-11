@@ -13,8 +13,13 @@
    ========================================================================== */
 .reg-page-head {
   background: linear-gradient(135deg, rgba(13,35,29,0.92) 0%, rgba(0,104,110,0.85) 100%), url('assets/img/agri.jpg') center/cover no-repeat;
-  color: #fff;
+  color: #ffffff !important;
   padding: 130px 0 60px;
+}
+.reg-page-head h1,
+.reg-page-head .h-display {
+  color: #ffffff !important;
+  text-shadow: 0 2px 10px rgba(0,0,0,0.35);
 }
 .reg-container {
   max-width: 920px;
@@ -350,22 +355,26 @@
   transform: none;
 }
 
-/* Global Alert Banners */
 .alert-banner {
   padding: 14px 18px;
   border-radius: 10px;
   margin-bottom: 24px;
   font-size: 0.92rem;
   line-height: 1.5;
-  display: none;
+  display: none !important;
 }
 .alert-banner.error {
   background: #fef2f2;
   color: #991b1b;
   border: 1px solid #fecaca;
-  display: flex;
+  display: none !important;
   align-items: center;
   gap: 10px;
+}
+.alert-banner.visible,
+.alert-banner.error.visible,
+.alert-banner.info.visible {
+  display: flex !important;
 }
 .alert-banner.info {
   background: #f0fdf4;
@@ -520,8 +529,8 @@
   <section class="reg-page-head">
     <div class="wrap text-center" style="max-width:880px; margin:0 auto;">
       <p class="crumb" style="color:var(--gold); font-weight:700; text-transform:uppercase; letter-spacing:0.08em; font-size:0.8rem; margin-bottom:12px;">Official Event Registration</p>
-      <h1 class="h-display" style="font-size:clamp(1.75rem, 3.2vw, 2.55rem); line-height:1.2; margin-bottom:16px;">
-        International Day for Rural Women 2026: Rural Women Rising: Strengthening the Frontline in Nigeria
+      <h1 class="h-display" style="color:#ffffff !important; font-size:clamp(1.75rem, 3.2vw, 2.55rem); line-height:1.2; margin-bottom:16px;">
+        International Day for Rural Women 2026 — Rural Women Rising: Strengthening the Frontline in Nigeria
       </h1>
       <p style="font-size:1.05rem; color:rgba(255,255,255,0.9); line-height:1.6; max-width:760px; margin:0 auto 20px;">
         <strong>Keynote Theme:</strong> Promise or Publicity: PreCEFI as a Leading Institution in Bridging Financial Inclusion Gaps
@@ -575,7 +584,7 @@
       </div>
 
       <!-- GLOBAL SERVER ERROR BANNER -->
-      <div id="serverErrorBanner" class="alert-banner error" style="margin: 20px 32px 0;">
+      <div id="serverErrorBanner" class="alert-banner error" style="display:none; margin: 20px 32px 0;">
         <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
         <span id="serverErrorMessage">Please check the indicated fields and try submitting again.</span>
       </div>
@@ -1191,30 +1200,34 @@ let currentStep = 1;
 const totalSteps = 7;
 
 document.addEventListener('DOMContentLoaded', () => {
+  hideAllErrors();
   setupInteractiveCards();
   restoreDraft();
+  hideAllErrors();
   updateStepperUI(1);
 });
 
-// Highlight cards on radio/checkbox change
+// Highlight cards on radio/checkbox change and clear errors immediately
 function setupInteractiveCards() {
   document.querySelectorAll('.choice-card input').forEach(input => {
     input.addEventListener('change', () => {
       syncCardSelections();
       saveDraft();
+      // Instantly clear field error message on selection
+      const parent = input.closest('.q-block');
+      if (parent) {
+        const err = parent.querySelector('.field-error-msg');
+        if (err) err.classList.remove('visible');
+      }
     });
   });
 
-  // Watch text inputs for auto-save
-  const textInputs = ['q1_fullName', 'q2_email', 'q3_phone', 'q4_organization', 'q5_designation', 'q7_other_text', 'q10_challenge', 'q14_opportunity', 'q15_model'];
-  textInputs.forEach(id => {
-    const el = document.getElementById(id);
-    if (el) {
-      el.addEventListener('input', () => {
-        hideError(el);
-        saveDraft();
-      });
-    }
+  // Watch all text and textarea inputs for auto-save and real-time error clearing
+  document.querySelectorAll('.form-input-text, .form-textarea').forEach(input => {
+    input.addEventListener('input', () => {
+      hideError(input);
+      saveDraft();
+    });
   });
 
   // Handle Q7 other toggle
@@ -1330,126 +1343,178 @@ function updateStepperUI(stepNum) {
 // Validation per Step
 function validateStep(step) {
   let valid = true;
+  let firstErrorField = null;
   hideAllErrors();
 
   if (step === 1) {
-    const fullName = document.getElementById('q1_fullName')?.value.trim();
-    if (!fullName || fullName.length < 2) {
+    const fullNameEl = document.getElementById('q1_fullName');
+    const fullName = fullNameEl?.value.trim() || '';
+    if (fullName.length < 2) {
       showError('q1_fullName', 'err_q1');
+      if (!firstErrorField) firstErrorField = fullNameEl;
       valid = false;
     }
 
-    const email = document.getElementById('q2_email')?.value.trim();
+    const emailEl = document.getElementById('q2_email');
+    const email = emailEl?.value.trim() || '';
     const emailRegex = /^[^@\s]+@[^@\s]+\.[^@\s]+$/;
     if (!email || !emailRegex.test(email)) {
       showError('q2_email', 'err_q2');
+      if (!firstErrorField) firstErrorField = emailEl;
       valid = false;
     }
 
-    const phone = document.getElementById('q3_phone')?.value.trim();
-    if (!phone || phone.length < 7) {
+    const phoneEl = document.getElementById('q3_phone');
+    const phone = phoneEl?.value.trim() || '';
+    if (phone.length < 7) {
       showError('q3_phone', 'err_q3');
+      if (!firstErrorField) firstErrorField = phoneEl;
       valid = false;
     }
 
-    const org = document.getElementById('q4_organization')?.value.trim();
-    if (!org || org.length < 2) {
+    const orgEl = document.getElementById('q4_organization');
+    const org = orgEl?.value.trim() || '';
+    if (org.length < 2) {
       showError('q4_organization', 'err_q4');
+      if (!firstErrorField) firstErrorField = orgEl;
       valid = false;
     }
 
-    const des = document.getElementById('q5_designation')?.value.trim();
-    if (!des || des.length < 2) {
+    const desEl = document.getElementById('q5_designation');
+    const des = desEl?.value.trim() || '';
+    if (des.length < 2) {
       showError('q5_designation', 'err_q5');
+      if (!firstErrorField) firstErrorField = desEl;
       valid = false;
     }
 
     const footprints = document.querySelectorAll('input[name="q6_footprint"]:checked');
     if (footprints.length === 0) {
-      document.getElementById('err_q6').classList.add('visible');
+      const err6 = document.getElementById('err_q6');
+      if (err6) err6.classList.add('visible');
+      if (!firstErrorField) firstErrorField = document.querySelector('input[name="q6_footprint"]');
       valid = false;
     }
   } else if (step === 2) {
     const archetype = document.querySelector('input[name="q7_archetype"]:checked');
     if (!archetype) {
-      document.getElementById('err_q7').classList.add('visible');
+      const err7 = document.getElementById('err_q7');
+      if (err7) err7.classList.add('visible');
+      if (!firstErrorField) firstErrorField = document.querySelector('input[name="q7_archetype"]');
       valid = false;
     } else if (archetype.value.includes('Other')) {
-      const otherVal = document.getElementById('q7_other_text')?.value.trim();
+      const otherEl = document.getElementById('q7_other_text');
+      const otherVal = otherEl?.value.trim();
       if (!otherVal) {
         showError('q7_other_text', 'err_q7');
-        document.getElementById('err_q7').innerText = 'Please specify your organization type.';
-        document.getElementById('err_q7').classList.add('visible');
+        const err7 = document.getElementById('err_q7');
+        if (err7) {
+          err7.innerText = 'Please specify your organization type.';
+          err7.classList.add('visible');
+        }
+        if (!firstErrorField) firstErrorField = otherEl;
         valid = false;
       }
     }
 
     const products = document.querySelectorAll('input[name="q8_products"]:checked');
     if (products.length === 0) {
-      document.getElementById('err_q8').classList.add('visible');
+      const err8 = document.getElementById('err_q8');
+      if (err8) err8.classList.add('visible');
+      if (!firstErrorField) firstErrorField = document.querySelector('input[name="q8_products"]');
       valid = false;
     }
   } else if (step === 3) {
     const barriers = document.querySelectorAll('input[name="q9_barriers"]:checked');
     if (barriers.length === 0 || barriers.length > 3) {
-      document.getElementById('err_q9').classList.add('visible');
+      const err9 = document.getElementById('err_q9');
+      if (err9) err9.classList.add('visible');
+      if (!firstErrorField) firstErrorField = document.querySelector('input[name="q9_barriers"]');
       valid = false;
     }
 
-    const challenge = document.getElementById('q10_challenge')?.value.trim();
+    const challengeEl = document.getElementById('q10_challenge');
+    const challenge = challengeEl?.value.trim() || '';
     if (!challenge) {
       showError('q10_challenge', 'err_q10');
+      if (!firstErrorField) firstErrorField = challengeEl;
       valid = false;
     } else {
       const words = challenge.split(/\s+/).filter(Boolean);
       if (words.length > 50) {
         showError('q10_challenge', 'err_q10');
-        document.getElementById('err_q10').innerText = `Please limit response to 50 words maximum (currently ${words.length} words).`;
+        const err10 = document.getElementById('err_q10');
+        if (err10) {
+          err10.innerText = `Please limit response to 50 words maximum (currently ${words.length} words).`;
+          err10.classList.add('visible');
+        }
+        if (!firstErrorField) firstErrorField = challengeEl;
         valid = false;
       }
     }
   } else if (step === 4) {
     const offers = document.querySelectorAll('input[name="q11_offer"]:checked');
     if (offers.length === 0) {
-      document.getElementById('err_q11').classList.add('visible');
+      const err11 = document.getElementById('err_q11');
+      if (err11) err11.classList.add('visible');
+      if (!firstErrorField) firstErrorField = document.querySelector('input[name="q11_offer"]');
       valid = false;
     }
 
     const needed = document.querySelector('input[name="q12_needed"]:checked');
     if (!needed) {
-      document.getElementById('err_q12').classList.add('visible');
+      const err12 = document.getElementById('err_q12');
+      if (err12) err12.classList.add('visible');
+      if (!firstErrorField) firstErrorField = document.querySelector('input[name="q12_needed"]');
       valid = false;
     }
 
     const consortium = document.querySelector('input[name="q13_consortium"]:checked');
     if (!consortium) {
-      document.getElementById('err_q13').classList.add('visible');
+      const err13 = document.getElementById('err_q13');
+      if (err13) err13.classList.add('visible');
+      if (!firstErrorField) firstErrorField = document.querySelector('input[name="q13_consortium"]');
       valid = false;
     }
   } else if (step === 5) {
-    const opp = document.getElementById('q14_opportunity')?.value.trim();
-    if (!opp || opp.length < 5) {
+    const oppEl = document.getElementById('q14_opportunity');
+    const opp = oppEl?.value.trim() || '';
+    if (opp.length < 5) {
       showError('q14_opportunity', 'err_q14');
+      if (!firstErrorField) firstErrorField = oppEl;
       valid = false;
     }
 
-    const model = document.getElementById('q15_model')?.value.trim();
-    if (!model || model.length < 5) {
+    const modelEl = document.getElementById('q15_model');
+    const model = modelEl?.value.trim() || '';
+    if (model.length < 5) {
       showError('q15_model', 'err_q15');
+      if (!firstErrorField) firstErrorField = modelEl;
       valid = false;
     }
   } else if (step === 6) {
     const consent = document.querySelector('input[name="q16_consent"]:checked');
     if (!consent) {
-      document.getElementById('err_q16').classList.add('visible');
+      const err16 = document.getElementById('err_q16');
+      if (err16) err16.classList.add('visible');
+      if (!firstErrorField) firstErrorField = document.querySelector('input[name="q16_consent"]');
       valid = false;
     }
 
     const wg = document.querySelector('input[name="q17_wg"]:checked');
     if (!wg) {
-      document.getElementById('err_q17').classList.add('visible');
+      const err17 = document.getElementById('err_q17');
+      if (err17) err17.classList.add('visible');
+      if (!firstErrorField) firstErrorField = document.querySelector('input[name="q17_wg"]');
       valid = false;
     }
+  }
+
+  if (!valid && firstErrorField) {
+    try {
+      firstErrorField.focus();
+      firstErrorField.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    } catch(e) {}
   }
 
   return valid;
@@ -1463,14 +1528,23 @@ function showError(inputId, errId) {
 }
 
 function hideError(input) {
-  if (input) input.classList.remove('has-error');
+  if (!input) return;
+  input.classList.remove('has-error');
+  const parent = input.closest('.q-block');
+  if (parent) {
+    const err = parent.querySelector('.field-error-msg');
+    if (err) err.classList.remove('visible');
+  }
 }
 
 function hideAllErrors() {
   document.querySelectorAll('.field-error-msg').forEach(el => el.classList.remove('visible'));
   document.querySelectorAll('.has-error').forEach(el => el.classList.remove('has-error'));
   const sErr = document.getElementById('serverErrorBanner');
-  if (sErr) sErr.style.display = 'none';
+  if (sErr) {
+    sErr.classList.remove('visible');
+    sErr.style.display = 'none';
+  }
 }
 
 // Generate Review Step 7 Table
@@ -1746,9 +1820,9 @@ async function handleRegistrationSubmit(e) {
         const cmsRes = await fetch('assets/data/cms-data.json').catch(() => null);
         if (cmsRes && cmsRes.ok) {
           const cmsData = await cmsRes.json().catch(() => ({}));
-          fallbackUrl = cmsData.googleSheetsWebhookUrl || 'https://script.google.com/macros/s/AKfycbxY4abu_7rFcG9ixvysi5hkQTu_xNImrGs1rq57j8WhTHrt8zFDRxSI2gGFN2TTAmzPUw/exec';
+          fallbackUrl = cmsData.googleSheetsWebhookUrl || 'https://script.google.com/macros/s/AKfycbzRFIBzhiU8B7MuITKV41Pq9Enm4nzwdBOeOIdz4VvbRA2Qk1gqa0D-AmxPRWDhBwVxXQ/exec';
         }
-        if (!fallbackUrl) fallbackUrl = 'https://script.google.com/macros/s/AKfycbxY4abu_7rFcG9ixvysi5hkQTu_xNImrGs1rq57j8WhTHrt8zFDRxSI2gGFN2TTAmzPUw/exec';
+        if (!fallbackUrl) fallbackUrl = 'https://script.google.com/macros/s/AKfycbzRFIBzhiU8B7MuITKV41Pq9Enm4nzwdBOeOIdz4VvbRA2Qk1gqa0D-AmxPRWDhBwVxXQ/exec';
           await fetch(fallbackUrl, {
             method: 'POST',
             mode: 'no-cors',

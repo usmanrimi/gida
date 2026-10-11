@@ -123,7 +123,7 @@ def get_sheets_webhook_url():
                 return (cms_data.get("googleSheetsWebhookUrl") or "").strip()
     except Exception:
         pass
-    return "https://script.google.com/macros/s/AKfycbxY4abu_7rFcG9ixvysi5hkQTu_xNImrGs1rq57j8WhTHrt8zFDRxSI2gGFN2TTAmzPUw/exec"
+    return "https://script.google.com/macros/s/AKfycbzRFIBzhiU8B7MuITKV41Pq9Enm4nzwdBOeOIdz4VvbRA2Qk1gqa0D-AmxPRWDhBwVxXQ/exec"
 
 def send_to_google_sheets(record, webhook_url):
     if not webhook_url:

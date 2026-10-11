@@ -34,8 +34,7 @@
     "reportFeatureConsent": "Yes, publish our organization profile and operational area",
     "workingGroupInterest": "Yes",
     "status": "confirmed",
-    "googleSheetsSynced": false,
-    "googleSheetsError": "Google Web App returned 401 Unauthorized: In Google Apps Script, click Deploy > Manage deployments > Edit > set 'Who has access' to 'Anyone'."
+    "googleSheetsSynced": true
   },
   {
     "id": "GIDA-RW2026-1002",
@@ -68,8 +67,7 @@
     "reportFeatureConsent": "Yes, publish our organization profile and operational area",
     "workingGroupInterest": "Yes",
     "status": "confirmed",
-    "googleSheetsSynced": false,
-    "googleSheetsError": "Google Web App returned 401 Unauthorized: In Google Apps Script, click Deploy > Manage deployments > Edit > set 'Who has access' to 'Anyone'."
+    "googleSheetsSynced": true
   },
   {
     "id": "GIDA-RW2026-1003",
@@ -103,7 +101,74 @@
     "reportFeatureConsent": "Yes, you may feature our organization profile and operational footprint",
     "workingGroupInterest": "Yes, I would like to participate in post-event working groups",
     "status": "confirmed",
-    "googleSheetsSynced": false,
-    "googleSheetsError": "Google Web App returned 401 Unauthorized: In Google Apps Script, click Deploy > Manage deployments > Edit > set 'Who has access' to 'Anyone'."
+    "googleSheetsSynced": true
+  },
+  {
+    "id": "GIDA-RW2026-1004",
+    "submittedAt": "2026-10-11T21:23:17.457850Z",
+    "fullName": "Automation Test User",
+    "email": "autotest@example.org",
+    "phone": "+234 801 234 5678",
+    "organization": "Rural Women Dev Network",
+    "designation": "Executive Lead",
+    "operationalFootprint": [
+      "North-West",
+      "North-Central"
+    ],
+    "stakeholderArchetype": "NGO / Civil Society",
+    "stakeholderArchetypeOther": "",
+    "financialProducts": [
+      "Credit / Micro-loans",
+      "Financial Literacy"
+    ],
+    "topBarriers": [
+      "High Transportation / Logistics Costs"
+    ],
+    "biggestOperationalChallenge": "Access to affordable processing equipment and cold storage.",
+    "offerCapabilities": [
+      "Community mobilization / Network of women producers"
+    ],
+    "neededSupport": "Grants / Catalytic funding",
+    "consortiumInterest": "Yes, our organization wants to co-create and lead interventions",
+    "overlookedOpportunity": "Expansion of processing hubs across Kaduna rural clusters.",
+    "successfulModel": "Cooperative ownership model linked to off-takers.",
+    "reportFeatureConsent": "Yes",
+    "workingGroupInterest": "Yes",
+    "status": "confirmed",
+    "googleSheetsSynced": true
+  },
+  {
+    "id": "GIDA-RW2026-1005",
+    "submittedAt": "2026-10-11T21:25:57.108394Z",
+    "fullName": "Fatima Aliyu",
+    "email": "fatima.aliyu@ruralwomen.ng",
+    "phone": "+234 803 111 2233",
+    "organization": "Kaduna Women Farmers Cooperative",
+    "designation": "Program Coordinator",
+    "operationalFootprint": [
+      "North-West",
+      "North-Central"
+    ],
+    "stakeholderArchetype": "Producer Organization / Cooperative",
+    "stakeholderArchetypeOther": "",
+    "financialProducts": [
+      "Credit / Micro-loans",
+      "Financial Literacy"
+    ],
+    "topBarriers": [
+      "High Transportation / Logistics Costs"
+    ],
+    "biggestOperationalChallenge": "Access to affordable storage and processing equipment.",
+    "offerCapabilities": [
+      "Community mobilization / Network of women producers"
+    ],
+    "neededSupport": "Grants / Catalytic funding",
+    "consortiumInterest": "Yes, our organization wants to co-create and lead interventions",
+    "overlookedOpportunity": "Aggregated village collection centers for fresh produce.",
+    "successfulModel": "Revolving input credit scheme managed by women leads.",
+    "reportFeatureConsent": "Yes",
+    "workingGroupInterest": "Yes",
+    "status": "confirmed",
+    "googleSheetsSynced": true
   }
 ]
