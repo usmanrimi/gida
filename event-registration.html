@@ -1829,9 +1829,8 @@ async function handleRegistrationSubmit(e) {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(payload)
           });
-          res = { ok: true };
-          result = { success: true, registrationId: 'GIDA-RW2026-' + Date.now().toString().slice(-4), registration: payload };
-        }
+        res = { ok: true };
+        result = { success: true, registrationId: 'GIDA-RW2026-' + Date.now().toString().slice(-4), registration: payload };
       } catch (e) {}
     }
 
