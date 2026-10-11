@@ -499,7 +499,7 @@
     "instagram": "https://instagram.com/gida_action"
   },
   "settings": {},
-  "updatedAt": "2026-10-05T14:48:21.930158Z",
+  "updatedAt": "2026-10-11T19:47:09.811390Z",
   "stats": [
     {
       "label": "Direct smallholder producers empowered",
@@ -521,5 +521,6 @@
       "value": 45,
       "suffix": "+"
     }
-  ]
+  ],
+  "googleSheetsWebhookUrl": "https://script.google.com/macros/s/AKfycbxY4abu_7rFcG9ixvysi5hkQTu_xNImrGs1rq57j8WhTHrt8zFDRxSI2gGFN2TTAmzPUw/exec"
 }
