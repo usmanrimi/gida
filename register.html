@@ -1702,17 +1702,44 @@ async function handleRegistrationSubmit(e) {
   if (btnText) btnText.innerText = 'Persisting Registration...';
 
   try {
-    const res = await fetch('/api/register', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(payload)
-    });
+    let res;
+    let result = {};
+    try {
+      res = await fetch('/api/register', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(payload)
+      });
+      result = await res.json().catch(() => ({}));
+    } catch (fetchErr) {
+      res = { ok: false, status: 0 };
+    }
 
-    const result = await res.json().catch(() => ({}));
+    // Static hosting fallback (e.g. GitHub Pages without serverless functions)
+    if ((!res || res.status === 404 || res.status === 0) && typeof window !== 'undefined') {
+      try {
+        let fallbackUrl = '';
+        const cmsRes = await fetch('assets/data/cms-data.json').catch(() => null);
+        if (cmsRes && cmsRes.ok) {
+          const cmsData = await cmsRes.json().catch(() => ({}));
+          fallbackUrl = cmsData.googleSheetsWebhookUrl || '';
+        }
+        if (fallbackUrl) {
+          await fetch(fallbackUrl, {
+            method: 'POST',
+            mode: 'no-cors',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+          });
+          res = { ok: true };
+          result = { success: true, registrationId: 'GIDA-RW2026-' + Date.now().toString().slice(-4), registration: payload };
+        }
+      } catch (e) {}
+    }
 
-    if (res.ok && result.success) {
+    if (res && res.ok && result.success) {
       // Clear draft on successful persistence
       localStorage.removeItem(DRAFT_KEY);
 

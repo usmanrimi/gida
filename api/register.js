@@ -1,61 +1,97 @@
 const fs = require('fs');
 const path = require('path');
-const https = require('https');
-const http = require('http');
 
 const REGISTRATIONS_FILE = path.join(process.cwd(), 'assets', 'data', 'registrations.json');
 
-function dispatchSheetsWebhook(record) {
-  const webhookUrl = (process.env.GOOGLE_SHEETS_WEBHOOK_URL || '').trim();
-  if (!webhookUrl) return;
+function getSheetsWebhookUrl() {
+  const envUrl = (process.env.GOOGLE_SHEETS_WEBHOOK_URL || '').trim();
+  if (envUrl) return envUrl;
+  try {
+    const cmsPath = path.join(process.cwd(), 'assets', 'data', 'cms-data.json');
+    if (fs.existsSync(cmsPath)) {
+      const cmsData = JSON.parse(fs.readFileSync(cmsPath, 'utf8'));
+      return (cmsData.googleSheetsWebhookUrl || '').trim();
+    }
+  } catch (e) {}
+  return '';
+}
+
+async function sendToGoogleSheets(record, webhookUrl) {
+  if (!webhookUrl) {
+    return { success: false, configured: false, reason: 'unconfigured' };
+  }
 
   try {
-    const url = new URL(webhookUrl);
-    const client = url.protocol === 'https:' ? https : http;
-    const data = JSON.stringify(record);
-
-    const req = client.request(url, {
+    const res = await fetch(webhookUrl, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Content-Length': Buffer.byteLength(data),
-        'User-Agent': 'GIDA-Event-Registration/1.0'
+        'User-Agent': 'GIDA-Registration-Sync/1.0'
       },
-      timeout: 5000
+      body: JSON.stringify(record),
+      redirect: 'follow',
+      signal: AbortSignal.timeout(12000)
     });
 
-    req.on('error', (err) => {
-      console.warn('[SHEETS WEBHOOK WARNING] Delivery failed:', err.message);
-    });
-    req.write(data);
-    req.end();
+    const text = await res.text();
+    let data;
+    try {
+      data = JSON.parse(text);
+    } catch (e) {
+      data = { raw: text };
+    }
+
+    if (res.ok && data.success !== false) {
+      return { success: true, configured: true, data };
+    } else {
+      return {
+        success: false,
+        configured: true,
+        status: res.status,
+        error: data.error || data.message || text
+      };
+    }
   } catch (err) {
-    console.warn('[SHEETS WEBHOOK WARNING] URL parsing failed:', err.message);
+    return { success: false, configured: true, error: err.message };
   }
 }
 
 async function loadRegistrations() {
   try {
-    if (!fs.existsSync(REGISTRATIONS_FILE)) {
-      return [];
+    if (fs.existsSync(REGISTRATIONS_FILE)) {
+      const raw = await fs.promises.readFile(REGISTRATIONS_FILE, 'utf-8');
+      const parsed = JSON.parse(raw);
+      if (Array.isArray(parsed)) return parsed;
     }
-    const raw = await fs.promises.readFile(REGISTRATIONS_FILE, 'utf-8');
-    const parsed = JSON.parse(raw);
-    return Array.isArray(parsed) ? parsed : [];
+    const tmpPath = path.join('/tmp', 'registrations.json');
+    if (fs.existsSync(tmpPath)) {
+      const raw = await fs.promises.readFile(tmpPath, 'utf-8');
+      const parsed = JSON.parse(raw);
+      if (Array.isArray(parsed)) return parsed;
+    }
+    return [];
   } catch (err) {
-    console.error('[REGISTRATIONS READ ERROR]', err);
+    console.warn('[REGISTRATIONS READ NOTICE]', err.message);
     return [];
   }
 }
 
 async function saveRegistrations(records) {
-  const dir = path.dirname(REGISTRATIONS_FILE);
-  if (!fs.existsSync(dir)) {
-    await fs.promises.mkdir(dir, { recursive: true });
+  try {
+    const dir = path.dirname(REGISTRATIONS_FILE);
+    if (!fs.existsSync(dir)) {
+      await fs.promises.mkdir(dir, { recursive: true });
+    }
+    const tempFile = REGISTRATIONS_FILE + '.tmp';
+    await fs.promises.writeFile(tempFile, JSON.stringify(records, null, 2), 'utf-8');
+    await fs.promises.rename(tempFile, REGISTRATIONS_FILE);
+  } catch (err) {
+    console.warn('[LOCAL STORAGE NOTICE (SERVERLESS/READ-ONLY)]', err.message);
+    try {
+      const tmpPath = path.join('/tmp', 'registrations.json');
+      await fs.promises.writeFile(tmpPath, JSON.stringify(records, null, 2), 'utf-8');
+    } catch (e) {}
   }
-  const tempFile = REGISTRATIONS_FILE + '.tmp';
-  await fs.promises.writeFile(tempFile, JSON.stringify(records, null, 2), 'utf-8');
-  await fs.promises.rename(tempFile, REGISTRATIONS_FILE);
 }
 
 module.exports = async (req, res) => {
@@ -250,14 +286,26 @@ module.exports = async (req, res) => {
     records.push(newRecord);
     await saveRegistrations(records);
 
-    // Safe webhook dispatch
-    dispatchSheetsWebhook(newRecord);
+    // Primary destination: Google Sheets integration
+    const webhookUrl = getSheetsWebhookUrl();
+    const sheetsResult = await sendToGoogleSheets(newRecord, webhookUrl);
+
+    if (webhookUrl && !sheetsResult.success) {
+      return res.status(502).json({
+        success: false,
+        message: 'Could not write registration to Google Sheet: ' + (sheetsResult.error || 'Webhook delivery error. Please try again.'),
+        error: sheetsResult.error
+      });
+    }
 
     return res.status(200).json({
       success: true,
       registrationId: newId,
       registration: newRecord,
-      message: 'Registration successfully saved to database.'
+      googleSheetsSynced: Boolean(sheetsResult.success),
+      message: sheetsResult.success
+        ? 'Registration successfully recorded in Google Sheets.'
+        : 'Registration recorded. Google Sheets Webhook is pending setup in Super Admin.'
     });
   } catch (err) {
     console.error('[API REGISTER ERROR]', err);

@@ -180,3 +180,14 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   } catch(e) {}
 });
+
+/* =================== EVENT REGISTRATION FLOATING WIDGET =================== */
+document.addEventListener('DOMContentLoaded', () => {
+  const p = (window.location.pathname || '').toLowerCase();
+  if (!p.includes('admin') && !p.includes('register') && !p.includes('registration')) {
+    const script = document.createElement('script');
+    script.src = 'assets/js/event-widget.js';
+    script.async = true;
+    document.body.appendChild(script);
+  }
+});

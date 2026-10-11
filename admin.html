@@ -1063,6 +1063,32 @@
               </div>
             </div>
 
+            <!-- GOOGLE SHEETS LIVE INTEGRATION BANNER -->
+            <div style="background:#f0fdf4;border-bottom:1px solid #bbf7d0;padding:14px 20px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;">
+              <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
+                <div style="width:38px;height:38px;border-radius:10px;background:#15803d;color:#fff;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                  <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
+                </div>
+                <div>
+                  <div style="display:flex;align-items:center;gap:8px;">
+                    <strong style="color:#14532d;font-size:0.92rem;">Primary Destination: Google Sheets Database</strong>
+                    <span id="sheetsStatusBadge" class="badge-status badge-draft" style="font-size:0.75rem;">Configurable</span>
+                  </div>
+                  <div style="font-size:0.82rem;color:#166534;margin-top:2px;">
+                    Target Spreadsheet: <a href="https://docs.google.com/spreadsheets/d/1Wl1rhD_nZh5iQ1ibGwAhSPvAd4BOJQAt_kVJehTxzj8/edit" target="_blank" rel="noopener noreferrer" style="color:#15803d;font-weight:700;text-decoration:underline;">International Day for Rural Women 2026 Sheet &nearr;</a>
+                  </div>
+                </div>
+              </div>
+              <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+                <button type="button" class="btn-outline-sm" onclick="openSheetsGuideModal()" style="font-size:0.82rem;padding:6px 12px;background:#fff;">
+                  📖 Setup Guide &amp; Script
+                </button>
+                <button type="button" class="btn-outline-sm" onclick="openSheetsConfigModal()" style="font-size:0.82rem;padding:6px 12px;background:#15803d;color:#fff;border-color:#15803d;">
+                  ⚙️ Configure Webhook
+                </button>
+              </div>
+            </div>
+
             <!-- SEARCH, FILTERS & SORT CONTROLS -->
             <div class="card-body" style="padding-bottom:12px;background:#f8fafc;border-bottom:1px solid var(--border);">
               <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(190px, 1fr));gap:12px;align-items:flex-end;">
@@ -1718,6 +1744,91 @@
       <button type="button" class="btn-modal-cancel" onclick="closeModal('safeDeleteModal')">Cancel</button>
       <button type="button" class="btn-action" onclick="switchToReplace()">Replace Instead</button>
       <button type="button" class="btn-modal-save" style="background:var(--danger);" id="confirmDeleteExecBtn">Confirm Delete</button>
+    </div>
+  </div>
+</div>
+
+<!-- GOOGLE SHEETS LIVE INTEGRATION CONFIG MODAL -->
+<div id="sheetsConfigModal" class="modal-overlay">
+  <div class="modal-box" style="max-width:620px;">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px;">
+      <div style="width:36px;height:36px;border-radius:8px;background:#15803d;color:#fff;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+        <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
+      </div>
+      <div>
+        <h4 style="margin:0;font-size:1.15rem;color:#0f172a;">Google Sheets Live Webhook Settings</h4>
+        <span style="font-size:0.82rem;color:var(--text-muted);">Direct row insertion for International Day for Rural Women 2026</span>
+      </div>
+    </div>
+
+    <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:14px;margin-bottom:18px;font-size:0.86rem;line-height:1.5;color:#334155;">
+      <strong>Target Google Sheet:</strong><br>
+      <a href="https://docs.google.com/spreadsheets/d/1Wl1rhD_nZh5iQ1ibGwAhSPvAd4BOJQAt_kVJehTxzj8/edit" target="_blank" rel="noopener noreferrer" style="color:#15803d;font-weight:700;word-break:break-all;">
+        https://docs.google.com/spreadsheets/d/1Wl1rhD_nZh5iQ1ibGwAhSPvAd4BOJQAt_kVJehTxzj8/edit
+      </a>
+    </div>
+
+    <div class="form-group">
+      <label for="inputSheetsWebhookUrl" style="font-weight:700;">Google Apps Script Web App URL</label>
+      <input type="url" id="inputSheetsWebhookUrl" placeholder="https://script.google.com/macros/s/AKfycb.../exec" style="width:100%;padding:10px 12px;border:1px solid #cbd5e1;border-radius:8px;font-family:monospace;font-size:0.85rem;">
+      <span style="font-size:0.78rem;color:var(--text-muted);display:block;margin-top:6px;">
+        Deploy the Google Apps Script in your spreadsheet as a Web app (Access: Anyone) and paste the URL here.
+      </span>
+    </div>
+
+    <div id="sheetsTestResultBox" style="display:none;padding:12px 14px;border-radius:8px;font-size:0.85rem;margin-bottom:16px;"></div>
+
+    <div class="modal-actions" style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;">
+      <button type="button" id="btnTestWebhookConn" class="btn-action" onclick="testSheetsWebhookConnection()" style="background:#f1f5f9;color:#0f172a;border:1px solid #cbd5e1;">
+        ⚡ Test Connection
+      </button>
+      <div style="display:flex;gap:10px;">
+        <button type="button" class="btn-modal-cancel" onclick="closeModal('sheetsConfigModal')">Cancel</button>
+        <button type="button" class="btn-modal-save" style="background:#15803d;color:#fff;" onclick="saveSheetsWebhookConfig()">Save Webhook</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- GOOGLE SHEETS SETUP GUIDE MODAL -->
+<div id="sheetsGuideModal" class="modal-overlay">
+  <div class="modal-box" style="max-width:700px;max-height:88vh;overflow-y:auto;">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;border-bottom:1px solid var(--border);padding-bottom:12px;">
+      <h4 style="margin:0;font-size:1.15rem;color:#0f172a;">3-Step Google Sheets Integration Guide</h4>
+      <button type="button" class="btn-action" onclick="closeModal('sheetsGuideModal')">&times; Close</button>
+    </div>
+
+    <div style="font-size:0.88rem;color:#334155;line-height:1.6;display:flex;flex-direction:column;gap:16px;">
+      <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:14px;">
+        <strong style="color:#0f172a;display:block;margin-bottom:4px;">Step 1: Open Apps Script in Google Sheets</strong>
+        1. Open your Google Sheet: <a href="https://docs.google.com/spreadsheets/d/1Wl1rhD_nZh5iQ1ibGwAhSPvAd4BOJQAt_kVJehTxzj8/edit" target="_blank" rel="noopener noreferrer" style="color:#15803d;font-weight:700;">Open Sheet &nearr;</a><br>
+        2. In the top Google Sheets menu, click <strong>Extensions &gt; Apps Script</strong>.
+      </div>
+
+      <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:14px;">
+        <strong style="color:#0f172a;display:block;margin-bottom:4px;">Step 2: Paste the Integration Script</strong>
+        Replace any code in <code>Code.gs</code> with the pre-built script file <code>google-apps-script.js</code> from the repository.
+        <div style="margin-top:10px;">
+          <button type="button" class="btn-outline-sm" onclick="copyAppsScriptCode()" id="btnCopyAppsScript" style="background:#fff;">
+            📋 Copy Apps Script Code to Clipboard
+          </button>
+        </div>
+      </div>
+
+      <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:14px;">
+        <strong style="color:#0f172a;display:block;margin-bottom:4px;">Step 3: Deploy as Web App</strong>
+        1. In Apps Script, click the blue <strong>Deploy &gt; New deployment</strong> button.<br>
+        2. Select type: <strong>Web app</strong>.<br>
+        3. Execute as: <strong>Me</strong> &bull; Who has access: <strong>Anyone</strong>.<br>
+        4. Click <strong>Deploy</strong>, authorize permissions, and copy the Web App URL.<br>
+        5. Return here, click <strong>Configure Webhook</strong>, paste the URL, and click <strong>Test Connection</strong>!
+      </div>
+    </div>
+
+    <div class="modal-actions" style="margin-top:20px;">
+      <button type="button" class="btn-gold-sm" onclick="closeModal('sheetsGuideModal'); openSheetsConfigModal();">
+        Proceed to Configure Webhook &rarr;
+      </button>
     </div>
   </div>
 </div>
@@ -2734,6 +2845,7 @@ function renderAll() {
   renderSettingsForm();
   renderManagedImages(currentFilterSection);
   fetchRegistrations();
+  updateSheetsStatusBadge();
 }
 
 function renderStats() {
@@ -4790,6 +4902,129 @@ function exportRegistrationsCsv(exportAll) {
 
 function printCurrentRegistration() {
   window.print();
+}
+
+// ==========================================
+// GOOGLE SHEETS LIVE INTEGRATION HELPERS
+// ==========================================
+function updateSheetsStatusBadge() {
+  const badge = document.getElementById('sheetsStatusBadge');
+  const input = document.getElementById('inputSheetsWebhookUrl');
+  const url = (store.googleSheetsWebhookUrl || '').trim();
+  if (input && !input.value) input.value = url;
+  if (!badge) return;
+  if (url) {
+    badge.className = 'badge-status badge-published';
+    badge.innerText = '✓ Connected to Webhook';
+    badge.style.background = '#dcfce7';
+    badge.style.color = '#15803d';
+  } else {
+    badge.className = 'badge-status badge-draft';
+    badge.innerText = '⚙️ Webhook Not Configured';
+    badge.style.background = '#fef3c7';
+    badge.style.color = '#b45309';
+  }
+}
+
+function openSheetsConfigModal() {
+  const input = document.getElementById('inputSheetsWebhookUrl');
+  if (input) input.value = store.googleSheetsWebhookUrl || '';
+  const resBox = document.getElementById('sheetsTestResultBox');
+  if (resBox) resBox.style.display = 'none';
+  document.getElementById('sheetsConfigModal').style.display = 'flex';
+}
+
+function openSheetsGuideModal() {
+  document.getElementById('sheetsGuideModal').style.display = 'flex';
+}
+
+async function saveSheetsWebhookConfig() {
+  const input = document.getElementById('inputSheetsWebhookUrl');
+  const url = (input ? input.value : '').trim();
+  store.googleSheetsWebhookUrl = url;
+  await persist();
+  updateSheetsStatusBadge();
+  closeModal('sheetsConfigModal');
+  showToast(url ? 'Google Sheets Webhook URL saved successfully!' : 'Google Sheets Webhook URL cleared.');
+}
+
+async function testSheetsWebhookConnection() {
+  const input = document.getElementById('inputSheetsWebhookUrl');
+  const url = (input ? input.value : '').trim() || (store.googleSheetsWebhookUrl || '').trim();
+  const btn = document.getElementById('btnTestWebhookConn');
+  const resBox = document.getElementById('sheetsTestResultBox');
+  const token = sessionStorage.getItem('gida_admin_token');
+
+  if (!url) {
+    if (resBox) {
+      resBox.style.display = 'block';
+      resBox.style.background = '#fef2f2';
+      resBox.style.color = '#991b1b';
+      resBox.style.border = '1px solid #fecaca';
+      resBox.innerText = 'Please enter a Google Apps Script Web App URL first.';
+    }
+    return;
+  }
+
+  if (btn) {
+    btn.disabled = true;
+    btn.innerText = 'Testing connection...';
+  }
+
+  try {
+    const res = await fetch('/api/admin/test-sheets-webhook', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + (token || '')
+      },
+      body: JSON.stringify({ webhookUrl: url })
+    });
+
+    const data = await res.json().catch(() => ({}));
+    if (resBox) {
+      resBox.style.display = 'block';
+      if (res.ok && data.success) {
+        resBox.style.background = '#f0fdf4';
+        resBox.style.color = '#15803d';
+        resBox.style.border = '1px solid #bbf7d0';
+        resBox.innerHTML = `<strong>✓ Connection Verified!</strong><br>${escapeHtml(data.message || 'Row successfully appended to your Google Sheet.')}`;
+      } else {
+        resBox.style.background = '#fef2f2';
+        resBox.style.color = '#991b1b';
+        resBox.style.border = '1px solid #fecaca';
+        resBox.innerHTML = `<strong>✕ Verification Failed</strong><br>${escapeHtml(data.message || 'Unable to connect to Google Sheets Webhook.')}`;
+      }
+    }
+  } catch (err) {
+    if (resBox) {
+      resBox.style.display = 'block';
+      resBox.style.background = '#fef2f2';
+      resBox.style.color = '#991b1b';
+      resBox.style.border = '1px solid #fecaca';
+      resBox.innerHTML = `<strong>✕ Network Error:</strong> ${escapeHtml(err.message)}`;
+    }
+  } finally {
+    if (btn) {
+      btn.disabled = false;
+      btn.innerText = '⚡ Test Connection';
+    }
+  }
+}
+
+function copyAppsScriptCode() {
+  fetch('google-apps-script.js')
+    .then(r => r.text())
+    .then(t => {
+      navigator.clipboard.writeText(t).then(() => {
+        const btn = document.getElementById('btnCopyAppsScript');
+        if (btn) btn.innerText = '✓ Copied to Clipboard!';
+        setTimeout(() => { if (btn) btn.innerText = '📋 Copy Apps Script Code to Clipboard'; }, 2500);
+      });
+    })
+    .catch(() => {
+      alert('Open the file google-apps-script.js in the project repository to copy the script code.');
+    });
 }
 
 // Initial authentication check

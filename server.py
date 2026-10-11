@@ -112,25 +112,50 @@ def save_registrations(records):
         else:
             os.rename(temp_file, REGISTRATIONS_FILE)
 
-def dispatch_sheets_webhook(record):
-    webhook_url = os.environ.get("GOOGLE_SHEETS_WEBHOOK_URL", "").strip()
+def get_sheets_webhook_url():
+    env_url = (os.environ.get("GOOGLE_SHEETS_WEBHOOK_URL") or "").strip()
+    if env_url:
+        return env_url
+    try:
+        if os.path.exists(DATA_FILE):
+            with open(DATA_FILE, 'r', encoding='utf-8') as f:
+                cms_data = json.load(f)
+                return (cms_data.get("googleSheetsWebhookUrl") or "").strip()
+    except Exception:
+        pass
+    return ""
+
+def send_to_google_sheets(record, webhook_url):
     if not webhook_url:
-        return
-    def _send():
-        try:
-            req = urllib.request.Request(
-                webhook_url,
-                data=json.dumps(record).encode('utf-8'),
-                headers={'Content-Type': 'application/json', 'User-Agent': 'GIDA-Event-Registration/1.0'},
-                method='POST'
-            )
-            with urllib.request.urlopen(req, timeout=5) as resp:
-                pass
-            print(f"[SHEETS WEBHOOK] Dispatched record {record.get('id')} successfully.")
-        except Exception as err:
-            print(f"[SHEETS WEBHOOK WARNING] Delivery failed (database record is safe): {err}")
-    t = threading.Thread(target=_send, daemon=True)
-    t.start()
+        return {"success": False, "configured": False, "reason": "unconfigured"}
+    try:
+        data_bytes = json.dumps(record, ensure_ascii=False).encode('utf-8')
+        req = urllib.request.Request(
+            webhook_url,
+            data=data_bytes,
+            headers={
+                'Content-Type': 'application/json',
+                'User-Agent': 'GIDA-Registration-Sync/1.0'
+            },
+            method='POST'
+        )
+        with urllib.request.urlopen(req, timeout=12) as resp:
+            content = resp.read().decode('utf-8')
+            try:
+                res_data = json.loads(content)
+            except Exception:
+                res_data = {"raw": content}
+            if resp.status in [200, 201, 302] and res_data.get("success") is not False:
+                return {"success": True, "configured": True, "data": res_data}
+            else:
+                return {
+                    "success": False,
+                    "configured": True,
+                    "status": resp.status,
+                    "error": res_data.get("error") or res_data.get("message") or content
+                }
+    except Exception as err:
+        return {"success": False, "configured": True, "error": str(err)}
 
 class GidaCMSHandler(http.server.SimpleHTTPRequestHandler):
     def __init__(self, *args, **kwargs):
@@ -170,7 +195,7 @@ class GidaCMSHandler(http.server.SimpleHTTPRequestHandler):
     def do_HEAD(self):
         if self.path == '/admin' or self.path.startswith('/admin/') or self.path.startswith('/admin?'):
             self.path = '/admin.html'
-        elif self.path in ['/register', '/register/', '/event-registration', '/event-registration/'] or self.path.startswith('/register?') or self.path.startswith('/event-registration?'):
+        elif self.path in ['/register', '/register/', '/registration', '/registration/', '/event-registration', '/event-registration/'] or self.path.startswith('/register?') or self.path.startswith('/registration?') or self.path.startswith('/event-registration?'):
             self.path = '/register.html'
         if self.path.startswith('/api/get-cms'):
             self.send_response(200)
@@ -183,7 +208,7 @@ class GidaCMSHandler(http.server.SimpleHTTPRequestHandler):
         # Protected and clean admin routing
         if self.path == '/admin' or self.path.startswith('/admin/') or self.path.startswith('/admin?'):
             self.path = '/admin.html'
-        elif self.path in ['/register', '/register/', '/event-registration', '/event-registration/'] or self.path.startswith('/register?') or self.path.startswith('/event-registration?'):
+        elif self.path in ['/register', '/register/', '/registration', '/registration/', '/event-registration', '/event-registration/'] or self.path.startswith('/register?') or self.path.startswith('/registration?') or self.path.startswith('/event-registration?'):
             self.path = '/register.html'
 
         if self.path.startswith('/api/health'):
@@ -219,6 +244,8 @@ class GidaCMSHandler(http.server.SimpleHTTPRequestHandler):
             self.handle_push_changes()
         elif self.path.startswith('/api/register'):
             self.handle_register()
+        elif self.path.startswith('/api/admin/test-sheets-webhook'):
+            self.handle_test_sheets_webhook()
         elif self.path.startswith('/api/admin/registrations/delete'):
             self.handle_delete_registration()
         else:
@@ -645,15 +672,26 @@ class GidaCMSHandler(http.server.SimpleHTTPRequestHandler):
             records.append(new_record)
             save_registrations(records)
 
-            # Safe async webhook dispatch
-            dispatch_sheets_webhook(new_record)
+            # Primary destination: Google Sheets integration
+            webhook_url = get_sheets_webhook_url()
+            sheets_result = send_to_google_sheets(new_record, webhook_url)
 
-            print(f"[REGISTRATION SUCCESS] Registered {new_id} for {email} ({organization})")
+            if webhook_url and not sheets_result.get("success"):
+                print(f"[SHEETS SYNC ERROR] {sheets_result.get('error')}")
+                self.send_json_response({
+                    "success": False,
+                    "message": f"Could not write registration to Google Sheet: {sheets_result.get('error', 'Webhook delivery error. Please try again.')}",
+                    "error": sheets_result.get("error")
+                }, status=502)
+                return
+
+            print(f"[REGISTRATION SUCCESS] Registered {new_id} for {email} ({organization}). Sheets synced: {sheets_result.get('success')}")
             self.send_json_response({
                 "success": True,
                 "registrationId": new_id,
                 "registration": new_record,
-                "message": "Registration successfully saved to database."
+                "googleSheetsSynced": bool(sheets_result.get("success")),
+                "message": "Registration successfully recorded in Google Sheets." if sheets_result.get("success") else "Registration recorded. Google Sheets Webhook is pending setup in Super Admin."
             }, status=200)
 
         except Exception as e:
@@ -662,6 +700,59 @@ class GidaCMSHandler(http.server.SimpleHTTPRequestHandler):
                 "success": False,
                 "message": f"Server error processing registration: {str(e)}"
             }, status=500)
+
+    def handle_test_sheets_webhook(self):
+        session = self.check_admin_auth()
+        if not session:
+            self.send_json_response({"success": False, "message": "Unauthorized. Super Admin login required."}, status=401)
+            return
+        try:
+            content_length = int(self.headers.get('Content-Length', 0))
+            body = self.rfile.read(content_length).decode('utf-8') if content_length > 0 else '{}'
+            data = json.loads(body)
+            target_url = (data.get('webhookUrl') or '').strip() or get_sheets_webhook_url()
+            if not target_url:
+                self.send_json_response({"success": False, "message": "No Google Sheets Webhook URL provided."}, status=400)
+                return
+
+            test_record = {
+                "id": "GIDA-TEST-PING",
+                "submittedAt": datetime.now(timezone.utc).isoformat(),
+                "fullName": "GIDA System Webhook Test",
+                "email": "admin@gida-action.org",
+                "phone": "+234 800 GIDA ACTION",
+                "organization": "GIDA Action",
+                "designation": "Administrator",
+                "operationalFootprint": ["Nationwide"],
+                "stakeholderArchetype": "NGO / CSO / Development Agency",
+                "stakeholderArchetypeOther": "",
+                "financialProducts": ["Connectivity Test"],
+                "topBarriers": ["System Test"],
+                "biggestOperationalChallenge": "Live webhook connection test ping from Super Admin.",
+                "offerCapabilities": ["Integration Test"],
+                "neededSupport": "Verification confirmation",
+                "consortiumInterest": "Yes",
+                "overlookedOpportunity": "Automation",
+                "successfulModel": "GIDA Webhook Model",
+                "reportFeatureConsent": "Internal Verification",
+                "workingGroupInterest": "Yes",
+                "status": "test-ping"
+            }
+            res = send_to_google_sheets(test_record, target_url)
+            if res.get("success"):
+                self.send_json_response({
+                    "success": True,
+                    "message": "Connection verified! Test ping written to Google Sheet successfully.",
+                    "details": res.get("data")
+                }, status=200)
+            else:
+                self.send_json_response({
+                    "success": False,
+                    "message": f"Connection failed: {res.get('error', 'Webhook error')}",
+                    "details": res
+                }, status=502)
+        except Exception as e:
+            self.send_json_response({"success": False, "message": f"Test error: {str(e)}"}, status=500)
 
     def handle_get_registrations(self):
         session = self.check_admin_auth()

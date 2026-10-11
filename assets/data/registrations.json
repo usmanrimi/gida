@@ -34,5 +34,37 @@
     "reportFeatureConsent": "Yes, publish our organization profile and operational area",
     "workingGroupInterest": "Yes",
     "status": "confirmed"
+  },
+  {
+    "id": "GIDA-RW2026-1002",
+    "submittedAt": "2026-10-11T18:16:20.746484Z",
+    "fullName": "Faysal",
+    "email": "wixfayz95@gmail.com",
+    "phone": "08097786676",
+    "organization": "Nexstep",
+    "designation": "Founder",
+    "operationalFootprint": [
+      "North-West (Kano, Kaduna, Katsina, etc.)"
+    ],
+    "stakeholderArchetype": "FinTech / Mobile Money Operator (MMO) / Payment Service Bank (PSB)",
+    "stakeholderArchetypeOther": "",
+    "financialProducts": [
+      "Micro-credit & Agricultural Loan Facilities",
+      "Savings & Asset-Building Accounts"
+    ],
+    "topBarriers": [
+      "Identity Verification / Lack of NIN, BVN, or official documentation"
+    ],
+    "biggestOperationalChallenge": "What is the single biggest",
+    "offerCapabilities": [
+      "Last-mile agent network and rural distribution channels"
+    ],
+    "neededSupport": "Technical assistance to design gender-responsive financial products",
+    "consortiumInterest": "Maybe, pending further details",
+    "overlookedOpportunity": "What is the single biggest",
+    "successfulModel": "What is the single biggest",
+    "reportFeatureConsent": "Yes, publish our organization profile and operational area",
+    "workingGroupInterest": "Yes",
+    "status": "confirmed"
   }
 ]
