@@ -889,12 +889,28 @@ class GidaServer(http.server.ThreadingHTTPServer):
     allow_reuse_address = True
     daemon_threads = True
 
+    def __init__(self, server_address, RequestHandlerClass):
+        self.address_family = socket.AF_INET6
+        try:
+            super().__init__(server_address, RequestHandlerClass)
+        except Exception:
+            self.address_family = socket.AF_INET
+            super().__init__(("0.0.0.0", server_address[1]), RequestHandlerClass)
+
+    def server_bind(self):
+        if self.address_family == socket.AF_INET6:
+            try:
+                self.socket.setsockopt(socket.IPPROTO_IPV6, socket.IPV6_V6ONLY, 0)
+            except Exception:
+                pass
+        super().server_bind()
+
 if __name__ == "__main__":
     print(f"Starting GIDA Live CMS Server on http://localhost:{PORT} and http://127.0.0.1:{PORT}...")
     print(f"Serving directory: {DIRECTORY}")
     print(f"CMS Data file: {DATA_FILE}")
     try:
-        with GidaServer(("0.0.0.0", PORT), GidaCMSHandler) as httpd:
+        with GidaServer(("::", PORT), GidaCMSHandler) as httpd:
             print(f"Server live at http://localhost:{PORT} and http://127.0.0.1:{PORT}")
             httpd.serve_forever()
     except KeyboardInterrupt:
