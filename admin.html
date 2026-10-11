@@ -2242,10 +2242,15 @@ function checkAuth() {
 // Show/Hide password toggle control
 const togglePassBtn = document.getElementById('togglePassBtn');
 if (togglePassBtn) {
-  togglePassBtn.addEventListener('click', () => {
+  togglePassBtn.addEventListener('click', (e) => {
+    if (e) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
     const passInput = document.getElementById('loginPass');
     const eyeIcon = document.getElementById('eyeIcon');
     const eyeSlashIcon = document.getElementById('eyeSlashIcon');
+    if (!passInput) return;
     if (passInput.type === 'password') {
       passInput.type = 'text';
       if (eyeIcon) eyeIcon.style.display = 'none';
@@ -2255,6 +2260,7 @@ if (togglePassBtn) {
       if (eyeIcon) eyeIcon.style.display = 'block';
       if (eyeSlashIcon) eyeSlashIcon.style.display = 'none';
     }
+    passInput.focus();
   });
 }
 
@@ -4340,6 +4346,8 @@ function importData(input) {
     };
     reader.readAsText(input.files[0]);
   }
+}
+
 function resetToDefaults() {
   if (confirm('Reset all CMS content and media to factory defaults? Any custom drafts will be replaced.')) {
     store = JSON.parse(JSON.stringify(DEFAULT_STORE));

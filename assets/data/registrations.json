@@ -1,1 +1,38 @@
-[]
+[
+  {
+    "id": "GIDA-RW2026-1001",
+    "submittedAt": "2026-10-11T16:04:59.598313Z",
+    "fullName": "Faysal",
+    "email": "faysal@nexstep.com.ng",
+    "phone": "0908787878",
+    "organization": "Nexstep",
+    "designation": "CEO",
+    "operationalFootprint": [
+      "North-West (Kano, Kaduna, Katsina, etc.)"
+    ],
+    "stakeholderArchetype": "NGO / CSO / Development Agency",
+    "stakeholderArchetypeOther": "",
+    "financialProducts": [
+      "Micro-credit & Agricultural Loan Facilities",
+      "Mobile Wallets & Agent Banking",
+      "Asset Financing / Buy-Now-Pay-Later (BNPL) Models"
+    ],
+    "topBarriers": [
+      "Identity Verification / Lack of NIN, BVN, or official documentation",
+      "High transaction costs and low profitability in last-mile rural delivery",
+      "Restrictive socio-cultural norms and household power dynamics"
+    ],
+    "biggestOperationalChallenge": "What is the single biggest operational challenge your organization faces when scaling services to rural women? *",
+    "offerCapabilities": [
+      "Last-mile agent network and rural distribution channels",
+      "Policy design and regulatory advocacy influence"
+    ],
+    "neededSupport": "First-loss guarantees to de-risk rural lending",
+    "consortiumInterest": "Maybe, pending further details",
+    "overlookedOpportunity": "What is one practical, overlooked opportunity in rural financial inclusion that stakeholders should prioritize at this event? *",
+    "successfulModel": "Can you share one successful project, tool, or pilot model that has proven effective for rural women in your operational areas? *",
+    "reportFeatureConsent": "Yes, publish our organization profile and operational area",
+    "workingGroupInterest": "Yes",
+    "status": "confirmed"
+  }
+]
