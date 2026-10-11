@@ -141,10 +141,18 @@ def send_to_google_sheets(record, webhook_url):
         )
         with urllib.request.urlopen(req, timeout=12) as resp:
             content = resp.read().decode('utf-8')
+            if '<!doctype html>' in content.lower() or 'accounts.google.com' in content:
+                return {
+                    "success": False,
+                    "configured": True,
+                    "status": 401,
+                    "error": "Google Web App permissions issue: Web app redirected to Google Sign-In. In Google Apps Script, click Deploy > Manage deployments > Edit (pencil) > set 'Who has access' to 'Anyone' > Deploy."
+                }
             try:
                 res_data = json.loads(content)
             except Exception:
                 res_data = {"raw": content}
+
             if resp.status in [200, 201, 302] and res_data.get("success") is not False:
                 return {"success": True, "configured": True, "data": res_data}
             else:
@@ -152,8 +160,17 @@ def send_to_google_sheets(record, webhook_url):
                     "success": False,
                     "configured": True,
                     "status": resp.status,
-                    "error": res_data.get("error") or res_data.get("message") or content
+                    "error": res_data.get("error") or res_data.get("message") or "Google Sheet returned non-success response."
                 }
+    except urllib.error.HTTPError as http_err:
+        if http_err.code in [401, 403]:
+            return {
+                "success": False,
+                "configured": True,
+                "status": http_err.code,
+                "error": "Google Web App returned 401 Unauthorized: In Google Apps Script, click Deploy > Manage deployments > Edit > set 'Who has access' to 'Anyone'."
+            }
+        return {"success": False, "configured": True, "error": f"HTTP Error {http_err.code}: {http_err.reason}"}
     except Exception as err:
         return {"success": False, "configured": True, "error": str(err)}
 
@@ -246,6 +263,8 @@ class GidaCMSHandler(http.server.SimpleHTTPRequestHandler):
             self.handle_register()
         elif self.path.startswith('/api/admin/test-sheets-webhook'):
             self.handle_test_sheets_webhook()
+        elif self.path.startswith('/api/admin/registrations/sync-sheets'):
+            self.handle_sync_registrations_to_sheets()
         elif self.path.startswith('/api/admin/registrations/delete'):
             self.handle_delete_registration()
         else:
@@ -669,21 +688,19 @@ class GidaCMSHandler(http.server.SimpleHTTPRequestHandler):
                 "status": "confirmed"
             }
 
-            records.append(new_record)
-            save_registrations(records)
-
             # Primary destination: Google Sheets integration
             webhook_url = get_sheets_webhook_url()
             sheets_result = send_to_google_sheets(new_record, webhook_url)
 
-            if webhook_url and not sheets_result.get("success"):
-                print(f"[SHEETS SYNC ERROR] {sheets_result.get('error')}")
-                self.send_json_response({
-                    "success": False,
-                    "message": f"Could not write registration to Google Sheet: {sheets_result.get('error', 'Webhook delivery error. Please try again.')}",
-                    "error": sheets_result.get("error")
-                }, status=502)
-                return
+            new_record["googleSheetsSynced"] = bool(sheets_result.get("success"))
+            if not sheets_result.get("success") and sheets_result.get("error"):
+                new_record["googleSheetsError"] = sheets_result.get("error")
+                print(f"[SHEETS SYNC NOTICE] Registration {new_id} saved locally. Sheets sync: {sheets_result.get('error')}")
+            else:
+                print(f"[SHEETS SYNC SUCCESS] Registration {new_id} successfully mirrored to Google Sheets.")
+
+            records.append(new_record)
+            save_registrations(records)
 
             print(f"[REGISTRATION SUCCESS] Registered {new_id} for {email} ({organization}). Sheets synced: {sheets_result.get('success')}")
             self.send_json_response({
@@ -691,7 +708,8 @@ class GidaCMSHandler(http.server.SimpleHTTPRequestHandler):
                 "registrationId": new_id,
                 "registration": new_record,
                 "googleSheetsSynced": bool(sheets_result.get("success")),
-                "message": "Registration successfully recorded in Google Sheets." if sheets_result.get("success") else "Registration recorded. Google Sheets Webhook is pending setup in Super Admin."
+                "googleSheetsError": None if sheets_result.get("success") else sheets_result.get("error"),
+                "message": "Registration successfully recorded in Google Sheets." if sheets_result.get("success") else "Registration confirmed and reserved."
             }, status=200)
 
         except Exception as e:
@@ -753,6 +771,49 @@ class GidaCMSHandler(http.server.SimpleHTTPRequestHandler):
                 }, status=502)
         except Exception as e:
             self.send_json_response({"success": False, "message": f"Test error: {str(e)}"}, status=500)
+
+    def handle_sync_registrations_to_sheets(self):
+        session = self.check_admin_auth()
+        if not session:
+            self.send_json_response({"success": False, "message": "Unauthorized. Super Admin login required."}, status=401)
+            return
+        webhook_url = get_sheets_webhook_url()
+        if not webhook_url:
+            self.send_json_response({"success": False, "message": "Google Sheets Webhook URL is not configured."}, status=400)
+            return
+
+        records = load_registrations()
+        synced_count = 0
+        failed_count = 0
+        last_error = None
+
+        for r in records:
+            res = send_to_google_sheets(r, webhook_url)
+            if res.get("success"):
+                r["googleSheetsSynced"] = True
+                r.pop("googleSheetsError", None)
+                synced_count += 1
+            else:
+                r["googleSheetsSynced"] = False
+                last_error = res.get("error")
+                r["googleSheetsError"] = last_error
+                failed_count += 1
+
+        save_registrations(records)
+        if failed_count == 0:
+            self.send_json_response({
+                "success": True,
+                "message": f"Successfully synced all {synced_count} registrations to Google Sheet!",
+                "synced": synced_count
+            }, status=200)
+        else:
+            self.send_json_response({
+                "success": False,
+                "message": f"Synced {synced_count} entries, but {failed_count} failed: {last_error}",
+                "synced": synced_count,
+                "failed": failed_count,
+                "error": last_error
+            }, status=502)
 
     def handle_get_registrations(self):
         session = self.check_admin_auth()

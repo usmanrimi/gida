@@ -51,15 +51,25 @@ const COLUMN_HEADERS = [
 ];
 
 function getTargetSheet() {
-  var ss;
-  if (SPREADSHEET_ID && SPREADSHEET_ID !== '') {
+  var ss = null;
+  // First attempt container-bound spreadsheet (highest reliability, no Drive permissions needed)
+  try {
+    ss = SpreadsheetApp.getActiveSpreadsheet();
+  } catch (e) {
+    ss = null;
+  }
+
+  // Fallback to explicit ID if running as standalone script
+  if (!ss && SPREADSHEET_ID && SPREADSHEET_ID !== '') {
     try {
       ss = SpreadsheetApp.openById(SPREADSHEET_ID);
     } catch (e) {
-      ss = SpreadsheetApp.getActiveSpreadsheet();
+      Logger.log('Could not open spreadsheet by ID: ' + e.toString());
     }
-  } else {
-    ss = SpreadsheetApp.getActiveSpreadsheet();
+  }
+
+  if (!ss) {
+    throw new Error('Spreadsheet could not be accessed. Please ensure this script is attached to the spreadsheet (Extensions > Apps Script) or that the account has access to ID: ' + SPREADSHEET_ID);
   }
 
   var sheet = ss.getSheetByName(SHEET_NAME);
@@ -102,8 +112,16 @@ function doPost(e) {
     // Acquire lock for up to 10 seconds to prevent race conditions during high traffic
     lock.waitLock(10000);
 
-    var rawContent = (e && e.postData && e.postData.contents) ? e.postData.contents : '{}';
-    var data = JSON.parse(rawContent);
+    var data = {};
+    if (e && e.postData && e.postData.contents) {
+      try {
+        data = JSON.parse(e.postData.contents);
+      } catch (jsonErr) {
+        data = e.parameter || {};
+      }
+    } else if (e && e.parameter) {
+      data = e.parameter;
+    }
 
     var sheet = getTargetSheet();
 

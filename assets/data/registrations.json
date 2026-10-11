@@ -66,5 +66,40 @@
     "reportFeatureConsent": "Yes, publish our organization profile and operational area",
     "workingGroupInterest": "Yes",
     "status": "confirmed"
+  },
+  {
+    "id": "GIDA-RW2026-1003",
+    "submittedAt": "2026-10-11T20:13:54.630409Z",
+    "fullName": "Amina Sani Test",
+    "email": "amina.test@sample.org",
+    "phone": "+2348011223344",
+    "organization": "Kano Farmers Cooperative",
+    "designation": "Executive Secretary",
+    "operationalFootprint": [
+      "North-West (Kano, Kaduna, Katsina, etc.)"
+    ],
+    "stakeholderArchetype": "Agricultural Value Chain Actor / Commodity Cooperative",
+    "stakeholderArchetypeOther": "",
+    "financialProducts": [
+      "Agricultural Input Credit / Anchor Borrowers Model"
+    ],
+    "topBarriers": [
+      "Collateral requirements incompatible with rural land tenure",
+      "High interest rates and short repayment cycles",
+      "Lack of formal credit history or credit bureau coverage"
+    ],
+    "biggestOperationalChallenge": "Ensuring women cooperatives have access to affordable seasonal liquidity.",
+    "offerCapabilities": [
+      "Direct access to organized rural farmer or women clusters"
+    ],
+    "neededSupport": "Subsidized loan guarantees / De-risking capital",
+    "consortiumInterest": "Yes, strongly interested",
+    "overlookedOpportunity": "Deploying digital micro-savings groups directly through market clusters.",
+    "successfulModel": "Village Savings and Loan Association linkage with microfinance.",
+    "reportFeatureConsent": "Yes, you may feature our organization profile and operational footprint",
+    "workingGroupInterest": "Yes, I would like to participate in post-event working groups",
+    "status": "confirmed",
+    "googleSheetsSynced": false,
+    "googleSheetsError": "Google Web App returned 401 Unauthorized: In Google Apps Script, click Deploy > Manage deployments > Edit > set 'Who has access' to 'Anyone'."
   }
 ]

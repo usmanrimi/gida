@@ -1083,6 +1083,9 @@
                 <button type="button" class="btn-outline-sm" onclick="openSheetsGuideModal()" style="font-size:0.82rem;padding:6px 12px;background:#fff;">
                   📖 Setup Guide &amp; Script
                 </button>
+                <button type="button" class="btn-outline-sm" id="btnSyncAllToSheets" onclick="syncAllToSheets()" style="font-size:0.82rem;padding:6px 12px;background:#e0f2fe;color:#0369a1;border-color:#7dd3fc;" title="Sync all saved registrations to Google Sheet">
+                  🔄 Sync to Sheets
+                </button>
                 <button type="button" class="btn-outline-sm" onclick="openSheetsConfigModal()" style="font-size:0.82rem;padding:6px 12px;background:#15803d;color:#fff;border-color:#15803d;">
                   ⚙️ Configure Webhook
                 </button>
@@ -1819,9 +1822,22 @@
         <strong style="color:#0f172a;display:block;margin-bottom:4px;">Step 3: Deploy as Web App</strong>
         1. In Apps Script, click the blue <strong>Deploy &gt; New deployment</strong> button.<br>
         2. Select type: <strong>Web app</strong>.<br>
-        3. Execute as: <strong>Me</strong> &bull; Who has access: <strong>Anyone</strong>.<br>
-        4. Click <strong>Deploy</strong>, authorize permissions, and copy the Web App URL.<br>
-        5. Return here, click <strong>Configure Webhook</strong>, paste the URL, and click <strong>Test Connection</strong>!
+        3. Execute as: <strong>Me</strong> (your Google account).<br>
+        4. Who has access: <strong style="color:#15803d;background:#dcfce7;padding:2px 6px;border-radius:4px;">Anyone</strong> (do NOT choose "Only myself" or domain-only, otherwise Google blocks website submissions).<br>
+        5. Click <strong>Deploy</strong>, authorize permissions, and copy the Web App URL (ends in <code>/exec</code>).<br>
+        6. Return here, click <strong>Configure Webhook</strong>, paste the URL, and click <strong>Test Connection</strong>!
+      </div>
+
+      <div style="background:#fef2f2;border:1px solid #fecaca;border-radius:10px;padding:14px;">
+        <strong style="color:#991b1b;display:block;margin-bottom:4px;">⚠️ Already deployed and getting 401 Unauthorized / Sign-In error?</strong>
+        If you already deployed with "Only myself", simply update the deployment:
+        <ol style="margin:6px 0 0 18px;line-height:1.6;font-size:0.84rem;">
+          <li>In Apps Script, click <strong>Deploy &gt; Manage deployments</strong>.</li>
+          <li>Click the <strong>Edit (pencil)</strong> icon next to your active deployment.</li>
+          <li>Change <strong>"Who has access"</strong> to <strong>"Anyone"</strong>.</li>
+          <li>Under <strong>"Version"</strong>, select <strong>"New version"</strong>.</li>
+          <li>Click <strong>Deploy</strong>. That's it! Website submissions will now connect automatically.</li>
+        </ol>
       </div>
     </div>
 
@@ -5012,6 +5028,43 @@ async function testSheetsWebhookConnection() {
     if (btn) {
       btn.disabled = false;
       btn.innerText = '⚡ Test Connection';
+    }
+  }
+}
+
+async function syncAllToSheets() {
+  const token = sessionStorage.getItem('gida_admin_token');
+  const btn = document.getElementById('btnSyncAllToSheets');
+  if (!confirm("Sync all saved registrations to your Google Sheet now?")) return;
+
+  if (btn) {
+    btn.disabled = true;
+    btn.innerText = '⏳ Syncing...';
+  }
+
+  showToast('Connecting to Google Sheets webhook...');
+  try {
+    const res = await fetch('/api/admin/registrations/sync-sheets', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + (token || '')
+      }
+    });
+    const data = await res.json().catch(() => ({}));
+    if (res.ok && data.success) {
+      showToast(data.message || 'All registrations synced to Google Sheet!');
+      fetchRegistrations(true);
+    } else {
+      alert("Google Sheets Sync Notice:\n\n" + (data.message || "Unable to sync. Please ensure Web App access is set to 'Anyone'."));
+      fetchRegistrations(true);
+    }
+  } catch (err) {
+    alert("Network error syncing to Google Sheets: " + err.message);
+  } finally {
+    if (btn) {
+      btn.disabled = false;
+      btn.innerText = '🔄 Sync to Sheets';
     }
   }
 }

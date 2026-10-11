@@ -34,6 +34,13 @@ async function sendToGoogleSheets(record, webhookUrl) {
     });
 
     const text = await res.text();
+    if (text.toLowerCase().includes('<!doctype html>') || text.includes('accounts.google.com')) {
+      return {
+        success: false,
+        configured: true,
+        error: "Google Web App requires access set to 'Anyone'. Currently redirecting to Google Sign-In."
+      };
+    }
     let data;
     try {
       data = JSON.parse(text);
@@ -48,7 +55,7 @@ async function sendToGoogleSheets(record, webhookUrl) {
         success: false,
         configured: true,
         status: res.status,
-        error: data.error || data.message || text
+        error: data.error || data.message || 'Webhook response error.'
       };
     }
   } catch (err) {
@@ -290,22 +297,21 @@ module.exports = async (req, res) => {
     const webhookUrl = getSheetsWebhookUrl();
     const sheetsResult = await sendToGoogleSheets(newRecord, webhookUrl);
 
-    if (webhookUrl && !sheetsResult.success) {
-      return res.status(502).json({
-        success: false,
-        message: 'Could not write registration to Google Sheet: ' + (sheetsResult.error || 'Webhook delivery error. Please try again.'),
-        error: sheetsResult.error
-      });
+    newRecord.googleSheetsSynced = Boolean(sheetsResult.success);
+    if (!sheetsResult.success && sheetsResult.error) {
+      newRecord.googleSheetsError = sheetsResult.error;
     }
+    await saveRegistrations(records);
 
     return res.status(200).json({
       success: true,
       registrationId: newId,
       registration: newRecord,
       googleSheetsSynced: Boolean(sheetsResult.success),
+      googleSheetsError: sheetsResult.success ? null : sheetsResult.error,
       message: sheetsResult.success
         ? 'Registration successfully recorded in Google Sheets.'
-        : 'Registration recorded. Google Sheets Webhook is pending setup in Super Admin.'
+        : 'Registration confirmed and reserved.'
     });
   } catch (err) {
     console.error('[API REGISTER ERROR]', err);

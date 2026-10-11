@@ -1765,11 +1765,15 @@ async function handleRegistrationSubmit(e) {
 
       window.scrollTo({ top: document.querySelector('.reg-card').offsetTop - 90, behavior: 'smooth' });
     } else {
-      // Server error handling: Preserve form data, highlight errors, never show false success
+      // Server error handling: Preserve form data, highlight errors, never show raw script tags
       const sErr = document.getElementById('serverErrorBanner');
       const sMsg = document.getElementById('serverErrorMessage');
       if (sErr && sMsg) {
-        sMsg.innerText = result.message || 'Submission could not be completed. Please review your entries and try again.';
+        let cleanMsg = result.message || 'Submission could not be completed. Please review your entries and try again.';
+        if (cleanMsg.includes('<script') || cleanMsg.includes('<!doctype') || cleanMsg.includes("window['ppConfig']")) {
+          cleanMsg = 'Google Apps Script permissions notice: The webhook is redirecting to Google Sign-In. In Google Apps Script, click Deploy > Manage deployments > Edit > set "Who has access" to "Anyone".';
+        }
+        sMsg.innerText = cleanMsg;
         sErr.style.display = 'flex';
       }
       if (result.errors) {
