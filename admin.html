@@ -2250,19 +2250,31 @@ try {
   store = DEFAULT_STORE;
 }
 
-// PERSISTENCE ENGINE: Saves to browser storage and synchronizes directly to server disk
+// PERSISTENCE ENGINE: Saves to browser storage and synchronizes directly to server disk & GitHub
 async function persist() {
   store.updatedAt = new Date().toISOString();
+  let serverSaved = false;
+  let pushed = false;
+  let msg = '';
   if (typeof window.GIDA_PERSIST_CMS === 'function') {
     const res = await window.GIDA_PERSIST_CMS(store);
-    if (res && res.serverSaved) {
-      console.log('[CMS SYNC] Persisted to server disk and broadcasted to all tabs.');
+    serverSaved = !!(res && res.serverSaved);
+    pushed = !!(res && res.pushed);
+    msg = (res && res.message) || '';
+    if (pushed) {
+      console.log('[CMS SYNC] Persisted to server disk and auto-pushed to live repository (origin/master).');
+      showToast('✓ Saved & published live to GitHub repository (origin/master)!');
+    } else if (serverSaved) {
+      console.log('[CMS SYNC] Persisted to server disk locally.');
+      showToast('✓ Saved to server disk successfully.');
+    } else {
+      showToast('Changes saved locally in browser.');
     }
-  } else if (typeof window.GIDA_SYNC_CMS === 'function') {
-    window.GIDA_SYNC_CMS(store);
   } else {
     localStorage.setItem('gida_cms_data', JSON.stringify(store));
+    showToast('Changes saved locally in browser.');
   }
+  return { success: true, serverSaved, pushed, message: msg };
 }
 
 // ==========================================
@@ -2290,8 +2302,15 @@ async function syncWithServer() {
       } catch(e) {}
     }
     if (serverData && typeof serverData === 'object') {
-      store = { ...DEFAULT_STORE, ...store, ...serverData };
-      localStorage.setItem('gida_cms_data', JSON.stringify(store));
+      const serverTime = serverData.updatedAt ? new Date(serverData.updatedAt).getTime() : 0;
+      const localTime = store.updatedAt ? new Date(store.updatedAt).getTime() : 0;
+      // Protect recent admin changes from being clobbered by stale CDN/server responses
+      if (serverTime >= localTime) {
+        store = { ...DEFAULT_STORE, ...serverData };
+        localStorage.setItem('gida_cms_data', JSON.stringify(store));
+      } else {
+        console.log('[CMS Admin] Local store is newer than server response. Retaining newest edits.');
+      }
       renderAll();
     }
     checkServerConnection();
@@ -2664,7 +2683,7 @@ async function pushViaGitHubApi(token) {
   const base64Content = btoa(unescape(encodeURIComponent(jsonString)));
 
   const putBody = {
-    message: 'Update CMS content and site data from Super Admin [skip ci]',
+    message: 'Update CMS content and site data from Super Admin ',
     content: base64Content,
     branch: branch
   };
@@ -2832,11 +2851,20 @@ document.querySelectorAll('.nav-btn').forEach(btn => {
   });
 });
 
-function showToast(msg) {
+function showToast(msg, isError) {
   const t = document.getElementById('toast');
+  if (!t) return;
   t.innerText = msg;
+  if (isError) {
+    t.style.borderLeftColor = '#ef4444';
+    t.style.background = '#7f1d1d';
+  } else {
+    t.style.borderLeftColor = 'var(--gold)';
+    t.style.background = 'var(--primary-dark)';
+  }
   t.classList.add('show');
-  setTimeout(() => t.classList.remove('show'), 3200);
+  clearTimeout(t._toastTimer);
+  t._toastTimer = setTimeout(() => t.classList.remove('show'), 3800);
 }
 
 function closeModal(id) {

@@ -392,10 +392,38 @@ class GidaCMSHandler(http.server.SimpleHTTPRequestHandler):
             else:
                 os.rename(temp_file, DATA_FILE)
 
+            pushed = False
+            git_err = None
+            try:
+                subprocess.run(['git', 'add', 'assets/data/cms-data.json', 'assets/img', 'assets/docs'], cwd=DIRECTORY, capture_output=True, text=True)
+                status_proc = subprocess.run(['git', 'status', '--porcelain'], cwd=DIRECTORY, capture_output=True, text=True)
+                if status_proc.stdout.strip():
+                    commit_msg = f"Update CMS content from Super Admin: {cms_payload['updatedAt']}"
+                    commit_proc = subprocess.run(['git', 'commit', '-m', commit_msg], cwd=DIRECTORY, capture_output=True, text=True)
+                    if commit_proc.returncode == 0:
+                        push_proc = subprocess.run(['git', 'push', 'origin', 'master'], cwd=DIRECTORY, capture_output=True, text=True)
+                        if push_proc.returncode == 0:
+                            pushed = True
+                            print(f"[CMS PUSH] Successfully auto-pushed CMS updates to origin/master")
+                        else:
+                            git_err = push_proc.stderr.strip() or push_proc.stdout.strip()
+                            print(f"[CMS PUSH WARNING] Push failed: {git_err}")
+                    else:
+                        git_err = commit_proc.stderr.strip()
+                        print(f"[CMS COMMIT WARNING] Commit failed: {git_err}")
+                else:
+                    pushed = True
+            except Exception as ge:
+                git_err = str(ge)
+                print(f"[CMS GIT ERROR] {git_err}")
+
             response_data = {
                 "success": True,
-                "message": "CMS data synchronized directly to disk.",
-                "updatedAt": cms_payload['updatedAt']
+                "serverSaved": True,
+                "pushed": pushed,
+                "message": "CMS data saved to disk and pushed live to GitHub repository!" if pushed else "CMS data saved to disk locally.",
+                "updatedAt": cms_payload['updatedAt'],
+                "gitError": git_err
             }
             
             res_bytes = json.dumps(response_data).encode('utf-8')
@@ -1050,31 +1078,19 @@ class GidaCMSHandler(http.server.SimpleHTTPRequestHandler):
         self.wfile.write(csv_bytes)
 
 class GidaServer(http.server.ThreadingHTTPServer):
-    allow_reuse_address = False if sys.platform == 'win32' else True
+    allow_reuse_address = True
     daemon_threads = True
 
     def __init__(self, server_address, RequestHandlerClass):
-        self.address_family = socket.AF_INET6
-        try:
-            super().__init__(server_address, RequestHandlerClass)
-        except Exception:
-            self.address_family = socket.AF_INET
-            super().__init__(("0.0.0.0", server_address[1]), RequestHandlerClass)
-
-    def server_bind(self):
-        if self.address_family == socket.AF_INET6:
-            try:
-                self.socket.setsockopt(socket.IPPROTO_IPV6, socket.IPV6_V6ONLY, 0)
-            except Exception:
-                pass
-        super().server_bind()
+        self.address_family = socket.AF_INET
+        super().__init__(("0.0.0.0", server_address[1]), RequestHandlerClass)
 
 if __name__ == "__main__":
     print(f"Starting GIDA Live CMS Server on http://localhost:{PORT} and http://127.0.0.1:{PORT}...")
     print(f"Serving directory: {DIRECTORY}")
     print(f"CMS Data file: {DATA_FILE}")
     try:
-        with GidaServer(("::", PORT), GidaCMSHandler) as httpd:
+        with GidaServer(("0.0.0.0", PORT), GidaCMSHandler) as httpd:
             print(f"Server live at http://localhost:{PORT} and http://127.0.0.1:{PORT}")
             httpd.serve_forever()
     except KeyboardInterrupt:

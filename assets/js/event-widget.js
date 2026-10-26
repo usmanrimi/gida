@@ -279,16 +279,15 @@
   floatingBtn.id = 'gidaFloatingEventBtn';
   floatingBtn.className = 'gida-floating-event-btn';
   floatingBtn.type = 'button';
-  floatingBtn.setAttribute('aria-label', 'Register for International Day for Rural Women 2026 Event');
-  floatingBtn.setAttribute('title', 'International Day for Rural Women 2026: Rural Women Rising');
+  floatingBtn.setAttribute('aria-label', 'View Upcoming Events');
+  floatingBtn.setAttribute('title', 'Upcoming Events - Growth Innovation for Development Action');
   floatingBtn.innerHTML = `
     <span class="gida-floating-icon-wrap">
       <svg width="15" height="15" fill="currentColor" viewBox="0 0 24 24">
         <path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20a2 2 0 0 0 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V9h14v11zM7 11h5v5H7z"/>
       </svg>
     </span>
-    <span>Register for Our Event</span>
-    <span class="gida-floating-badge-dot"></span>
+    <span>Upcoming Events</span>
   `;
   document.body.appendChild(floatingBtn);
 
@@ -301,25 +300,18 @@
   modalOverlay.setAttribute('aria-labelledby', 'gidaEventTitle');
   modalOverlay.innerHTML = `
     <div class="gida-event-modal-dialog">
-      <button type="button" class="gida-event-modal-close" id="gidaEventModalCloseBtn" aria-label="Close invitation">&times;</button>
+      <button type="button" class="gida-event-modal-close" id="gidaEventModalCloseBtn" aria-label="Close modal">&times;</button>
       <div class="gida-event-pill">
-        <span>🇳🇬 National Convening • Oct 15, 2026</span>
+        <span>GIDA Events</span>
       </div>
-      <h3 class="gida-event-title" id="gidaEventTitle">International Day for Rural Women 2026</h3>
-      <div class="gida-event-theme">"Rural Women Rising — Strengthening the Frontline in Nigeria"</div>
-      <p class="gida-event-desc">
-        Join grassroots women leaders, agricultural enterprises, financial institutions, and policy advocates to scale frontline solutions, de-risk rural finance, and strengthen community prosperity across Nigeria.
+      <h3 class="gida-event-title" id="gidaEventTitle">Upcoming Events</h3>
+      <p class="gida-event-desc" style="font-size:1.02rem;color:#334155;line-height:1.65;margin:16px 0 24px 0;">
+        Our next event is coming soon. Please check back for updates.
       </p>
-      <div class="gida-event-meta-box">
-        <div><strong>Date:</strong> October 15, 2026</div>
-        <div><strong>Venue:</strong> Kano, Nigeria &amp; Online (Google Meet)</div>
-      </div>
       <div class="gida-event-actions">
-        <a href="${regUrl}" class="gida-btn-register" id="gidaBtnRegisterNow">
-          <span>Register Now</span>
-          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-        </a>
-        <button type="button" class="gida-btn-secondary" id="gidaBtnMaybeLater">Maybe Later</button>
+        <button type="button" class="gida-btn-register" id="gidaBtnCloseEvents" style="cursor:pointer;flex:none;padding:10px 28px;">
+          <span>Close</span>
+        </button>
       </div>
     </div>
   `;
@@ -334,18 +326,12 @@
     document.body.style.overflow = 'hidden';
   }
 
-  function closeModal(rememberDismissal) {
+  function closeModal() {
     modalOverlay.classList.remove('active');
     setTimeout(function() {
       modalOverlay.style.display = 'none';
       document.body.style.overflow = '';
     }, 250);
-
-    if (rememberDismissal) {
-      try {
-        localStorage.setItem(DISMISS_KEY, Date.now().toString());
-      } catch (e) {}
-    }
   }
 
   // Floating button click
@@ -358,50 +344,29 @@
   var closeBtn = document.getElementById('gidaEventModalCloseBtn');
   if (closeBtn) {
     closeBtn.addEventListener('click', function() {
-      closeModal(true);
+      closeModal();
     });
   }
 
-  var maybeLaterBtn = document.getElementById('gidaBtnMaybeLater');
-  if (maybeLaterBtn) {
-    maybeLaterBtn.addEventListener('click', function() {
-      closeModal(true);
+  var closeEventsBtn = document.getElementById('gidaBtnCloseEvents');
+  if (closeEventsBtn) {
+    closeEventsBtn.addEventListener('click', function() {
+      closeModal();
     });
   }
 
   // Backdrop click
   modalOverlay.addEventListener('click', function(e) {
     if (e.target === modalOverlay) {
-      closeModal(true);
+      closeModal();
     }
   });
 
   // Escape key handler
   document.addEventListener('keydown', function(e) {
     if (e.key === 'Escape' && modalOverlay.classList.contains('active')) {
-      closeModal(true);
+      closeModal();
     }
   });
-
-  // Optional First-Visit Invitation (Polite 3.5s delay on initial visit)
-  try {
-    var lastDismissed = localStorage.getItem(DISMISS_KEY);
-    var shouldShow = true;
-    if (lastDismissed) {
-      var diff = Date.now() - parseInt(lastDismissed, 10);
-      if (diff < SEVEN_DAYS_MS) {
-        shouldShow = false;
-      }
-    }
-
-    if (shouldShow) {
-      setTimeout(function() {
-        // Double check not navigating away
-        if (!modalOverlay.classList.contains('active')) {
-          openModal();
-        }
-      }, 3500);
-    }
-  } catch (e) {}
 
 })();

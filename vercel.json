@@ -11,6 +11,14 @@
       "destination": "/api/admin-registrations.js"
     },
     {
+      "source": "/api/get-cms",
+      "destination": "/api/get-cms.js"
+    },
+    {
+      "source": "/api/save-cms",
+      "destination": "/api/save-cms.js"
+    },
+    {
       "source": "/registration",
       "destination": "/register.html"
     },

@@ -72,11 +72,29 @@
 
     fetchCanonicalData()
       .then(serverData => {
-        if (!serverData) return;
-        // Apply canonical server / repository data
-        activeCmsData = serverData;
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(serverData));
-        applyCmsToDom(activeCmsData);
+        if (!serverData || typeof serverData !== 'object') return;
+
+        let localData = null;
+        try {
+          const raw = localStorage.getItem(STORAGE_KEY);
+          if (raw) localData = JSON.parse(raw);
+        } catch(e) {}
+
+        const serverTime = serverData.updatedAt ? new Date(serverData.updatedAt).getTime() : 0;
+        const localTime = (localData && localData.updatedAt) ? new Date(localData.updatedAt).getTime() : 0;
+
+        // Prevent stale CDN or server cache from wiping out newly saved changes:
+        // Only overwrite if server data is equal to or newer than local storage,
+        // or if local storage is older than 30 minutes
+        const isStaleLocal = (Date.now() - localTime) > (30 * 60 * 1000);
+
+        if (!localData || serverTime >= localTime || isStaleLocal) {
+          activeCmsData = serverData;
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(serverData));
+          applyCmsToDom(activeCmsData);
+        } else {
+          console.log('[CMS Engine] Local storage is newer than server response. Retaining newest published content.');
+        }
       })
       .catch(err => {
         console.warn('[CMS Engine] Hydration notice:', err);
@@ -1099,6 +1117,7 @@
 
     // 4. Persist directly to physical disk via backend API
     let serverSaved = false;
+    let pushed = false;
     let message = 'Saved to browser storage and synced live across tabs.';
     try {
       const response = await fetch('/api/save-cms', {
@@ -1109,7 +1128,8 @@
       if (response.ok) {
         const resJson = await response.json();
         serverSaved = true;
-        message = 'CMS successfully synchronized to server database and live site!';
+        pushed = !!resJson.pushed;
+        message = resJson.message || 'CMS successfully saved to disk and published to live website!';
       }
     } catch(err) {
       // Backend not running (e.g. purely static server), localStorage & Broadcast still function
@@ -1119,6 +1139,7 @@
     return {
       success: true,
       serverSaved: serverSaved,
+      pushed: pushed,
       message: message,
       data: updatedData
     };
