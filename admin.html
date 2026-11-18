@@ -6,6 +6,9 @@
 <title>Super Admin CMS — GIDA</title>
 <link rel="icon" href="assets/img/logo.png">
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/quill@1.3.7/dist/quill.snow.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/quill@1.3.7/dist/quill.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/dompurify@3.0.6/dist/purify.min.js"></script>
 <style>
   :root {
     --primary: #1B4D3E;
@@ -133,8 +136,49 @@
   td { padding: 14px 18px; font-size: 0.9rem; border-bottom: 1px solid var(--border); vertical-align: middle; }
   tr:hover td { background: #fcfdfd; }
   .badge-status { display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; border-radius: 100px; font-size: 0.76rem; font-weight: 700; text-transform: uppercase; white-space: nowrap; }
-  .badge-published { background: #dcfce7; color: #15803d; }
+    .badge-published { background: #dcfce7; color: #15803d; }
   .badge-draft { background: #fef3c7; color: #b45309; }
+  .badge-archived { background: #f3e8ff; color: #7e22ce; }
+
+  /* Rich Text Editor (Quill) Styling */
+  .ql-toolbar.ql-snow {
+    border: 1px solid var(--border) !important;
+    border-radius: 8px 8px 0 0 !important;
+    background: #f8fafc;
+    padding: 8px 10px !important;
+  }
+  .ql-container.ql-snow {
+    border: 1px solid var(--border) !important;
+    border-top: none !important;
+    border-radius: 0 0 8px 8px !important;
+    font-family: inherit;
+    font-size: 0.95rem;
+    line-height: 1.7;
+    background: #fff;
+  }
+  .ql-editor {
+    min-height: 240px;
+    max-height: 480px;
+    overflow-y: auto;
+  }
+  .ql-editor p { margin-bottom: 12px; }
+  .ql-editor h1, .ql-editor h2, .ql-editor h3 {
+    color: var(--primary-dark);
+    margin: 16px 0 8px;
+    font-weight: 800;
+  }
+  .ql-editor blockquote {
+    border-left: 4px solid var(--gold);
+    padding-left: 14px;
+    color: #475569;
+    font-style: italic;
+    margin: 14px 0;
+  }
+  .ql-editor img {
+    max-width: 100%;
+    border-radius: 8px;
+    margin: 12px 0;
+  }
 
   /* Action Buttons */
   .action-links { display: inline-flex; gap: 6px; align-items: center; flex-wrap: nowrap; }
@@ -315,8 +359,8 @@
         <!-- GROUP 3: CONTENT -->
         <div class="menu-heading">Content</div>
         <button class="nav-btn" data-tab="registrations">
-          <svg width="20" height="20" fill="none" stroke-width="1.75" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path></svg>
-          Event Registrations <span class="badge-count" id="navRegBadge" style="background:var(--teal);color:#fff;font-size:0.72rem;padding:2px 7px;border-radius:100px;margin-left:auto;font-weight:700;">0</span>
+          <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+          Events &amp; Archives <span class="badge-count" id="navRegBadge" style="background:var(--teal);color:#fff;font-size:0.72rem;padding:2px 7px;border-radius:100px;margin-left:auto;font-weight:700;">0</span>
         </button>
         <button class="nav-btn" data-tab="articles">
           <svg width="20" height="20" fill="none" stroke-width="1.75" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"></path></svg>
@@ -1037,17 +1081,64 @@
           </div>
         </section>
 
-        <!-- TAB: EVENT REGISTRATIONS (RURAL WOMEN RISING 2026) -->
+                <!-- TAB: EVENT REGISTRATIONS (RURAL WOMEN RISING 2026) -->
         <section id="tab-registrations" class="tab-pane">
+          <!-- EVENT LIFECYCLE & FUTURE EVENT CONFIGURATION -->
+          <div class="content-card" style="margin-bottom:20px;">
+            <div class="card-head">
+              <div>
+                <h3 style="margin:0;">Event Lifecycle &amp; Public Registration Control</h3>
+                <p style="font-size:0.86rem;color:var(--text-muted);margin-top:4px;">
+                  Configure public registration status, upcoming event details, and Google Sheets integration without rebuilding the website.
+                </p>
+              </div>
+            </div>
+            <div class="card-body">
+              <form id="formEventConfig" onsubmit="saveEventConfigSettings(event)">
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+                  <div class="form-group">
+                    <label>Event Title</label>
+                    <input type="text" id="evtTitle" value="International Day for Rural Women 2026" required>
+                  </div>
+                  <div class="form-group">
+                    <label>Public Registration Status</label>
+                    <select id="evtStatus">
+                      <option value="closed">Closed / Concluded (Archived &amp; Forms Disabled)</option>
+                      <option value="active">Active / Open (Accepting Live Registrations)</option>
+                    </select>
+                  </div>
+                </div>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+                  <div class="form-group">
+                    <label>Event Date &amp; Timing</label>
+                    <input type="text" id="evtDate" value="October 15, 2026">
+                  </div>
+                  <div class="form-group">
+                    <label>Venue / Location</label>
+                    <input type="text" id="evtLocation" value="Kano, Nigeria &amp; Virtual Broadcast">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label>Concluded / Closed Notice Message (Shown to Visitors when Closed)</label>
+                  <textarea id="evtClosedMsg" rows="2">The International Day for Rural Women 2026 convening has successfully concluded. We sincerely thank our keynote speakers, development partners, financial institutions, and community delegates. Registration for this event is now closed.</textarea>
+                </div>
+                <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;margin-top:10px;">
+                  <button type="submit" class="btn-gold-sm">Save Event Configuration</button>
+                  <span id="evtSaveStatus" style="font-size:0.85rem;color:var(--teal);font-weight:700;"></span>
+                </div>
+              </form>
+            </div>
+          </div>
+
           <div class="content-card">
             <div class="card-head" style="flex-wrap:wrap;gap:12px;">
               <div>
                 <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
-                  <h3 style="margin:0;">International Day for Rural Women 2026 — Registrations</h3>
-                  <span id="regCountBadge" class="badge-status badge-published">0 Total Registrations</span>
+                  <h3 style="margin:0;">International Day for Rural Women 2026 — Archived Registrations</h3>
+                  <span id="regCountBadge" class="badge-status badge-archived">Archived Delegate Records</span>
                 </div>
                 <p style="font-size:0.86rem;color:var(--text-muted);margin-top:4px;">
-                  Real-time delegate registrations, institutional categorization, and ecosystem questionnaire submissions.
+                  Preserved historical delegate registrations, institutional categorization, and ecosystem questionnaire submissions.
                 </p>
               </div>
               <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;">
@@ -1247,25 +1338,73 @@
   </div>
 </div>
 
-<!-- 0. GITHUB CONNECT & PUSH MODAL -->
-<div id="githubModal" class="modal-overlay">
-  <div class="modal-box">
-    <h4>Connect GitHub for 1-Click Publishing</h4>
-    <p style="font-size:0.88rem;color:var(--text-muted);margin-bottom:16px;line-height:1.5;">
-      You are accessing the Super Admin directly from the web without a local Python server. To publish and deploy changes automatically to <strong>https://gida-action.org</strong>, please enter your GitHub Personal Access Token.
-    </p>
-    <div class="form-group">
-      <label>GitHub Personal Access Token (PAT)</label>
-      <input type="password" id="modalGhToken" placeholder="ghp_... or github_pat_..." style="width:100%;">
-      <p style="font-size:0.78rem;color:var(--text-muted);margin-top:6px;">
-        <a href="https://github.com/settings/tokens/new?scopes=repo&description=GIDA+Super+Admin+Live+Sync" target="_blank" style="color:var(--teal);font-weight:700;">Click here to generate a token on GitHub &rarr;</a> (Check the &ldquo;repo&rdquo; box, click Generate, and paste it here).
-      </p>
+<!-- 0. ARTICLE LIVE PREVIEW MODAL -->
+<div id="articlePreviewModal" class="modal-overlay">
+  <div class="modal-box" style="max-width:840px;">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;border-bottom:1px solid var(--border);padding-bottom:12px;">
+      <div>
+        <span style="font-size:0.75rem;font-weight:800;color:var(--gold);text-transform:uppercase;letter-spacing:0.05em;">Live Preview (Reader View)</span>
+        <h4 style="margin:4px 0 0;" id="previewModalTitle">Article Headline Preview</h4>
+      </div>
+      <button type="button" class="btn-modal-cancel" onclick="closeModal('articlePreviewModal')" style="padding:6px 14px;">✕ Close</button>
+    </div>
+    <div style="padding:10px 0;">
+      <div style="display:flex;gap:10px;align-items:center;margin-bottom:14px;flex-wrap:wrap;">
+        <span id="previewModalCategory" style="font-size:0.8rem;background:#f1f5f9;color:var(--text);padding:3px 10px;border-radius:6px;font-weight:700;">Field Insights</span>
+        <span style="font-size:0.85rem;color:var(--text-muted);">By <strong id="previewModalAuthor">GIDA Author</strong></span>
+        <span style="font-size:0.85rem;color:var(--text-muted);">&bull;</span>
+        <span id="previewModalDate" style="font-size:0.85rem;color:var(--text-muted);">15 October 2026</span>
+      </div>
+      <div style="margin-bottom:20px;border-radius:12px;overflow:hidden;max-height:360px;background:#f1f5f9;display:flex;align-items:center;justify-content:center;">
+        <img id="previewModalHeroImg" src="" style="width:100%;height:auto;object-fit:cover;max-height:360px;">
+      </div>
+      <div id="previewModalBody" style="font-size:1.02rem;line-height:1.75;color:#1e293b;">
+        <!-- Sanitized rich text rendered here -->
+      </div>
     </div>
     <div class="modal-actions">
-      <button type="button" class="btn-modal-cancel" onclick="closeModal('githubModal')">Cancel</button>
-      <button type="button" class="btn-modal-save" onclick="saveTokenFromModalAndPush()">Save &amp; Push to Live</button>
+      <button type="button" class="btn-modal-cancel" onclick="closeModal('articlePreviewModal')">Close Preview</button>
+      <button type="button" class="btn-modal-save" onclick="closeModal('articlePreviewModal');saveArticle(null, 'published');">Publish Live Now</button>
     </div>
   </div>
+</div>
+
+<!-- 0B. INSERT IMAGE INTO RICH-TEXT MODAL -->
+<div id="editorImageModal" class="modal-overlay">
+  <div class="modal-box" style="max-width:540px;">
+    <h4>Insert Image into Article Body</h4>
+    <p style="font-size:0.85rem;color:var(--text-muted);margin-bottom:18px;">Upload a photograph from your device or specify an image URL with accessible alt text.</p>
+    
+    <div class="form-group">
+      <label>Upload Image from Device</label>
+      <input type="file" id="editorImgFile" accept="image/*" onchange="previewEditorFile(this)">
+    </div>
+
+    <div class="form-group">
+      <label>Or Image URL</label>
+      <input type="text" id="editorImgUrl" placeholder="assets/img/... or https://...">
+    </div>
+
+    <div id="editorImgPreviewWrap" style="display:none;margin-bottom:14px;border:1px solid var(--border);border-radius:8px;overflow:hidden;height:160px;background:#f8fafc;align-items:center;justify-content:center;">
+      <img id="editorImgPreview" src="" style="width:100%;height:100%;object-fit:cover;">
+    </div>
+
+    <div class="form-group">
+      <label>Image Alternative Text (Accessibility &amp; SEO)</label>
+      <input type="text" id="editorImgAlt" placeholder="Brief description of the image content" required>
+    </div>
+
+    <div class="form-group">
+      <label>Image Caption (Optional, appears beneath image)</label>
+      <input type="text" id="editorImgCaption" placeholder="Optional caption displayed under photo">
+    </div>
+
+    <div class="modal-actions">
+      <button type="button" class="btn-modal-cancel" onclick="closeModal('editorImageModal')">Cancel</button>
+      <button type="button" class="btn-modal-save" onclick="insertImageToQuill()">Insert Image</button>
+    </div>
+  </div>
+</div>
 </div>
 
 <!-- 1. EDIT IMAGE METADATA MODAL -->
@@ -1425,16 +1564,25 @@
   </div>
 </div>
 
-<!-- 5. ADD / EDIT ARTICLE MODAL (RICH MEDIA & TOOLBAR) -->
+<!-- 5. ADD / EDIT ARTICLE MODAL (FULL RICH-TEXT PROSE EDITOR) -->
 <div id="articleModal" class="modal-overlay">
-  <div class="modal-box" style="max-width:760px;">
-    <h4 id="articleModalTitle">Write New Article</h4>
+  <div class="modal-box" style="max-width:860px;">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+      <h4 id="articleModalTitle" style="margin:0;">Write New Article</h4>
+      <div style="display:flex;gap:8px;">
+        <button type="button" class="btn-outline-sm" onclick="previewCurrentArticle()">👁 Preview</button>
+        <button type="button" class="btn-modal-cancel" onclick="closeModal('articleModal')" style="padding:4px 10px;">✕</button>
+      </div>
+    </div>
+
     <form id="formArticle" onsubmit="saveArticle(event)">
       <input type="hidden" id="artId">
+      
       <div class="form-group">
         <label>Article Title</label>
         <input type="text" id="artTitle" placeholder="e.g. Scaling Regenerative Soil Systems Across Northern Corridors" required>
       </div>
+
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
         <div class="form-group">
           <label>Category</label>
@@ -1451,13 +1599,14 @@
           <input type="text" id="artDate" placeholder="e.g. 15 September 2026" required>
         </div>
       </div>
+
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
         <div class="form-group">
           <label>Author / Byline</label>
           <input type="text" id="artAuthor" placeholder="e.g. GIDA Agronomy Team" required>
         </div>
         <div class="form-group">
-          <label>Featured Image</label>
+          <label>Featured Cover Image</label>
           <div style="display:flex;gap:8px;align-items:center;">
             <input type="text" id="artImage" value="assets/img/agri.jpg" required style="flex:1;">
             <input type="file" id="artImageFile" accept="image/*" style="display:none;" onchange="handleFileUpload(this, 'artImage', 'artImageThumbPreview')">
@@ -1472,38 +1621,33 @@
           </div>
         </div>
       </div>
+
       <div class="form-group">
         <label>Lead Excerpt / Teaser</label>
         <textarea id="artExcerpt" rows="2" placeholder="Brief 1-2 sentence teaser shown on blog cards" required></textarea>
       </div>
       
-      <!-- RICH PROSE EDITOR WITH FORMATTING TOOLBAR -->
+      <!-- FULL RICH-TEXT PROSE EDITOR (QUILL) -->
       <div class="form-group">
-        <label>Full Article Body (Markdown Prose with Inline Media &amp; Documents)</label>
-        <div class="editor-toolbar" style="display:flex;flex-wrap:wrap;gap:5px;background:#f8fafc;padding:8px 10px;border:1px solid var(--border);border-bottom:none;border-radius:8px 8px 0 0;">
-          <button type="button" class="btn-tool" onclick="formatToolbar('bold')" title="Bold (Ctrl+B)"><strong>B</strong></button>
-          <button type="button" class="btn-tool" onclick="formatToolbar('italic')" title="Italic (Ctrl+I)"><em>I</em></button>
-          <button type="button" class="btn-tool" onclick="formatToolbar('h2')" title="Section Heading 2">H2</button>
-          <button type="button" class="btn-tool" onclick="formatToolbar('h3')" title="Sub-heading 3">H3</button>
-          <button type="button" class="btn-tool" onclick="formatToolbar('quote')" title="Blockquote">&ldquo;&rdquo;</button>
-          <button type="button" class="btn-tool" onclick="formatToolbar('ul')" title="Bulleted List">&bull; List</button>
-          <button type="button" class="btn-tool" onclick="formatToolbar('ol')" title="Numbered List">1. List</button>
-          <button type="button" class="btn-tool" onclick="formatToolbar('link')" title="Hyperlink">Link</button>
-          <span style="width:1px;height:20px;background:#cbd5e1;margin:0 4px;align-self:center;"></span>
-          <button type="button" class="btn-tool-accent" onclick="insertArticleImagePrompt()" title="Insert Image with Caption">
-            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
-            + Image &amp; Caption
-          </button>
-          <button type="button" class="btn-tool-accent" onclick="insertArticleDocPrompt()" title="Attach PDF or Document Block">
-            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
-            + Attach PDF / Doc
-          </button>
-          <button type="button" class="btn-tool-accent" onclick="insertArticleVideoPrompt()" title="Embed 16:9 Video Player">
-            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polygon points="23 7 16 12 23 17 23 7"></polygon><rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect></svg>
-            + Embed Video
-          </button>
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+          <label style="margin:0;">Full Article Body (Rich-Text Editor)</label>
+          <div style="display:flex;gap:6px;">
+            <button type="button" class="btn-tool-accent" onclick="openEditorImageModal()" title="Insert image from computer or URL into article">
+              <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
+              + Insert Image &amp; Caption
+            </button>
+            <button type="button" class="btn-tool-accent" onclick="insertArticleDocPrompt()" title="Attach PDF or Document Block">
+              <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
+              + Attach PDF
+            </button>
+            <button type="button" class="btn-tool-accent" onclick="insertArticleVideoPrompt()" title="Embed Video Player">
+              <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polygon points="23 7 16 12 23 17 23 7"></polygon><rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect></svg>
+              + Video
+            </button>
+          </div>
         </div>
-        <textarea id="artContent" rows="10" placeholder="Write full article prose..." required style="border-radius:0 0 8px 8px;border-top:1px dashed var(--border);font-family:monospace, sans-serif;font-size:0.9rem;line-height:1.6;"></textarea>
+        <div id="artQuillEditor"></div>
+        <input type="hidden" id="artContent">
       </div>
 
       <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;">
@@ -1512,6 +1656,7 @@
           <select id="artStatus">
             <option value="published">Published (Live on site)</option>
             <option value="draft">Draft (Admin only)</option>
+            <option value="archived">Archived (Hidden)</option>
           </select>
         </div>
         <div style="display:flex;align-items:center;gap:8px;padding-top:20px;">
@@ -1519,9 +1664,12 @@
           <label for="artFeatured" style="margin-bottom:0;cursor:pointer;font-size:0.9rem;font-weight:600;">Feature on Blog Banner</label>
         </div>
       </div>
-      <div class="modal-actions">
+
+      <div class="modal-actions" style="margin-top:24px;">
         <button type="button" class="btn-modal-cancel" onclick="closeModal('articleModal')">Cancel</button>
-        <button type="submit" class="btn-modal-save">Save &amp; Sync Article</button>
+        <button type="button" class="btn-outline-sm" onclick="previewCurrentArticle()" style="padding:10px 18px;font-weight:700;">👁 Live Preview</button>
+        <button type="button" class="btn-action" onclick="saveArticle(null, 'draft')" style="padding:10px 18px;font-weight:700;background:#fef3c7;color:#92400e;border-color:#fde68a;">Save as Draft</button>
+        <button type="submit" class="btn-modal-save" style="padding:10px 22px;">Publish Live</button>
       </div>
     </form>
   </div>
@@ -2230,7 +2378,18 @@ const DEFAULT_STORE = {
     facebook: 'https://facebook.com/gidaaction',
     instagram: 'https://instagram.com/gida_action'
   },
-  googleSheetsWebhookUrl: 'https://script.google.com/macros/s/AKfycbxY4abu_7rFcG9ixvysi5hkQTu_xNImrGs1rq57j8WhTHrt8zFDRxSI2gGFN2TTAmzPUw/exec'
+  googleSheetsWebhookUrl: 'https://script.google.com/macros/s/AKfycbzRFIBzhiU8B7MuITKV41Pq9Enm4nzwdBOeOIdz4VvbRA2Qk1gqa0D-AmxPRWDhBwVxXQ/exec',
+  eventConfig: {
+    title: 'International Day for Rural Women 2026',
+    theme: 'Rural Women Rising: Strengthening the Frontline in Nigeria',
+    keynote: 'Promise or Publicity: PreCEFI as a Leading Institution in Bridging Financial Inclusion Gaps',
+    date: 'October 15, 2026',
+    location: 'Kano, Nigeria & Virtual Broadcast',
+    status: 'closed',
+    closedMessage: 'The International Day for Rural Women 2026 convening has successfully concluded. We sincerely thank our keynote speakers, development partners, financial institutions, and community delegates. Registration for this event is now closed.',
+    nextEventMessage: 'Our next event is coming soon. Please check back for updates.',
+    googleSheetsWebhookUrl: 'https://script.google.com/macros/s/AKfycbzRFIBzhiU8B7MuITKV41Pq9Enm4nzwdBOeOIdz4VvbRA2Qk1gqa0D-AmxPRWDhBwVxXQ/exec'
+  }
 };
 
 let store = DEFAULT_STORE;
@@ -2590,126 +2749,60 @@ async function checkServerConnection() {
 }
 
 async function pushChangesToLive() {
-  if (!confirm("Do you confirm pushing all website changes to the live repository and deploying?")) return;
+  if (!confirm("Do you confirm publishing and saving all website changes permanently?")) return;
 
   const btn = document.getElementById('btnPushLive');
   const txt = document.getElementById('btnPushLiveText');
-  const originalHtml = txt ? txt.innerText : 'Push Changes to Live';
+  const originalHtml = txt ? txt.innerText : 'Publish Changes Live';
 
   try {
     if (btn) btn.disabled = true;
-    if (txt) txt.innerText = 'Saving Changes...';
-    showToast('Saving and packaging latest CMS data...');
+    if (txt) txt.innerText = 'Publishing Live...';
+    showToast('Saving and publishing changes to live website...');
 
-    // 1. Ensure latest store is saved locally & to server disk if running
-    await persist();
+    // 1. Update timestamp
+    store.updatedAt = new Date().toISOString();
 
-    // 2. Detect local Python server
-    let isServerRunning = false;
-    try {
-      const ping = await fetch('/api/health?t=' + Date.now(), { cache: 'no-store' });
-      if (ping.ok) isServerRunning = true;
-    } catch(e) {}
+    // 2. Persist locally to storage
+    localStorage.setItem('gida_cms_data', JSON.stringify(store));
 
-    if (isServerRunning) {
-      // --- MODE 1: LOCAL PYTHON SERVER (Localhost:3000) ---
-      if (txt) txt.innerText = 'Pushing to GitHub (Local)...';
-      showToast('Pushing changes to GitHub via local development server...');
+    // 3. Post to backend persistent API (/api/save-cms) with admin authorization
+    const authToken = localStorage.getItem('gida_admin_token') || sessionStorage.getItem('gida_admin_token') || '';
+    const res = await fetch('/api/save-cms', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + authToken,
+        'x-admin-token': authToken
+      },
+      body: JSON.stringify(store)
+    });
 
-      const response = await fetch('/api/push-changes', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ message: 'Update CMS content and site data from Super Admin' })
-      });
+    const result = await res.json().catch(() => ({}));
 
-      const result = await response.json().catch(() => ({}));
-      if (response.ok && result.success) {
-        showToast('✓ Successfully pushed changes to live repository (' + result.branch + ')');
-        alert('Do you confirm completion: Changes have been successfully published and pushed to GitHub (origin/' + result.branch + ')!\n\nYour live website (https://gida-xi.vercel.app) is automatically deploying.');
-        checkServerConnection();
-        return;
-      } else {
-        throw new Error(result.error || ('Server returned HTTP ' + response.status));
-      }
+    if (res.ok && result.success) {
+      const msg = result.message || 'Changes published live and permanently saved!';
+      showToast('✓ ' + msg);
+      alert(`Success: All website changes have been permanently published!\n\nStatus: ${msg}`);
+    } else {
+      const errMsg = (result && result.error) || ('Server returned HTTP ' + res.status);
+      showToast('Published locally in browser. Sync status: ' + errMsg);
     }
 
-    // --- MODE 2: DIRECT GITHUB REST API (Works on Vercel / Remote / Cloud) ---
-    const token = localStorage.getItem('gida_github_token');
-    if (!token) {
-      openGitHubModal();
-      return;
+    // Broadcast across tabs
+    if (typeof broadcastChannel !== 'undefined' && broadcastChannel) {
+      try { broadcastChannel.postMessage({ type: 'CMS_UPDATE', payload: store }); } catch(e) {}
     }
 
-    if (txt) txt.innerText = 'Pushing to GitHub API...';
-    showToast('Pushing directly to GitHub repository via REST API...');
-
-    await pushViaGitHubApi(token);
+    checkServerConnection();
 
   } catch (err) {
-    console.error('[PUSH ERROR]', err);
-    showToast('Push Error: ' + err.message);
-    alert('Push Notice: ' + err.message + '\n\nNote: Your changes remain safely saved locally. If running on the web, please check your GitHub Token in Settings.');
+    console.error('[PUBLISH ERROR]', err);
+    showToast('Saved locally in browser.');
   } finally {
     if (btn) btn.disabled = false;
     if (txt) txt.innerText = originalHtml;
   }
-}
-
-async function pushViaGitHubApi(token) {
-  const repo = 'usmanrimi/gida';
-  const branch = 'master';
-  const path = 'assets/data/cms-data.json';
-  const apiUrl = `https://api.github.com/repos/${repo}/contents/${path}?ref=${branch}`;
-
-  // 1. Fetch current file SHA
-  let currentSha = null;
-  const getRes = await fetch(apiUrl, {
-    headers: {
-      'Accept': 'application/vnd.github.v3+json',
-      'Authorization': `Bearer ${token}`
-    },
-    cache: 'no-store'
-  });
-
-  if (getRes.ok) {
-    const fileInfo = await getRes.json();
-    currentSha = fileInfo.sha;
-  } else if (getRes.status === 401 || getRes.status === 403) {
-    throw new Error('GitHub authentication failed. Please update your GitHub Token in Settings.');
-  }
-
-  // 2. Prepare base64 payload
-  const jsonString = JSON.stringify(store, null, 2);
-  const base64Content = btoa(unescape(encodeURIComponent(jsonString)));
-
-  const putBody = {
-    message: 'Update CMS content and site data from Super Admin ',
-    content: base64Content,
-    branch: branch
-  };
-  if (currentSha) {
-    putBody.sha = currentSha;
-  }
-
-  // 3. Commit to GitHub master branch
-  const putRes = await fetch(`https://api.github.com/repos/${repo}/contents/${path}`, {
-    method: 'PUT',
-    headers: {
-      'Accept': 'application/vnd.github.v3+json',
-      'Authorization': `Bearer ${token}`,
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(putBody)
-  });
-
-  if (!putRes.ok) {
-    const errData = await putRes.json().catch(() => ({}));
-    throw new Error(errData.message || `GitHub API returned ${putRes.status}`);
-  }
-
-  showToast('✓ Successfully committed to GitHub master! Vercel auto-deploying...');
-  alert('Do you confirm completion: Changes have been successfully committed directly to GitHub (' + repo + ':' + branch + ')!\n\nYour live website (https://gida-xi.vercel.app) is auto-deploying now and will apply across the website momentarily.');
-  checkServerConnection();
 }
 
 function openGitHubModal() {
@@ -2874,7 +2967,39 @@ function closeModal(id) {
 // ==========================================
 // RENDERING FUNCTIONS
 // ==========================================
+function renderEventConfigForm() {
+  if (!store.eventConfig) return;
+  const cfg = store.eventConfig;
+  if (document.getElementById('evtTitle')) document.getElementById('evtTitle').value = cfg.title || '';
+  if (document.getElementById('evtStatus')) document.getElementById('evtStatus').value = cfg.status || 'closed';
+  if (document.getElementById('evtDate')) document.getElementById('evtDate').value = cfg.date || '';
+  if (document.getElementById('evtLocation')) document.getElementById('evtLocation').value = cfg.location || '';
+  if (document.getElementById('evtClosedMsg')) document.getElementById('evtClosedMsg').value = cfg.closedMessage || '';
+}
+
+async function saveEventConfigSettings(e) {
+  if (e && e.preventDefault) e.preventDefault();
+  if (!store.eventConfig) store.eventConfig = {};
+  
+  store.eventConfig.title = document.getElementById('evtTitle').value;
+  store.eventConfig.status = document.getElementById('evtStatus').value;
+  store.eventConfig.date = document.getElementById('evtDate').value;
+  store.eventConfig.location = document.getElementById('evtLocation').value;
+  store.eventConfig.closedMessage = document.getElementById('evtClosedMsg').value;
+  
+  const statusSpan = document.getElementById('evtSaveStatus');
+  if (statusSpan) statusSpan.innerText = 'Saving...';
+  
+  await persist();
+  if (statusSpan) {
+    statusSpan.innerText = '✓ Saved & Applied Live';
+    setTimeout(() => { statusSpan.innerText = ''; }, 3000);
+  }
+  showToast('✓ Event configuration saved & published live!');
+}
+
 function renderAll() {
+  renderEventConfigForm();
   renderStats();
   renderHomepageForm();
   renderAboutForm();

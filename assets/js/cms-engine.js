@@ -894,6 +894,50 @@
   // --- HELPER: Convert Markdown into Clean Semantic HTML ---
   function formatMarkdownProse(markdownText) {
     if (!markdownText) return '';
+
+    // Check if input contains HTML formatting from Rich-Text Editor
+    const isHtml = /<(?:p|h[1-6]|ul|ol|blockquote|div|span|img|strong|em|u|table|figure)\b/i.test(markdownText);
+    if (isHtml) {
+      let processed = markdownText;
+
+      // Expand embedded video macros: [youtube:ID]
+      processed = processed.replace(/\[youtube:([a-zA-Z0-9_-]+)\]/g, (match, ytId) => {
+        return `
+          <div class="gida-video-player-wrap" style="position:relative; padding-bottom:56.25%; height:0; border-radius:12px; overflow:hidden; margin:28px 0; box-shadow:0 8px 24px rgba(0,0,0,0.12);">
+            <iframe src="https://www.youtube.com/embed/${escapeHtml(ytId)}?rel=0" title="Embedded Video" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="position:absolute; top:0; left:0; width:100%; height:100%; border:none;"></iframe>
+          </div>
+        `;
+      });
+
+      // Expand embedded document macros: [pdf:Title|URL] or [doc:Title|URL]
+      processed = processed.replace(/\[(pdf|doc):([^|]+)\|([^\]]+)\]/g, (match, type, docTitle, docUrl) => {
+        return `
+          <div class="article-attached-doc">
+            <div class="article-doc-icon">
+              <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
+            </div>
+            <div class="article-doc-info">
+              <div class="article-doc-title">${escapeHtml(docTitle)}</div>
+              <div class="article-doc-meta">Official Attached Document / PDF</div>
+            </div>
+            <div class="article-doc-btns">
+              <a href="${escapeHtml(docUrl)}" target="_blank" rel="noopener" class="btn btn-outline" style="padding:6px 14px; font-size:0.85rem;">View Document</a>
+              <a href="${escapeHtml(docUrl)}" download class="btn btn-gold" style="padding:6px 14px; font-size:0.85rem;">Download PDF</a>
+            </div>
+          </div>
+        `;
+      });
+
+      // Sanitize safely with DOMPurify if available
+      if (typeof DOMPurify !== 'undefined') {
+        return DOMPurify.sanitize(processed, {
+          ADD_TAGS: ['iframe', 'figure', 'figcaption'],
+          ADD_ATTR: ['allow', 'allowfullscreen', 'frameborder', 'target', 'rel']
+        });
+      }
+      return processed;
+    }
+
     let html = '';
     const paragraphs = markdownText.split(/\n\n+/);
     

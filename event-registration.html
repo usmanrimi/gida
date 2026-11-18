@@ -547,14 +547,32 @@
   <section class="wrap reg-container">
     <div class="reg-card">
 
+      <!-- EVENT CLOSED / ARCHIVED NOTICE -->
+      <div id="eventClosedBanner" style="padding: 48px 32px; text-align: center; background: linear-gradient(180deg, #f8fafc 0%, #ffffff 100%);">
+        <div style="display:inline-flex; align-items:center; gap:8px; background: rgba(0, 130, 138, 0.12); color: var(--teal-dark); padding: 7px 18px; border-radius: 100px; font-size: 0.82rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 20px;">
+          <span style="width:8px; height:8px; border-radius:50%; background:#16a34a;"></span>
+          Convening Concluded &bull; Registration Closed
+        </div>
+        <h2 id="eventTitleHeading" style="font-size: clamp(1.45rem, 2.8vw, 1.95rem); color: var(--green-dark); margin-bottom: 14px; font-weight: 800; line-height: 1.3;">
+          International Day for Rural Women 2026
+        </h2>
+        <p id="eventClosedMessage" style="font-size: 1.05rem; color: #475569; max-width: 680px; margin: 0 auto 28px; line-height: 1.7;">
+          The October 15, 2026 convening has successfully concluded. We sincerely thank our keynote speakers, development partners, financial institutions, and community delegates. Registration for this event is now closed.
+        </p>
+        <div style="display:flex; justify-content:center; gap:14px; flex-wrap:wrap;">
+          <a href="index.html" class="btn btn-gold" style="padding: 12px 26px; font-size: 0.92rem; text-decoration: none;">Return to Home</a>
+          <a href="safeguarding.html" class="btn btn-outline" style="padding: 12px 26px; font-size: 0.92rem; text-decoration: none;">Safeguarding &amp; Publications</a>
+        </div>
+      </div>
+
       <!-- DRAFT NOTIFICATION -->
-      <div id="draftNoticeBanner" class="alert-banner info" style="margin: 16px 24px 0;">
+      <div id="draftNoticeBanner" class="alert-banner info" style="margin: 16px 24px 0; display: none;">
         <span>📝 An auto-saved registration draft was restored.</span>
         <button type="button" onclick="clearRegistrationDraft()" style="background:none; border:none; color:#15803d; font-weight:700; cursor:pointer; text-decoration:underline; font-size:0.82rem;">Reset Form</button>
       </div>
 
       <!-- STEPPER HEADER -->
-      <div class="stepper-header" id="stepperNavBox">
+      <div class="stepper-header" id="stepperNavBox" style="display: none;">
         <div class="stepper-nav" role="tablist">
           <button type="button" class="stepper-step active" data-step="1" onclick="jumpToStep(1)">
             <span class="step-num">1</span> <span>Identity</span>
@@ -590,7 +608,7 @@
       </div>
 
       <!-- MULTI-STEP FORM -->
-      <form id="eventRegistrationForm" onsubmit="handleRegistrationSubmit(event)" novalidate>
+      <form id="eventRegistrationForm" onsubmit="handleRegistrationSubmit(event)" novalidate style="display: none;">
         <div class="reg-form-body">
 
           <!-- ========================================================
@@ -1197,12 +1215,50 @@ let currentStep = 1;
 const totalSteps = 7;
 
 document.addEventListener('DOMContentLoaded', () => {
+  checkEventStatus();
   hideAllErrors();
   setupInteractiveCards();
   restoreDraft();
   hideAllErrors();
   updateStepperUI(1);
 });
+
+async function checkEventStatus() {
+  let isClosed = true;
+  try {
+    const res = await fetch('/api/get-cms?t=' + Date.now());
+    if (res.ok) {
+      const data = await res.json();
+      if (data && data.eventConfig) {
+        isClosed = data.eventConfig.status === 'closed';
+        if (data.eventConfig.title) {
+          const titleEl = document.getElementById('eventTitleHeading');
+          if (titleEl) titleEl.innerText = data.eventConfig.title;
+        }
+        if (data.eventConfig.closedMessage) {
+          const msgEl = document.getElementById('eventClosedMessage');
+          if (msgEl) msgEl.innerText = data.eventConfig.closedMessage;
+        }
+      }
+    }
+  } catch(e) {}
+
+  const closedBanner = document.getElementById('eventClosedBanner');
+  const stepperNav = document.getElementById('stepperNavBox');
+  const formBox = document.getElementById('eventRegistrationForm');
+  const draftNotice = document.getElementById('draftNoticeBanner');
+
+  if (isClosed) {
+    if (closedBanner) closedBanner.style.display = 'block';
+    if (stepperNav) stepperNav.style.display = 'none';
+    if (formBox) formBox.style.display = 'none';
+    if (draftNotice) draftNotice.style.display = 'none';
+  } else {
+    if (closedBanner) closedBanner.style.display = 'none';
+    if (stepperNav) stepperNav.style.display = 'block';
+    if (formBox) formBox.style.display = 'block';
+  }
+}
 
 // Highlight cards on radio/checkbox change and clear errors immediately
 function setupInteractiveCards() {

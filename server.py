@@ -1083,18 +1083,24 @@ class GidaServer(http.server.ThreadingHTTPServer):
 
     def __init__(self, server_address, RequestHandlerClass):
         self.address_family = socket.AF_INET
-        super().__init__(("0.0.0.0", server_address[1]), RequestHandlerClass)
+        host = server_address[0] if server_address[0] else "127.0.0.1"
+        try:
+            super().__init__((host, server_address[1]), RequestHandlerClass)
+        except OSError:
+            super().__init__(("127.0.0.1", server_address[1]), RequestHandlerClass)
 
 if __name__ == "__main__":
     print(f"Starting GIDA Live CMS Server on http://localhost:{PORT} and http://127.0.0.1:{PORT}...")
     print(f"Serving directory: {DIRECTORY}")
     print(f"CMS Data file: {DATA_FILE}")
     try:
-        with GidaServer(("0.0.0.0", PORT), GidaCMSHandler) as httpd:
+        with GidaServer(("127.0.0.1", PORT), GidaCMSHandler) as httpd:
             print(f"Server live at http://localhost:{PORT} and http://127.0.0.1:{PORT}")
             httpd.serve_forever()
     except KeyboardInterrupt:
         print("\nShutting down server.")
     except Exception as e:
-        print(f"Failed to bind port {PORT}: {e}")
+        import traceback
+        print(f"Server exception on port {PORT}: {e}")
+        traceback.print_exc()
         sys.exit(1)

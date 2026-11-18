@@ -19,6 +19,14 @@
       "destination": "/api/save-cms.js"
     },
     {
+      "source": "/api/upload-file",
+      "destination": "/api/upload-file.js"
+    },
+    {
+      "source": "/api/upload-pdf",
+      "destination": "/api/upload-file.js"
+    },
+    {
       "source": "/registration",
       "destination": "/register.html"
     },
